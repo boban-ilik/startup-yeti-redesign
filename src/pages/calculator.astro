@@ -1,0 +1,456 @@
+---
+// src/pages/calculator.astro
+// SaaS Metrics Calculator
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark:bg-slate-900">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>SaaS Metrics Calculator | Startup Yeti</title>
+    <meta name="description" content="Calculate your SaaS metrics including LTV, CAC ratio, growth rate, and burn multiple. Free tool for SaaS founders." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <style>
+      img[src="/logo.png"] {
+        background: transparent !important;
+        mix-blend-mode: normal;
+      }
+
+      .metric-card {
+        background: linear-gradient(135deg, #f8fafc 0%, #e2e8f0 100%);
+      }
+
+      .dark .metric-card {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900 dark:selection:bg-yeti-900 dark:selection:text-yeti-100 transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-500">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="block hover:opacity-80 transition-all duration-300 hover:scale-105">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto" />
+        </a>
+
+        <div class="flex items-center gap-6">
+          <a href="/" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Home
+          </a>
+          <a href="/blog" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Blog
+          </a>
+          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-20">
+
+      <!-- Hero Section -->
+      <section class="relative py-20 px-6 bg-gradient-to-b from-white dark:from-slate-900 to-slate-50 dark:to-slate-800">
+        <div class="max-w-5xl mx-auto text-center">
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 dark:border-slate-700 shadow-lg text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-widest mb-8">
+            <svg class="w-4 h-4 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z"></path></svg>
+            Free Tool
+          </div>
+
+          <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight font-serif">
+            SaaS Metrics Calculator
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light mb-8">
+            Calculate your key SaaS metrics instantly. Understand your LTV:CAC ratio, growth rate, and burn multiple to make better decisions.
+          </p>
+
+          <div class="flex flex-wrap justify-center gap-4 text-sm text-slate-600 dark:text-slate-400">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <span class="font-semibold">No signup required</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <span class="font-semibold">Instant results</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <span class="font-semibold">100% free</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Calculator Section -->
+      <section class="py-12 px-6">
+        <div class="max-w-6xl mx-auto">
+          <div class="grid lg:grid-cols-2 gap-10">
+
+            <!-- Input Column -->
+            <div class="space-y-6">
+              <div class="glass dark:border-slate-700 rounded-3xl p-8 shadow-xl">
+                <h2 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-6 font-serif flex items-center gap-3">
+                  <svg class="w-6 h-6 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg>
+                  Your Metrics
+                </h2>
+
+                <div class="space-y-5">
+                  <!-- MRR Input -->
+                  <div>
+                    <label for="mrr" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Monthly Recurring Revenue (MRR)
+                      <span class="text-slate-500 dark:text-slate-400 font-normal ml-2">in USD</span>
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">$</span>
+                      <input
+                        type="number"
+                        id="mrr"
+                        placeholder="50000"
+                        class="w-full pl-9 pr-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold"
+                        min="0"
+                        step="1000"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- Customer Count Input -->
+                  <div>
+                    <label for="customers" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Total Customers
+                    </label>
+                    <input
+                      type="number"
+                      id="customers"
+                      placeholder="500"
+                      class="w-full px-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold"
+                      min="1"
+                      step="1"
+                    />
+                  </div>
+
+                  <!-- Churn Rate Input -->
+                  <div>
+                    <label for="churn" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Monthly Churn Rate
+                      <span class="text-slate-500 dark:text-slate-400 font-normal ml-2">percentage</span>
+                    </label>
+                    <div class="relative">
+                      <input
+                        type="number"
+                        id="churn"
+                        placeholder="5"
+                        class="w-full pr-10 pl-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold"
+                        min="0"
+                        max="100"
+                        step="0.1"
+                      />
+                      <span class="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">%</span>
+                    </div>
+                  </div>
+
+                  <!-- CAC Input -->
+                  <div>
+                    <label for="cac" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Customer Acquisition Cost (CAC)
+                      <span class="text-slate-500 dark:text-slate-400 font-normal ml-2">per customer</span>
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">$</span>
+                      <input
+                        type="number"
+                        id="cac"
+                        placeholder="500"
+                        class="w-full pl-9 pr-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold"
+                        min="0"
+                        step="10"
+                      />
+                    </div>
+                  </div>
+
+                  <!-- ARPA Input (calculated but can be overridden) -->
+                  <div>
+                    <label for="arpa" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      Average Revenue Per Account (ARPA)
+                      <span class="text-slate-500 dark:text-slate-400 font-normal ml-2">auto-calculated</span>
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">$</span>
+                      <input
+                        type="number"
+                        id="arpa"
+                        placeholder="100"
+                        class="w-full pl-9 pr-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold bg-slate-50 dark:bg-slate-900"
+                        min="0"
+                        step="1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+
+                  <button
+                    id="calculate-btn"
+                    class="w-full py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-lg hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all transform hover:-translate-y-1"
+                  >
+                    Calculate Metrics
+                  </button>
+                </div>
+              </div>
+            </div>
+
+            <!-- Results Column -->
+            <div class="space-y-6">
+              <div id="results-container" class="space-y-6 opacity-50 transition-opacity duration-300">
+
+                <!-- LTV Card -->
+                <div class="metric-card rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                  <div class="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">Customer Lifetime Value</h3>
+                      <p class="text-4xl font-extrabold text-slate-900 dark:text-slate-100" id="ltv-value">$0</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-green-100 to-emerald-100 dark:from-green-900 dark:to-emerald-900 flex items-center justify-center">
+                      <svg class="w-6 h-6 text-green-600 dark:text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                  </div>
+                  <p class="text-sm text-slate-600 dark:text-slate-400" id="ltv-description">Average revenue per customer over their lifetime</p>
+                </div>
+
+                <!-- LTV:CAC Ratio Card -->
+                <div class="metric-card rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                  <div class="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">LTV:CAC Ratio</h3>
+                      <p class="text-4xl font-extrabold text-slate-900 dark:text-slate-100" id="ratio-value">0:1</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-blue-100 to-cyan-100 dark:from-blue-900 dark:to-cyan-900 flex items-center justify-center">
+                      <svg class="w-6 h-6 text-blue-600 dark:text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+                    </div>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <span id="ratio-badge" class="px-3 py-1 rounded-full text-xs font-bold bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-300">-</span>
+                    <p class="text-sm text-slate-600 dark:text-slate-400" id="ratio-description">Target: 3:1 or higher</p>
+                  </div>
+                </div>
+
+                <!-- Monthly Growth Rate Card -->
+                <div class="metric-card rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                  <div class="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">Net MRR Growth Rate</h3>
+                      <p class="text-4xl font-extrabold text-slate-900 dark:text-slate-100" id="growth-value">0%</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 flex items-center justify-center">
+                      <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+                    </div>
+                  </div>
+                  <p class="text-sm text-slate-600 dark:text-slate-400" id="growth-description">Based on current churn rate</p>
+                </div>
+
+                <!-- Payback Period Card -->
+                <div class="metric-card rounded-3xl p-8 shadow-xl border border-slate-200 dark:border-slate-700">
+                  <div class="flex items-start justify-between mb-4">
+                    <div>
+                      <h3 class="text-sm font-bold text-slate-600 dark:text-slate-400 uppercase tracking-wider mb-1">CAC Payback Period</h3>
+                      <p class="text-4xl font-extrabold text-slate-900 dark:text-slate-100" id="payback-value">0 mo</p>
+                    </div>
+                    <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-100 to-amber-100 dark:from-orange-900 dark:to-amber-900 flex items-center justify-center">
+                      <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+                    </div>
+                  </div>
+                  <p class="text-sm text-slate-600 dark:text-slate-400" id="payback-description">Time to recover acquisition cost</p>
+                </div>
+
+              </div>
+
+              <!-- Insights Box -->
+              <div id="insights-box" class="glass dark:border-slate-700 rounded-3xl p-8 shadow-xl opacity-0 transition-opacity duration-300">
+                <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-serif flex items-center gap-2">
+                  <svg class="w-5 h-5 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+                  Key Insights
+                </h3>
+                <ul id="insights-list" class="space-y-3 text-slate-600 dark:text-slate-400">
+                  <!-- Dynamically populated -->
+                </ul>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA Section -->
+      <section class="py-20 px-6 bg-gradient-to-b from-slate-50 dark:from-slate-800 to-white dark:to-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="glass dark:border-slate-700 rounded-3xl p-12 shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-serif">
+              Want to Improve These Metrics?
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+              Join 50k+ founders getting weekly insights on building and scaling SaaS businesses with proven frameworks.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" data-newsletter-form>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-6 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all"
+                required
+              />
+              <button
+                type="submit"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <img src="/logo.png" class="h-16 w-auto mx-auto mb-6" style="filter: brightness(0) invert(1) !important; image-rendering: crisp-edges;" alt="Startup Yeti" />
+        <p class="text-slate-300 mb-4 text-base">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+        <div class="flex justify-center gap-6">
+          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
+          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
+          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
+          <a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="hover:text-yeti-400 transition-colors">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Newsletter Form Handler -->
+    <script is:inline src="/js/newsletter.js"></script>
+
+    <script>
+      // Calculator Logic
+      (function() {
+        const mrrInput = document.getElementById('mrr');
+        const customersInput = document.getElementById('customers');
+        const churnInput = document.getElementById('churn');
+        const cacInput = document.getElementById('cac');
+        const arpaInput = document.getElementById('arpa');
+        const calculateBtn = document.getElementById('calculate-btn');
+        const resultsContainer = document.getElementById('results-container');
+        const insightsBox = document.getElementById('insights-box');
+
+        // Auto-calculate ARPA
+        function updateARPA() {
+          const mrr = parseFloat(mrrInput.value) || 0;
+          const customers = parseFloat(customersInput.value) || 0;
+          const arpa = customers > 0 ? mrr / customers : 0;
+          arpaInput.value = arpa.toFixed(2);
+        }
+
+        mrrInput.addEventListener('input', updateARPA);
+        customersInput.addEventListener('input', updateARPA);
+
+        // Calculate metrics
+        calculateBtn.addEventListener('click', () => {
+          const mrr = parseFloat(mrrInput.value) || 0;
+          const customers = parseFloat(customersInput.value) || 0;
+          const churn = parseFloat(churnInput.value) || 0;
+          const cac = parseFloat(cacInput.value) || 0;
+          const arpa = parseFloat(arpaInput.value) || 0;
+
+          if (mrr === 0 || customers === 0 || churn === 0 || cac === 0) {
+            alert('Please fill in all fields to calculate metrics.');
+            return;
+          }
+
+          // Calculate LTV
+          // LTV = ARPA / Churn Rate (monthly)
+          const ltv = arpa / (churn / 100);
+
+          // Calculate LTV:CAC Ratio
+          const ratio = ltv / cac;
+
+          // Calculate Net MRR Growth Rate (simplified)
+          const growthRate = (1 - (churn / 100)) * 100;
+
+          // Calculate Payback Period (months)
+          const paybackPeriod = cac / arpa;
+
+          // Update UI
+          document.getElementById('ltv-value').textContent = `$${Math.round(ltv).toLocaleString()}`;
+          document.getElementById('ratio-value').textContent = `${ratio.toFixed(1)}:1`;
+          document.getElementById('growth-value').textContent = `${growthRate.toFixed(1)}%`;
+          document.getElementById('payback-value').textContent = `${Math.round(paybackPeriod)} mo`;
+
+          // Update ratio badge
+          const ratioBadge = document.getElementById('ratio-badge');
+          if (ratio >= 3) {
+            ratioBadge.textContent = 'Excellent';
+            ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300';
+          } else if (ratio >= 2) {
+            ratioBadge.textContent = 'Good';
+            ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300';
+          } else if (ratio >= 1) {
+            ratioBadge.textContent = 'Fair';
+            ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300';
+          } else {
+            ratioBadge.textContent = 'Needs Improvement';
+            ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300';
+          }
+
+          // Generate insights
+          const insights = [];
+
+          if (ratio >= 3) {
+            insights.push('✅ Your LTV:CAC ratio is excellent! You\'re efficiently acquiring customers.');
+          } else if (ratio < 1) {
+            insights.push('⚠️ Your LTV:CAC ratio is below 1. You\'re spending more to acquire customers than they generate in value.');
+          } else {
+            insights.push('💡 Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.');
+          }
+
+          if (churn > 5) {
+            insights.push('🔴 Your churn rate is high. Focus on retention and customer success to improve LTV.');
+          } else if (churn < 2) {
+            insights.push('🎉 Excellent churn rate! Your customers are sticking around.');
+          }
+
+          if (paybackPeriod > 12) {
+            insights.push('⏰ Your CAC payback period is over a year. Consider optimizing your sales efficiency.');
+          } else if (paybackPeriod < 6) {
+            insights.push('⚡ Great payback period! You\'re recovering acquisition costs quickly.');
+          }
+
+          if (arpa < 50) {
+            insights.push('💰 Consider increasing prices or upselling to improve ARPA and LTV.');
+          }
+
+          // Update insights list
+          const insightsList = document.getElementById('insights-list');
+          insightsList.innerHTML = insights.map(insight =>
+            `<li class="flex items-start gap-3">
+              <span class="text-lg">${insight.substring(0, 2)}</span>
+              <span class="flex-1">${insight.substring(3)}</span>
+            </li>`
+          ).join('');
+
+          // Show results
+          resultsContainer.style.opacity = '1';
+          insightsBox.style.opacity = '1';
+
+          // Smooth scroll to results
+          resultsContainer.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        });
+      })();
+    </script>
+  </body>
+</html>
