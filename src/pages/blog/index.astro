@@ -1,0 +1,288 @@
+---
+// src/pages/blog/index.astro
+// Blog listing page
+
+const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+
+const response = await fetch(WORDPRESS_URL, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    query: `
+      query GetAllPosts {
+        posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
+          nodes {
+            slug
+            title
+            excerpt
+            date
+            featuredImage {
+              node {
+                sourceUrl
+                altText
+              }
+            }
+            author {
+              node {
+                name
+              }
+            }
+            categories {
+              nodes {
+                name
+                slug
+              }
+            }
+          }
+        }
+      }
+    `,
+  }),
+});
+
+const { data } = await response.json();
+const posts = data.posts.nodes;
+
+// Get unique categories
+const allCategories = [...new Set(posts.flatMap(post => post.categories.nodes.map(cat => cat.name)))];
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Blog | Startup Yeti - The Founder's Guide to Remote Teams</title>
+    <meta name="description" content="Tactical advice for modern founders. Learn how to build, manage, and scale remote teams with proven frameworks." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <style>
+      img[src="/logo.png"] {
+        background: transparent !important;
+        mix-blend-mode: normal;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 glass border-b border-slate-200/60 transition-all duration-500">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="block hover:opacity-80 transition-all duration-300 hover:scale-105">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto" />
+        </a>
+
+        <div class="flex items-center gap-6">
+          <a href="/" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
+            Home
+          </a>
+          <a href="/blog" class="text-sm font-semibold text-yeti-600">
+            Blog
+          </a>
+          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-20">
+
+      <!-- Hero Section -->
+      <section class="relative py-24 px-6 bg-gradient-to-b from-white via-slate-50 to-white text-center">
+        <div class="max-w-4xl mx-auto">
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-widest mb-8">
+            <span class="w-2 h-2 rounded-full bg-yeti-500 animate-pulse"></span>
+            {posts.length} Articles
+          </div>
+
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight font-serif">
+            The Startup Yeti <br class="hidden sm:block" />
+            <span class="text-gradient from-yeti-600 via-cyan-500 to-blue-600">Blog</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light">
+            Tactical advice for modern founders on building and scaling remote teams.
+          </p>
+        </div>
+      </section>
+
+      <!-- Filter Section -->
+      <section class="max-w-7xl mx-auto px-6 py-12">
+        <div class="flex flex-wrap gap-3 items-center justify-center">
+          <span class="text-sm font-semibold text-slate-600">Filter by:</span>
+          <button class="filter-btn active px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-yeti-600 to-yeti-700 text-white shadow-lg" data-filter="all">
+            All Articles
+          </button>
+          {allCategories.map((category) => (
+            <button class="filter-btn px-5 py-2.5 rounded-xl border-2 border-slate-200 bg-white font-semibold text-sm text-slate-700 hover:border-yeti-400 hover:text-yeti-700 transition-all" data-filter={category.toLowerCase()}>
+              {category}
+            </button>
+          ))}
+        </div>
+      </section>
+
+      <!-- Articles Grid -->
+      <section class="max-w-7xl mx-auto px-6 py-12 pb-28">
+        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="articles-grid">
+          {posts.map((post) => {
+            const category = post.categories.nodes[0]?.name || 'Uncategorized';
+            const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+
+            return (
+              <article class="article-item group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:border-yeti-200 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col" data-category={category.toLowerCase()}>
+                <a href={`/blog/${post.slug}`} class="block">
+                  {post.featuredImage ? (
+                    <div class="h-60 relative overflow-hidden">
+                      <img
+                        src={post.featuredImage.node.sourceUrl}
+                        alt={post.featuredImage.node.altText || post.title}
+                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                      />
+                      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                      <div class="absolute top-5 left-5 glass border-yeti-300 px-4 py-1.5 rounded-full text-xs font-bold text-yeti-700">
+                        {category}
+                      </div>
+                    </div>
+                  ) : (
+                    <div class="h-60 bg-gradient-to-br from-yeti-100 via-blue-50 to-cyan-50 relative overflow-hidden">
+                      <div class="absolute inset-0 bg-gradient-to-tr from-yeti-500/20 to-transparent group-hover:scale-110 transition-transform duration-700"></div>
+                      <div class="absolute top-5 left-5 glass border-yeti-300 px-4 py-1.5 rounded-full text-xs font-bold text-yeti-700">
+                        {category}
+                      </div>
+                    </div>
+                  )}
+
+                  <div class="p-8 flex flex-col flex-grow">
+                    <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:text-yeti-600 transition-colors leading-tight">
+                      {post.title}
+                    </h3>
+
+                    <p class="text-slate-600 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
+
+                    <div class="flex items-center justify-between text-sm text-slate-400 font-semibold border-t border-slate-100 pt-5 mt-auto">
+                      <div class="flex items-center gap-2">
+                        <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                        <span>•</span>
+                        <span>{readingTime} min read</span>
+                      </div>
+                      <svg class="w-5 h-5 text-yeti-600 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                    </div>
+                  </div>
+                </a>
+              </article>
+            );
+          })}
+        </div>
+
+        <!-- No Results Message -->
+        <div id="no-results" class="hidden text-center py-20">
+          <div class="text-6xl mb-6">🔍</div>
+          <h3 class="text-2xl font-bold text-slate-900 mb-3">No articles found</h3>
+          <p class="text-slate-600">Try selecting a different category.</p>
+        </div>
+      </section>
+
+      <!-- Newsletter CTA -->
+      <section class="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="glass border-slate-300 rounded-3xl p-12 shadow-2xl">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-yeti-100 to-cyan-100 flex items-center justify-center">
+              <svg class="w-8 h-8 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">
+              Join 50k+ Founders
+            </h2>
+            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
+              Get weekly tactical advice on building and scaling remote teams delivered to your inbox.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-6 py-4 rounded-xl border-2 border-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all"
+                required
+              />
+              <button
+                type="submit"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+            <p class="text-xs text-slate-500 mt-6">No spam. Unsubscribe anytime.</p>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <img src="/logo.png" class="h-10 w-auto mx-auto mb-6 brightness-0 invert" alt="Startup Yeti" />
+        <p class="text-slate-400 mb-4">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+        <div class="flex justify-center gap-6">
+          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
+          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
+          <a href="#" class="hover:text-yeti-400 transition-colors">Privacy</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Article filtering
+      (function() {
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        const articles = document.querySelectorAll('.article-item');
+        const noResults = document.getElementById('no-results');
+
+        filterBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            const filter = btn.dataset.filter;
+
+            // Update active state
+            filterBtns.forEach(b => {
+              b.classList.remove('active', 'bg-gradient-to-r', 'from-yeti-600', 'to-yeti-700', 'text-white', 'shadow-lg');
+              b.classList.add('border-2', 'border-slate-200', 'bg-white', 'text-slate-700');
+            });
+            btn.classList.add('active', 'bg-gradient-to-r', 'from-yeti-600', 'to-yeti-700', 'text-white', 'shadow-lg');
+            btn.classList.remove('border-2', 'border-slate-200', 'bg-white', 'text-slate-700');
+
+            // Filter articles
+            let visibleCount = 0;
+            articles.forEach(article => {
+              if (filter === 'all' || article.dataset.category === filter) {
+                article.style.display = 'flex';
+                visibleCount++;
+                setTimeout(() => {
+                  article.style.opacity = '1';
+                  article.style.transform = 'translateY(0)';
+                }, 10);
+              } else {
+                article.style.opacity = '0';
+                article.style.transform = 'translateY(20px)';
+                setTimeout(() => {
+                  article.style.display = 'none';
+                }, 300);
+              }
+            });
+
+            // Show/hide no results message
+            if (visibleCount === 0) {
+              noResults.classList.remove('hidden');
+            } else {
+              noResults.classList.add('hidden');
+            }
+          });
+        });
+      })();
+    </script>
+  </body>
+</html>

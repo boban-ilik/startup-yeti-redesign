@@ -1,16 +1,879 @@
 ---
+// filepath: /Users/bobanilikj/startup-yeti-redesign/src/pages/index.astro
+const year = new Date().getFullYear();
 
+// Fetch recent blog posts from WordPress
+const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+
+let posts = [];
+try {
+  const response = await fetch(WORDPRESS_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      query: `
+        query GetRecentPosts {
+          posts(first: 3, where: {orderby: {field: DATE, order: DESC}}) {
+            nodes {
+              slug
+              title
+              excerpt
+              date
+              featuredImage {
+                node {
+                  sourceUrl
+                  altText
+                }
+              }
+              categories {
+                nodes {
+                  name
+                  slug
+                }
+              }
+            }
+          }
+        }
+      `,
+    }),
+  });
+
+  const { data } = await response.json();
+  posts = data?.posts?.nodes || [];
+} catch (error) {
+  console.error("Error fetching WordPress posts:", error);
+  // posts will remain empty array if fetch fails
+}
+
+// Helper function to calculate reading time
+function calculateReadingTime(excerpt: string) {
+  const words = excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length;
+  return Math.max(1, Math.ceil(words / 200)); // Assume 200 words per minute
+}
+
+// Helper function to get category color scheme
+function getCategoryColors(categorySlug: string) {
+  const colorMap = {
+    business: { bg: 'from-yeti-100 via-blue-50 to-cyan-50', border: 'border-yeti-300', text: 'text-yeti-700', icon: 'text-yeti-600', hover: 'hover:border-yeti-200' },
+    marketing: { bg: 'from-purple-100 via-pink-50 to-purple-50', border: 'border-purple-300', text: 'text-purple-700', icon: 'text-purple-600', hover: 'hover:border-purple-200' },
+    'remote-work': { bg: 'from-green-100 via-emerald-50 to-teal-50', border: 'border-green-300', text: 'text-green-700', icon: 'text-green-600', hover: 'hover:border-green-200' },
+    productivity: { bg: 'from-orange-100 via-yellow-50 to-orange-50', border: 'border-orange-300', text: 'text-orange-700', icon: 'text-orange-600', hover: 'hover:border-orange-200' },
+    default: { bg: 'from-slate-100 via-slate-50 to-slate-50', border: 'border-slate-300', text: 'text-slate-700', icon: 'text-slate-600', hover: 'hover:border-slate-200' }
+  };
+  return colorMap[categorySlug] || colorMap.default;
+}
 ---
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Startup Yeti | The Founder's Guide to Remote Teams</title>
+    <meta name="description" content="StartupYeti helps early-stage founders build, manage, and scale remote teams using proven frameworks like EOS." />
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <style>
+      .bg-grid-pattern {
+        background-image: radial-gradient(#cbd5e1 1px, transparent 1px);
+        background-size: 40px 40px;
+      }
+
+      img[src="/logo.png"] {
+        background: transparent !important;
+        mix-blend-mode: normal;
+      }
+
+      .mask-gradient {
+        mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+        -webkit-mask-image: linear-gradient(to bottom, transparent, black 20%, black 80%, transparent);
+      }
+
+      @keyframes shimmer {
+        0% { background-position: -1000px 0; }
+        100% { background-position: 1000px 0; }
+      }
+
+      .shimmer {
+        animation: shimmer 3s infinite;
+        background: linear-gradient(to right, transparent 0%, rgba(255,255,255,0.3) 50%, transparent 100%);
+        background-size: 1000px 100%;
+      }
+
+      .scroll-nav {
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900">
+
+    <!-- Enhanced Navigation with better glassmorphism -->
+    <nav id="main-nav" class="fixed w-full top-0 z-50 glass border-b border-slate-200/60 transition-all duration-500">
+      <div class="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
+        <a href="/" class="block hover:opacity-80 transition-all duration-300 hover:scale-105">
+          <img src="/logo.png" alt="Startup Yeti" class="h-20 w-auto" />
+        </a>
+
+        <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-600">
+          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Business</a>
+          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Marketing</a>
+          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Remote Work</a>
+          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Productivity</a>
+
+          <!-- Search Bar -->
+          <div class="relative">
+            <button id="search-toggle" class="p-2.5 hover:bg-slate-100 rounded-lg transition-colors" aria-label="Search">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+            </button>
+            <div id="search-dropdown" class="absolute top-full right-0 mt-2 w-80 glass border-slate-300 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-200 transform translate-y-2">
+              <div class="p-4">
+                <div class="relative">
+                  <input type="text" placeholder="Search articles..." class="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all" />
+                  <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                </div>
+                <div class="mt-3 text-xs text-slate-500">
+                  <p class="font-semibold mb-2">Popular searches:</p>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">EOS</span>
+                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">Remote Teams</span>
+                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">Productivity</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <a href="#" class="ml-2 px-7 py-3 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg shadow-yeti-500/30 transition-all transform hover:-translate-y-1 hover:shadow-xl hover:shadow-yeti-500/40">
+            Get the Guides
+          </a>
+        </div>
+
+        <button id="menu-button" aria-controls="mobile-menu" aria-expanded="false" class="lg:hidden text-slate-800 p-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Open menu">
+          <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile Menu with enhanced backdrop -->
+    <div id="mobile-menu" class="fixed inset-0 z-40 pointer-events-none">
+      <div id="mobile-backdrop" class="absolute inset-0 bg-slate-900/30 backdrop-blur-md opacity-0 transition-all duration-300 pointer-events-none"></div>
+      <aside class="absolute top-0 right-0 h-full w-80 max-w-full glass shadow-2xl transform translate-x-full transition-all duration-300 pointer-events-auto flex flex-col" role="dialog" aria-modal="true">
+        <div class="px-6 h-28 flex items-center justify-between border-b border-slate-200/60">
+          <span class="text-lg font-bold text-slate-900">Menu</span>
+          <button id="mobile-close" class="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors">
+            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+          </button>
+        </div>
+        <nav class="p-6 space-y-2">
+          <a href="#" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Business</a>
+          <a href="#" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Marketing</a>
+          <a href="#" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Remote Work</a>
+          <a href="#" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Productivity</a>
+          <div class="pt-6 mt-6 border-t border-slate-200">
+            <a href="#" class="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold shadow-lg hover:from-yeti-700 hover:to-yeti-800 transition-all">Get the Guides</a>
+          </div>
+        </nav>
+      </aside>
+    </div>
+
+    <!-- Reading Progress Bar -->
+    <div id="reading-progress" class="fixed top-28 left-0 h-1 bg-gradient-to-r from-yeti-600 to-cyan-500 transition-all duration-150 z-50" style="width: 0%"></div>
+
+    <!-- Dark Mode Toggle -->
+    <button id="dark-mode-toggle" class="fixed bottom-24 right-6 z-50 w-14 h-14 rounded-full glass border-slate-300 shadow-xl hover:shadow-2xl transition-all transform hover:scale-110 flex items-center justify-center group" aria-label="Toggle dark mode">
+      <svg class="w-6 h-6 text-slate-700 dark:text-slate-300 transition-transform group-hover:rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path class="sun-icon" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"></path>
+        <path class="moon-icon hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"></path>
+      </svg>
+    </button>
+
+    <!-- Scroll to Top Button -->
+    <button id="scroll-to-top" class="fixed bottom-6 right-6 z-50 w-14 h-14 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white shadow-xl hover:shadow-glow-lg transition-all transform hover:scale-110 opacity-0 pointer-events-none flex items-center justify-center" aria-label="Scroll to top">
+      <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18"></path>
+      </svg>
+    </button>
+
+    <!-- Newsletter Modal -->
+    <div id="newsletter-modal" class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
+      <div class="absolute inset-0 bg-slate-900/50 backdrop-blur-sm" id="modal-backdrop"></div>
+      <div class="relative glass max-w-lg w-full mx-6 rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 border-slate-300" id="modal-content">
+        <button id="modal-close" class="absolute top-6 right-6 w-10 h-10 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center" aria-label="Close modal">
+          <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+        </button>
+
+        <div class="p-10">
+          <div class="text-center mb-8">
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-yeti-100 to-cyan-100 flex items-center justify-center">
+              <svg class="w-8 h-8 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h3 class="text-3xl font-bold text-slate-900 mb-3 font-serif">Join 50k+ Founders</h3>
+            <p class="text-slate-600 text-lg">Get weekly tactical advice on building and scaling remote teams.</p>
+          </div>
+
+          <form class="space-y-4" data-newsletter-form>
+            <input type="email" name="email" placeholder="Enter your email" class="w-full bg-white border-2 border-slate-200 rounded-xl px-5 py-4 text-base placeholder-slate-400 text-slate-900 focus:ring-2 focus:ring-yeti-500 focus:border-yeti-500 transition-all" required />
+            <button type="submit" class="w-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white text-base font-bold py-4 rounded-xl hover:from-yeti-700 hover:to-yeti-800 transition-all shadow-lg hover:shadow-glow transform hover:-translate-y-0.5">
+              Subscribe Now
+            </button>
+          </form>
+
+          <p class="text-xs text-slate-500 text-center mt-6">No spam. Unsubscribe anytime. We respect your privacy.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sticky CTA Bar -->
+    <div id="sticky-cta" class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-slate-200 shadow-2xl transform translate-y-full transition-transform duration-300">
+      <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-center sm:text-left">
+          <p class="font-bold text-slate-900 text-lg">Ready to scale your remote team?</p>
+          <p class="text-sm text-slate-600">Get our proven frameworks and tactics.</p>
+        </div>
+        <div class="flex gap-3">
+          <button id="sticky-newsletter-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all whitespace-nowrap">
+            Get Free Guides
+          </button>
+          <button id="close-sticky-cta" class="p-3 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close">
+            <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <main class="pt-28">
+
+      <!-- Enhanced Hero Section with dynamic gradients and animations -->
+      <section class="relative pt-24 pb-0 px-6 text-center overflow-hidden bg-gradient-to-b from-white via-slate-50 to-white">
+        <div class="absolute inset-0 bg-grid-pattern opacity-[0.3] mask-gradient"></div>
+
+        <!-- Multiple gradient orbs for depth -->
+        <div class="absolute top-0 left-1/4 w-[600px] h-[600px] bg-yeti-200/40 rounded-full blur-[120px] animate-float" style="animation-delay: 0s;"></div>
+        <div class="absolute top-20 right-1/4 w-[500px] h-[500px] bg-cyan-200/30 rounded-full blur-[100px] animate-float" style="animation-delay: 2s;"></div>
+        <div class="absolute top-40 left-1/2 -translate-x-1/2 w-[400px] h-[400px] bg-blue-200/20 rounded-full blur-[80px] animate-float" style="animation-delay: 4s;"></div>
+
+        <div class="max-w-5xl mx-auto relative z-10 pb-36 md:pb-44 animate-fade-in">
+          <!-- Enhanced badge with glow effect -->
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-widest mb-10 hover:border-yeti-300 hover:shadow-glow transition-all cursor-default animate-slide-down">
+            <span class="w-2 h-2 rounded-full bg-yeti-500 animate-pulse shadow-glow"></span>
+            Operational Excellence for Startups
+          </div>
+
+          <!-- Enhanced heading with better gradient -->
+          <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 mb-8 leading-[1.05] tracking-tight font-serif animate-slide-up">
+            The Founder's Guide to <br class="hidden sm:block" />
+            <span class="text-gradient from-yeti-600 via-cyan-500 to-blue-600 drop-shadow-sm">Remote Growth</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto mb-12 leading-relaxed font-light animate-slide-up" style="animation-delay: 0.1s;">
+            StartupYeti helps early-stage founders build, manage, and scale remote teams using proven frameworks like EOS. No fluff, just tactics.
+          </p>
+
+          <!-- Enhanced CTA buttons with better effects -->
+          <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-slide-up" style="animation-delay: 0.2s;">
+            <a href="#" class="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-lg overflow-hidden shadow-2xl shadow-yeti-500/30 hover:shadow-glow-lg transition-all transform hover:-translate-y-2 hover:scale-105">
+              <span class="relative z-10">Explore Our Guides</span>
+              <div class="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity"></div>
+            </a>
+            <a href="#" class="px-10 py-5 rounded-2xl glass text-slate-800 font-bold text-lg border-slate-300 hover:border-yeti-400 hover:bg-white shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+              Join Newsletter
+            </a>
+          </div>
+
+          <!-- Trust indicators -->
+          <div class="mt-16 flex flex-wrap items-center justify-center gap-8 text-sm text-slate-500 animate-fade-in" style="animation-delay: 0.4s;">
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-yeti-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+              <span class="font-semibold">50k+ Readers</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-yeti-600" fill="currentColor" viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"></path></svg>
+              <span class="font-semibold">Proven Frameworks</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <svg class="w-5 h-5 text-yeti-600" fill="currentColor" viewBox="0 0 20 20"><path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z"></path></svg>
+              <span class="font-semibold">Built by Founders</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Enhanced wave divider -->
+        <div class="absolute bottom-0 left-0 w-full overflow-hidden leading-none z-20">
+          <svg class="block w-full h-[100px] md:h-[140px] text-slate-50" preserveAspectRatio="none" viewBox="0 0 1440 320" xmlns="http://www.w3.org/2000/svg">
+            <path fill="currentColor" fill-opacity="1" d="M0,224L48,213.3C96,203,192,181,288,181.3C384,181,480,203,576,224C672,245,768,267,864,261.3C960,256,1056,224,1152,197.3C1248,171,1344,149,1392,138.7L1440,128L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path>
+          </svg>
+        </div>
+      </section>
+
+      <!-- Enhanced Topics Section -->
+      <section class="bg-slate-50 pb-28 px-6 pt-8">
+        <div class="max-w-7xl mx-auto">
+          <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-12">Explore Topics</p>
+          <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
+            {["Business", "Marketing", "Innovation", "Remote", "Sales", "Wellbeing", "Productivity", "Trends"].map((topic) => (
+              <a href="#" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+                {topic}
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <!-- Enhanced About Section -->
+      <section class="py-28 px-6 bg-white border-y border-slate-100 relative overflow-hidden">
+        <!-- Background decorative elements -->
+        <div class="absolute top-0 right-0 w-96 h-96 bg-yeti-100/30 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 left-0 w-80 h-80 bg-cyan-100/20 rounded-full blur-[80px]"></div>
+
+        <div class="max-w-6xl mx-auto flex flex-col md:flex-row items-center gap-20 relative z-10">
+          <div class="md:w-1/3 flex justify-center">
+             <div class="relative w-80 h-80 flex items-center justify-center group">
+                <div class="absolute inset-0 bg-gradient-to-br from-yeti-200/60 to-cyan-200/40 rounded-full blur-3xl opacity-70 group-hover:opacity-100 transition-opacity duration-500 animate-float"></div>
+                <img src="/logo.png" alt="Yeti Mascot" class="relative w-full h-auto drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500" />
+             </div>
+          </div>
+
+          <div class="md:w-2/3">
+            <h2 class="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-900 mb-10 font-serif leading-tight">
+                Built by Founders, <br/>
+                <span class="text-gradient from-yeti-600 to-cyan-600">for Founders.</span>
+            </h2>
+            <div class="space-y-7 text-lg md:text-xl text-slate-600 leading-relaxed">
+              <p class="font-light">
+                StartupYeti wasn't built by content marketers. It was created by a team that lives this daily. We run remote teams, build SaaS products, and use EOS to keep operations tight.
+              </p>
+              <div class="relative pl-8 py-5 border-l-4 border-yeti-500 bg-yeti-50/50 rounded-r-xl pr-6">
+                <div class="absolute -left-3 top-4 w-6 h-6 bg-yeti-500 rounded-full"></div>
+                <p class="italic text-slate-700 font-medium">
+                  "Every article, framework, and resource on this site comes from real experience scaling startups — not recycled advice from business school textbooks."
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enhanced Team Section -->
+      <section class="py-28 px-6 bg-gradient-to-b from-slate-50 to-white relative overflow-hidden">
+        <div class="absolute top-20 left-10 w-72 h-72 bg-purple-100/30 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-20 right-10 w-72 h-72 bg-orange-100/30 rounded-full blur-[100px]"></div>
+
+        <div class="max-w-6xl mx-auto text-center relative z-10">
+          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-serif">Meet the Experts</h2>
+          <p class="text-lg text-slate-600 mb-16 max-w-2xl mx-auto">Real founders with hands-on experience building and scaling remote teams.</p>
+
+          <div class="grid md:grid-cols-3 gap-10">
+            <!-- Team Member 1: Boban -->
+            <div class="group bg-white p-10 rounded-3xl shadow-lg border border-slate-100 hover:border-yeti-200 hover-lift cursor-pointer relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-yeti-100/50 to-blue-100/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="relative z-10">
+                <!-- Image Container: Replace /team/boban.jpg with your actual image path -->
+                <div class="w-28 h-28 mx-auto rounded-full mb-7 ring-4 ring-white shadow-xl group-hover:scale-110 transition-transform overflow-hidden bg-gradient-to-br from-yeti-100 to-blue-100">
+                  <img
+                    src="/team/boban.jpg"
+                    alt="Boban - Content & Outreach Specialist"
+                    class="w-full h-full object-cover"
+                    onError="this.onerror=null; this.parentElement.innerHTML='<span class=\'flex items-center justify-center w-full h-full text-5xl\'>👨🏻‍💻</span>';"
+                  />
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 group-hover:text-yeti-700 transition-colors">Boban</h3>
+                <p class="text-xs font-bold text-yeti-600 uppercase tracking-widest mb-5 mt-2">Content & Outreach</p>
+                <p class="text-slate-600 text-base leading-relaxed">
+                  Outreach Specialist with the superpower of making your content rank. Entering his 6th year of dominating SERPs.
+                </p>
+              </div>
+            </div>
+
+            <!-- Team Member 2: Angela -->
+            <div class="group bg-white p-10 rounded-3xl shadow-lg border border-slate-100 hover:border-purple-200 hover-lift cursor-pointer relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-purple-100/50 to-pink-100/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="relative z-10">
+                <!-- Image Container: Replace /team/angela.jpg with your actual image path -->
+                <div class="w-28 h-28 mx-auto rounded-full mb-7 ring-4 ring-white shadow-xl group-hover:scale-110 transition-transform overflow-hidden bg-gradient-to-br from-purple-100 to-pink-100">
+                  <img
+                    src="/team/angela.jpg"
+                    alt="Angela - Content Editor"
+                    class="w-full h-full object-cover"
+                    onError="this.onerror=null; this.parentElement.innerHTML='<span class=\'flex items-center justify-center w-full h-full text-5xl\'>👩🏼</span>';"
+                  />
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 group-hover:text-purple-700 transition-colors">Angela</h3>
+                <p class="text-xs font-bold text-yeti-600 uppercase tracking-widest mb-5 mt-2">Content Editor</p>
+                <p class="text-slate-600 text-base leading-relaxed">
+                  Takes pride in ensuring every word is actionable. With 10+ years in the industry, she ensures quality over quantity.
+                </p>
+              </div>
+            </div>
+
+            <!-- Team Member 3: Igor -->
+            <div class="group bg-white p-10 rounded-3xl shadow-lg border border-slate-100 hover:border-orange-200 hover-lift cursor-pointer relative overflow-hidden">
+              <div class="absolute top-0 right-0 w-40 h-40 bg-gradient-to-br from-orange-100/50 to-yellow-100/30 rounded-full blur-2xl opacity-0 group-hover:opacity-100 transition-opacity"></div>
+              <div class="relative z-10">
+                <!-- Image Container: Replace /team/igor.jpg with your actual image path -->
+                <div class="w-28 h-28 mx-auto rounded-full mb-7 ring-4 ring-white shadow-xl group-hover:scale-110 transition-transform overflow-hidden bg-gradient-to-br from-orange-100 to-yellow-100">
+                  <img
+                    src="/team/igor.jpg"
+                    alt="Igor - Design & Tech"
+                    class="w-full h-full object-cover"
+                    onError="this.onerror=null; this.parentElement.innerHTML='<span class=\'flex items-center justify-center w-full h-full text-5xl\'>🎨</span>';"
+                  />
+                </div>
+                <h3 class="text-2xl font-bold text-slate-900 group-hover:text-orange-700 transition-colors">Igor</h3>
+                <p class="text-xs font-bold text-yeti-600 uppercase tracking-widest mb-5 mt-2">Design & Tech</p>
+                <p class="text-slate-600 text-base leading-relaxed">
+                  Experienced Graphic & Web Designer. 8 years of experience mentoring and teaching the next generation of designers.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Testimonials Section -->
+      <section class="py-28 px-6 bg-white relative overflow-hidden">
+        <div class="absolute top-0 left-1/4 w-96 h-96 bg-green-100/20 rounded-full blur-[100px]"></div>
+        <div class="absolute bottom-0 right-1/4 w-96 h-96 bg-blue-100/20 rounded-full blur-[100px]"></div>
+
+        <div class="max-w-6xl mx-auto relative z-10">
+          <div class="text-center mb-16">
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-serif">Trusted by Founders Worldwide</h2>
+            <p class="text-lg text-slate-600 max-w-2xl mx-auto">See how our frameworks help early-stage founders build and scale their remote teams.</p>
+          </div>
+
+          <div class="grid md:grid-cols-3 gap-8">
+            <div class="bg-gradient-to-br from-white to-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-yeti-300 hover:shadow-xl transition-all">
+              <div class="flex items-center gap-1 mb-4">
+                {[1,2,3,4,5].map(() => (
+                  <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                ))}
+              </div>
+              <p class="text-slate-700 mb-6 leading-relaxed">"StartupYeti's EOS framework helped us go from chaos to clarity. Our remote team is now more productive than ever."</p>
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-yeti-400 to-cyan-400 flex items-center justify-center text-white font-bold">SK</div>
+                <div>
+                  <p class="font-bold text-slate-900">Sarah Kim</p>
+                  <p class="text-sm text-slate-500">CEO, TechFlow</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-white to-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-yeti-300 hover:shadow-xl transition-all">
+              <div class="flex items-center gap-1 mb-4">
+                {[1,2,3,4,5].map(() => (
+                  <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                ))}
+              </div>
+              <p class="text-slate-700 mb-6 leading-relaxed">"The tactical advice here is gold. No fluff, just real strategies that work for distributed teams."</p>
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-400 to-pink-400 flex items-center justify-center text-white font-bold">MR</div>
+                <div>
+                  <p class="font-bold text-slate-900">Marcus Rodriguez</p>
+                  <p class="text-sm text-slate-500">Founder, DataSync</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="bg-gradient-to-br from-white to-slate-50 p-8 rounded-2xl border border-slate-200 hover:border-yeti-300 hover:shadow-xl transition-all">
+              <div class="flex items-center gap-1 mb-4">
+                {[1,2,3,4,5].map(() => (
+                  <svg class="w-5 h-5 text-yellow-400 fill-current" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path></svg>
+                ))}
+              </div>
+              <p class="text-slate-700 mb-6 leading-relaxed">"Finally, content created by people who actually run startups. This is the resource I wish I had 3 years ago."</p>
+              <div class="flex items-center gap-3">
+                <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-400 to-yellow-400 flex items-center justify-center text-white font-bold">LW</div>
+                <div>
+                  <p class="font-bold text-slate-900">Lisa Wang</p>
+                  <p class="text-sm text-slate-500">Co-Founder, CloudNest</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Enhanced Articles Section with Filtering -->
+      <section class="max-w-7xl mx-auto px-6 py-28">
+        <div class="flex flex-col sm:flex-row justify-between items-end mb-12 border-b-2 border-slate-100 pb-8">
+          <div>
+            <h2 class="text-4xl md:text-5xl font-bold text-slate-900 font-serif mb-3">Recent Insights</h2>
+            <p class="text-slate-600 text-lg md:text-xl">Tactical advice for the modern founder.</p>
+          </div>
+          <a href="/blog" class="hidden sm:flex items-center gap-2 text-yeti-600 font-bold hover:text-yeti-800 transition-colors group">
+            View all articles
+            <svg class="w-5 h-5 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+          </a>
+        </div>
+
+        {posts.length > 0 ? (
+          <div class="grid md:grid-cols-3 gap-10" id="articles-grid">
+            {posts.map((post) => {
+              const category = post.categories.nodes[0];
+              const categorySlug = category?.slug || 'default';
+              const categoryName = category?.name || 'Article';
+              const colors = getCategoryColors(categorySlug);
+              const readingTime = calculateReadingTime(post.excerpt);
+              const postDate = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+
+              return (
+                <article class={`group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl ${colors.hover} hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col`}>
+                  <a href={`/blog/${post.slug}`} class="block h-full flex flex-col">
+                    {post.featuredImage ? (
+                      <div class="h-60 relative overflow-hidden">
+                        <img
+                          src={post.featuredImage.node.sourceUrl}
+                          alt={post.featuredImage.node.altText || post.title}
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class={`absolute top-5 left-5 glass ${colors.border} px-4 py-1.5 rounded-full text-xs font-bold ${colors.text} uppercase`}>
+                          {categoryName}
+                        </div>
+                      </div>
+                    ) : (
+                      <div class={`h-60 bg-gradient-to-br ${colors.bg} relative overflow-hidden`}>
+                        <div class="absolute inset-0 bg-gradient-to-tr from-black/10 to-transparent group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class={`absolute top-5 left-5 glass ${colors.border} px-4 py-1.5 rounded-full text-xs font-bold ${colors.text} uppercase`}>
+                          {categoryName}
+                        </div>
+                      </div>
+                    )}
+
+                    <div class="p-8 flex flex-col flex-grow">
+                      <h3 class={`text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:${colors.icon} transition-colors leading-tight`}>
+                        {post.title}
+                      </h3>
+
+                      <p class="text-slate-600 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
+
+                      <div class="flex items-center text-sm text-slate-400 font-semibold border-t border-slate-100 pt-5 mt-auto">
+                        <span>{postDate}</span>
+                        <span class="mx-3">•</span>
+                        <span>{readingTime} min read</span>
+                        <svg class={`w-5 h-5 ml-auto ${colors.icon} transform group-hover:translate-x-1 transition-transform`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                        </svg>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <p class="text-slate-600 text-lg mb-4">No blog posts found.</p>
+            <p class="text-slate-500 text-sm">Configure your WordPress URL in the .env file to display posts.</p>
+          </div>
+        )}
+      </section>
+    </main>
+
+    <!-- Enhanced Footer -->
+    <footer class="bg-gradient-to-b from-slate-900 to-slate-950 text-white pt-24 pb-10 relative overflow-hidden">
+      <div class="absolute top-0 left-0 w-full h-px bg-gradient-to-r from-transparent via-yeti-500/50 to-transparent"></div>
+      <div class="absolute top-0 right-0 w-96 h-96 bg-yeti-900/20 rounded-full blur-[120px]"></div>
+
+      <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-16 mb-20 relative z-10">
+        <div class="col-span-1 md:col-span-2">
+          <img src="/logo.png" class="h-14 w-auto mb-10 brightness-0 invert" alt="Startup Yeti" />
+          <p class="text-slate-400 leading-relaxed max-w-md mb-10 text-base">
+            The operational playbook for modern founders. Stay ahead by embracing the latest in remote work, SaaS trends, and team management.
+          </p>
+          <div class="flex gap-4">
+            <a href="#" class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-yeti-600 hover:to-yeti-700 hover:text-white transition-all hover:scale-110 shadow-lg">
+              <span class="font-semibold text-sm">in</span>
+            </a>
+            <a href="#" class="w-12 h-12 rounded-full bg-slate-800 flex items-center justify-center text-slate-400 hover:bg-gradient-to-r hover:from-yeti-600 hover:to-yeti-700 hover:text-white transition-all hover:scale-110 shadow-lg">
+              <span class="font-semibold text-sm">𝕏</span>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-xl mb-8 text-white">Explore</h4>
+          <ul class="space-y-4 text-slate-400">
+            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Business Strategy</a></li>
+            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Remote Work</a></li>
+            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Team Management</a></li>
+            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Founder Wellbeing</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="font-bold text-xl mb-8 text-white">Newsletter</h4>
+          <p class="text-slate-400 mb-6 text-base">Join 50k+ founders getting weekly tips.</p>
+          <form class="flex flex-col gap-4" data-newsletter-form>
+            <input type="email" name="email" placeholder="Enter your email" class="w-full bg-slate-800/50 border border-slate-700 rounded-xl px-5 py-4 text-sm placeholder-slate-500 text-white focus:ring-2 focus:ring-yeti-500 focus:border-yeti-500 transition-all" required />
+            <button type="submit" class="w-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white text-sm font-bold py-4 rounded-xl hover:from-yeti-700 hover:to-yeti-800 transition-all shadow-lg hover:shadow-glow transform hover:-translate-y-0.5">SUBSCRIBE</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-6 pt-10 border-t border-slate-800 text-center text-slate-500 text-sm flex flex-col md:flex-row justify-between items-center gap-6 relative z-10">
+        <p>&copy; {year} Startup Yeti. All rights reserved.</p>
+        <div class="flex gap-8">
+            <a href="#" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
+            <a href="#" class="hover:text-yeti-400 transition-colors">Terms of Service</a>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Mobile menu functionality
+      (function () {
+        const btn = document.getElementById('menu-button');
+        const menu = document.getElementById('mobile-menu');
+        const backdrop = document.getElementById('mobile-backdrop');
+        const closeBtn = document.getElementById('mobile-close');
+        let open = false;
+
+        function setOpen(state) {
+          open = state;
+          btn.setAttribute('aria-expanded', String(open));
+          const aside = menu.querySelector('aside');
+          if (open) {
+            aside.classList.remove('translate-x-full');
+            backdrop.classList.remove('pointer-events-none');
+            backdrop.classList.add('opacity-100');
+            backdrop.classList.remove('opacity-0');
+            menu.classList.remove('pointer-events-none');
+            const first = menu.querySelector('a, button');
+            first && first.focus();
+            document.body.style.overflow = 'hidden';
+          } else {
+            aside.classList.add('translate-x-full');
+            backdrop.classList.add('pointer-events-none');
+            backdrop.classList.remove('opacity-100');
+            backdrop.classList.add('opacity-0');
+            menu.classList.add('pointer-events-none');
+            btn.focus();
+            document.body.style.overflow = '';
+          }
+        }
+
+        btn.addEventListener('click', () => setOpen(!open));
+        closeBtn.addEventListener('click', () => setOpen(false));
+        backdrop.addEventListener('click', () => setOpen(false));
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && open) setOpen(false);
+        });
+
+        document.addEventListener('focusin', (e) => {
+          if (!open) return;
+          const aside = menu.querySelector('aside');
+          if (!aside.contains(e.target)) {
+            e.stopPropagation();
+            aside.querySelector('a, button')?.focus();
+          }
+        });
+      })();
+
+      // Enhanced scroll navigation effect
+      (function() {
+        const nav = document.getElementById('main-nav');
+        let lastScroll = 0;
+
+        window.addEventListener('scroll', () => {
+          const currentScroll = window.pageYOffset;
+
+          if (currentScroll > 100) {
+            nav.classList.add('scroll-nav');
+          } else {
+            nav.classList.remove('scroll-nav');
+          }
+
+          lastScroll = currentScroll;
+        });
+      })();
+
+      // Scroll animation observer
+      (function() {
+        const observer = new IntersectionObserver((entries) => {
+          entries.forEach(entry => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add('visible');
+            }
+          });
+        }, {
+          threshold: 0.1,
+          rootMargin: '0px 0px -50px 0px'
+        });
+
+        document.querySelectorAll('.animate-on-scroll').forEach(el => {
+          observer.observe(el);
+        });
+      })();
+
+      // Scroll to top button
+      (function() {
+        const scrollBtn = document.getElementById('scroll-to-top');
+
+        window.addEventListener('scroll', () => {
+          if (window.pageYOffset > 400) {
+            scrollBtn.classList.remove('opacity-0', 'pointer-events-none');
+            scrollBtn.classList.add('opacity-100');
+          } else {
+            scrollBtn.classList.add('opacity-0', 'pointer-events-none');
+            scrollBtn.classList.remove('opacity-100');
+          }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+      })();
+
+      // Reading progress bar
+      (function() {
+        const progressBar = document.getElementById('reading-progress');
+
+        window.addEventListener('scroll', () => {
+          const windowHeight = window.innerHeight;
+          const documentHeight = document.documentElement.scrollHeight;
+          const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+          const scrollPercent = (scrollTop / (documentHeight - windowHeight)) * 100;
+          progressBar.style.width = scrollPercent + '%';
+        });
+      })();
+
+      // Dark mode toggle
+      (function() {
+        const darkModeBtn = document.getElementById('dark-mode-toggle');
+        const sunIcon = darkModeBtn.querySelector('.sun-icon');
+        const moonIcon = darkModeBtn.querySelector('.moon-icon');
+        let isDark = localStorage.getItem('darkMode') === 'true';
+
+        function setDarkMode(dark) {
+          isDark = dark;
+          if (dark) {
+            document.documentElement.classList.add('dark');
+            sunIcon.classList.add('hidden');
+            moonIcon.classList.remove('hidden');
+            localStorage.setItem('darkMode', 'true');
+          } else {
+            document.documentElement.classList.remove('dark');
+            sunIcon.classList.remove('hidden');
+            moonIcon.classList.add('hidden');
+            localStorage.setItem('darkMode', 'false');
+          }
+        }
+
+        setDarkMode(isDark);
+
+        darkModeBtn.addEventListener('click', () => {
+          setDarkMode(!isDark);
+        });
+      })();
+
+      // Newsletter modal
+      (function() {
+        const modal = document.getElementById('newsletter-modal');
+        const modalContent = document.getElementById('modal-content');
+        const modalBackdrop = document.getElementById('modal-backdrop');
+        const modalClose = document.getElementById('modal-close');
+        const stickyNewsletterBtn = document.getElementById('sticky-newsletter-btn');
+        let modalShown = sessionStorage.getItem('newsletterModalShown') === 'true';
+
+        function openModal() {
+          modal.classList.remove('pointer-events-none', 'opacity-0');
+          modal.classList.add('pointer-events-auto', 'opacity-100');
+          modalContent.classList.remove('scale-95');
+          modalContent.classList.add('scale-100');
+          document.body.style.overflow = 'hidden';
+          sessionStorage.setItem('newsletterModalShown', 'true');
+        }
+
+        function closeModal() {
+          modal.classList.add('pointer-events-none', 'opacity-0');
+          modal.classList.remove('pointer-events-auto', 'opacity-100');
+          modalContent.classList.add('scale-95');
+          modalContent.classList.remove('scale-100');
+          document.body.style.overflow = '';
+        }
+
+        // Show modal after 10 seconds if not shown before
+        if (!modalShown) {
+          setTimeout(openModal, 10000);
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        modalBackdrop.addEventListener('click', closeModal);
+        stickyNewsletterBtn.addEventListener('click', openModal);
+
+        document.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape' && !modal.classList.contains('pointer-events-none')) {
+            closeModal();
+          }
+        });
+      })();
+
+      // Sticky CTA bar
+      (function() {
+        const stickyCta = document.getElementById('sticky-cta');
+        const closeStickyCta = document.getElementById('close-sticky-cta');
+        let ctaClosed = sessionStorage.getItem('stickyClosed') === 'true';
+
+        function showStickyCta() {
+          if (!ctaClosed) {
+            stickyCta.classList.remove('translate-y-full');
+            stickyCta.classList.add('translate-y-0');
+          }
+        }
+
+        function hideStickyCta() {
+          stickyCta.classList.add('translate-y-full');
+          stickyCta.classList.remove('translate-y-0');
+          sessionStorage.setItem('stickyClosed', 'true');
+          ctaClosed = true;
+        }
+
+        // Show sticky CTA after scrolling 50%
+        window.addEventListener('scroll', () => {
+          const scrollPercent = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
+          if (scrollPercent > 50 && !ctaClosed) {
+            showStickyCta();
+          }
+        });
+
+        closeStickyCta.addEventListener('click', hideStickyCta);
+      })();
+
+      // Search toggle
+      (function() {
+        const searchToggle = document.getElementById('search-toggle');
+        const searchDropdown = document.getElementById('search-dropdown');
+        let searchOpen = false;
+
+        searchToggle.addEventListener('click', () => {
+          searchOpen = !searchOpen;
+          if (searchOpen) {
+            searchDropdown.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
+            searchDropdown.classList.add('opacity-100', 'translate-y-0');
+            searchDropdown.querySelector('input').focus();
+          } else {
+            searchDropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            searchDropdown.classList.remove('opacity-100', 'translate-y-0');
+          }
+        });
+
+        document.addEventListener('click', (e) => {
+          if (!searchToggle.contains(e.target) && !searchDropdown.contains(e.target)) {
+            searchDropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+            searchDropdown.classList.remove('opacity-100', 'translate-y-0');
+            searchOpen = false;
+          }
+        });
+      })();
+
+    </script>
+
+    <!-- Newsletter Form Handler -->
+    <script src="/js/newsletter.js"></script>
+  </body>
 </html>
