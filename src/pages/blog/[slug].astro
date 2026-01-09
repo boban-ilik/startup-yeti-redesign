@@ -6,35 +6,51 @@
 export async function getStaticPaths() {
   const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 
-  const response = await fetch(WORDPRESS_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: `
-        query GetAllPosts {
-          posts(first: 1000) {
-            nodes {
-              slug
-              title
-              excerpt
-              date
-              categories {
-                nodes {
-                  name
+  // Return empty array if WordPress isn't configured
+  if (!import.meta.env.WORDPRESS_URL || WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+    console.warn('WordPress URL not configured. Blog pages will not be generated.');
+    return [];
+  }
+
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query GetAllPosts {
+            posts(first: 1000) {
+              nodes {
+                slug
+                title
+                excerpt
+                date
+                categories {
+                  nodes {
+                    name
+                  }
                 }
               }
             }
           }
-        }
-      `,
-    }),
-  });
+        `,
+      }),
+    });
 
-  const { data } = await response.json();
+    const { data } = await response.json();
 
-  return data.posts.nodes.map((post) => ({
-    params: { slug: post.slug },
-  }));
+    if (!data?.posts?.nodes) {
+      console.warn('No posts found in WordPress.');
+      return [];
+    }
+
+    return data.posts.nodes.map((post) => ({
+      params: { slug: post.slug },
+    }));
+  } catch (error) {
+    console.error('Error fetching WordPress posts:', error);
+    return [];
+  }
 }
 
 // 2. Get the specific data for the current page
