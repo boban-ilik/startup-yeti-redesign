@@ -5,6 +5,7 @@ const envCheck = {
   hasWordPress: !!import.meta.env.WORDPRESS_URL,
   nodeEnv: import.meta.env.MODE,
   buildTime: new Date().toISOString(),
+  cacheCleared: true,
 };
 
 let wpTest = null;
