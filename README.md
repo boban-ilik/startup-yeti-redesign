@@ -41,4 +41,9 @@ All commands are run from the root of the project, from a terminal:
 ## 👀 Want to learn more?
 
 Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
-# WordPress configured at https://www.startupyeti.com/graphql
+
+## 🌐 Startup Yeti Site
+
+WordPress GraphQL endpoint: https://www.startupyeti.com/graphql
+
+See CLOUDFLARE-SETUP.md for deployment instructions.
