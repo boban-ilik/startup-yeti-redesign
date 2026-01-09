@@ -1,8 +1,8 @@
 ---
-// src/pages/blog/[slug].astro
-// Dynamic blog post page for WordPress content
+// src/pages/[category]/[slug].astro
+// Dynamic blog post page matching existing URL structure: /category/slug/
 
-// 1. Get all paths (slugs) from WordPress to generate pages
+// 1. Get all paths (category/slug combinations) from WordPress to generate pages
 export async function getStaticPaths() {
   const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 
@@ -28,6 +28,7 @@ export async function getStaticPaths() {
                 categories {
                   nodes {
                     name
+                    slug
                   }
                 }
               }
@@ -44,9 +45,16 @@ export async function getStaticPaths() {
       return [];
     }
 
-    return data.posts.nodes.map((post) => ({
-      params: { slug: post.slug },
-    }));
+    // Create paths using category slug + post slug to match existing URLs
+    return data.posts.nodes.map((post) => {
+      const categorySlug = post.categories.nodes[0]?.slug || 'uncategorized';
+      return {
+        params: {
+          category: categorySlug.toLowerCase(),
+          slug: post.slug
+        },
+      };
+    });
   } catch (error) {
     console.error('Error fetching WordPress posts:', error);
     return [];
@@ -54,7 +62,7 @@ export async function getStaticPaths() {
 }
 
 // 2. Get the specific data for the current page
-const { slug } = Astro.params;
+const { category, slug } = Astro.params;
 const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 
 const response = await fetch(WORDPRESS_URL, {
@@ -245,7 +253,7 @@ const readingTime = Math.ceil(wordCount / 200);
             <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
               Join 50k+ founders getting weekly insights on building and scaling remote teams.
             </p>
-            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" data-newsletter-form>
               <input
                 type="email"
                 placeholder="Enter your email"
@@ -277,6 +285,9 @@ const readingTime = Math.ceil(wordCount / 200);
         </div>
       </div>
     </footer>
+
+    <!-- Newsletter Form Handler -->
+    <script is:inline src="/js/newsletter.js"></script>
 
     <script>
       // Reading progress bar
