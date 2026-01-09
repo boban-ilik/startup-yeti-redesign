@@ -411,35 +411,35 @@
           const insights = [];
 
           if (ratio >= 3) {
-            insights.push('✅ Your LTV:CAC ratio is excellent! You\'re efficiently acquiring customers.');
+            insights.push({ icon: '✅', text: 'Your LTV:CAC ratio is excellent! You\'re efficiently acquiring customers.' });
           } else if (ratio < 1) {
-            insights.push('⚠️ Your LTV:CAC ratio is below 1. You\'re spending more to acquire customers than they generate in value.');
+            insights.push({ icon: '⚠️', text: 'Your LTV:CAC ratio is below 1. You\'re spending more to acquire customers than they generate in value.' });
           } else {
-            insights.push('💡 Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.');
+            insights.push({ icon: '💡', text: 'Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.' });
           }
 
           if (churn > 5) {
-            insights.push('🔴 Your churn rate is high. Focus on retention and customer success to improve LTV.');
+            insights.push({ icon: '🔴', text: 'Your churn rate is high. Focus on retention and customer success to improve LTV.' });
           } else if (churn < 2) {
-            insights.push('🎉 Excellent churn rate! Your customers are sticking around.');
+            insights.push({ icon: '🎉', text: 'Excellent churn rate! Your customers are sticking around.' });
           }
 
           if (paybackPeriod > 12) {
-            insights.push('⏰ Your CAC payback period is over a year. Consider optimizing your sales efficiency.');
+            insights.push({ icon: '⏰', text: 'Your CAC payback period is over a year. Consider optimizing your sales efficiency.' });
           } else if (paybackPeriod < 6) {
-            insights.push('⚡ Great payback period! You\'re recovering acquisition costs quickly.');
+            insights.push({ icon: '⚡', text: 'Great payback period! You\'re recovering acquisition costs quickly.' });
           }
 
           if (arpa < 50) {
-            insights.push('💰 Consider increasing prices or upselling to improve ARPA and LTV.');
+            insights.push({ icon: '💰', text: 'Consider increasing prices or upselling to improve ARPA and LTV.' });
           }
 
           // Update insights list
           const insightsList = document.getElementById('insights-list');
           insightsList.innerHTML = insights.map(insight =>
             `<li class="flex items-start gap-3">
-              <span class="text-lg">${insight.substring(0, 2)}</span>
-              <span class="flex-1">${insight.substring(3)}</span>
+              <span class="text-lg flex-shrink-0">${insight.icon}</span>
+              <span class="flex-1">${insight.text}</span>
             </li>`
           ).join('');
 
