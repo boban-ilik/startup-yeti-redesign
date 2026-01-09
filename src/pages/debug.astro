@@ -1,0 +1,111 @@
+---
+// Debug page to check environment variables
+const envCheck = {
+  WORDPRESS_URL: import.meta.env.WORDPRESS_URL || 'NOT SET',
+  hasWordPress: !!import.meta.env.WORDPRESS_URL,
+  nodeEnv: import.meta.env.MODE,
+  buildTime: new Date().toISOString(),
+};
+
+let wpTest = null;
+if (import.meta.env.WORDPRESS_URL) {
+  try {
+    const response = await fetch(import.meta.env.WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `query { posts(first: 1) { nodes { title } } }`
+      }),
+    });
+    wpTest = {
+      status: response.status,
+      ok: response.ok,
+      data: await response.json()
+    };
+  } catch (error) {
+    wpTest = {
+      error: error.message
+    };
+  }
+}
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Debug Info | Startup Yeti</title>
+  <style>
+    body {
+      font-family: monospace;
+      padding: 2rem;
+      background: #1e293b;
+      color: #e2e8f0;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    h1 {
+      color: #38bdf8;
+    }
+    pre {
+      background: #0f172a;
+      padding: 1rem;
+      border-radius: 8px;
+      overflow-x: auto;
+      border: 1px solid #334155;
+    }
+    .section {
+      margin-bottom: 2rem;
+    }
+    .status {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-left: 1rem;
+    }
+    .ok { background: #10b981; color: white; }
+    .error { background: #ef4444; color: white; }
+  </style>
+</head>
+<body>
+  <h1>🔍 Startup Yeti Debug Info</h1>
+
+  <div class="section">
+    <h2>Environment Variables</h2>
+    <pre>{JSON.stringify(envCheck, null, 2)}</pre>
+  </div>
+
+  <div class="section">
+    <h2>WordPress Connection Test
+      <span class={wpTest?.ok ? 'status ok' : 'status error'}>
+        {wpTest?.ok ? '✓ Connected' : '✗ Failed'}
+      </span>
+    </h2>
+    <pre>{JSON.stringify(wpTest, null, 2)}</pre>
+  </div>
+
+  <div class="section">
+    <h2>Expected Behavior</h2>
+    <ul>
+      <li>WORDPRESS_URL should be: <code>https://www.startupyeti.com/graphql</code></li>
+      <li>WordPress connection test should return status 200 and post data</li>
+      <li>If either fails, check Cloudflare Pages environment variables</li>
+    </ul>
+  </div>
+
+  <div class="section">
+    <h2>How to Fix</h2>
+    <ol>
+      <li>Go to Cloudflare Dashboard → Workers & Pages → startup-yeti-redesign</li>
+      <li>Settings → Environment variables</li>
+      <li>Add: <code>WORDPRESS_URL = https://www.startupyeti.com/graphql</code></li>
+      <li>Apply to both Production and Preview environments</li>
+      <li>Retry deployment</li>
+    </ol>
+  </div>
+
+  <p><a href="/" style="color: #38bdf8;">← Back to Home</a></p>
+</body>
+</html>
