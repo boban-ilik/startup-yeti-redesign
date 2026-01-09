@@ -235,7 +235,7 @@ function getCategoryColors(categorySlug: string) {
     </div>
 
     <!-- Sticky CTA Bar -->
-    <div id="sticky-cta" class="fixed bottom-0 left-0 right-0 z-40 glass border-t border-slate-200 shadow-2xl transform translate-y-full transition-transform duration-300">
+    <div id="sticky-cta" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-2xl transform translate-y-full transition-transform duration-300">
       <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="text-center sm:text-left">
           <p class="font-bold text-slate-900 text-lg">Ready to scale your remote team?</p>
@@ -587,7 +587,7 @@ function getCategoryColors(categorySlug: string) {
 
       <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-4 gap-16 mb-20 relative z-10">
         <div class="col-span-1 md:col-span-2">
-          <img src="/logo.png" class="h-14 w-auto mb-10 brightness-0 invert" alt="Startup Yeti" />
+          <img src="/logo.png" class="h-14 w-auto mb-10 brightness-0 invert opacity-90" style="filter: brightness(0) invert(1);" alt="Startup Yeti" />
           <p class="text-slate-400 leading-relaxed max-w-md mb-10 text-base">
             The operational playbook for modern founders. Stay ahead by embracing the latest in remote work, SaaS trends, and team management.
           </p>
@@ -822,7 +822,8 @@ function getCategoryColors(categorySlug: string) {
       // Sticky CTA bar
       (function() {
         const stickyCta = document.getElementById('sticky-cta');
-        const closeStickyCta = document.getElementById('close-sticky-cta');
+        const closeBtn = document.getElementById('close-sticky-cta');
+        const footer = document.querySelector('footer');
         let ctaClosed = sessionStorage.getItem('stickyClosed') === 'true';
 
         function showStickyCta() {
@@ -835,19 +836,29 @@ function getCategoryColors(categorySlug: string) {
         function hideStickyCta() {
           stickyCta.classList.add('translate-y-full');
           stickyCta.classList.remove('translate-y-0');
+        }
+
+        function permanentlyClose() {
+          hideStickyCta();
           sessionStorage.setItem('stickyClosed', 'true');
           ctaClosed = true;
         }
 
-        // Show sticky CTA after scrolling 50%
+        // Show/hide sticky CTA based on scroll and footer visibility
         window.addEventListener('scroll', () => {
           const scrollPercent = (window.pageYOffset / (document.documentElement.scrollHeight - window.innerHeight)) * 100;
-          if (scrollPercent > 50 && !ctaClosed) {
+          const footerRect = footer.getBoundingClientRect();
+          const isFooterVisible = footerRect.top < window.innerHeight;
+
+          // Hide sticky CTA when footer is visible
+          if (isFooterVisible) {
+            hideStickyCta();
+          } else if (scrollPercent > 50 && !ctaClosed) {
             showStickyCta();
           }
         });
 
-        closeStickyCta.addEventListener('click', hideStickyCta);
+        closeBtn.addEventListener('click', permanentlyClose);
       })();
 
       // Search toggle
