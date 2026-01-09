@@ -4,47 +4,62 @@
 
 const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 
-const response = await fetch(WORDPRESS_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    query: `
-      query GetAllPosts {
-        posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
-          nodes {
-            slug
-            title
-            excerpt
-            date
-            featuredImage {
-              node {
-                sourceUrl
-                altText
-              }
-            }
-            author {
-              node {
-                name
-              }
-            }
-            categories {
+let posts = [];
+let allCategories = [];
+
+// Only fetch if WordPress is configured
+if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query GetAllPosts {
+            posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
               nodes {
-                name
                 slug
+                title
+                excerpt
+                date
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
+                }
+                author {
+                  node {
+                    name
+                  }
+                }
+                categories {
+                  nodes {
+                    name
+                    slug
+                  }
+                }
               }
             }
           }
-        }
-      }
-    `,
-  }),
-});
+        `,
+      }),
+    });
 
-const { data } = await response.json();
-const posts = data.posts.nodes;
+    const { data } = await response.json();
 
-// Get unique categories
-const allCategories = [...new Set(posts.flatMap(post => post.categories.nodes.map(cat => cat.name)))];
+    if (data?.posts?.nodes) {
+      posts = data.posts.nodes;
+      // Get unique categories
+      allCategories = [...new Set(posts.flatMap(post => post.categories.nodes.map(cat => cat.name)))];
+    }
+  } catch (error) {
+    console.error('Error fetching WordPress posts:', error);
+    // Posts remain empty array, page will show "no posts" message
+  }
+} else {
+  console.warn('WordPress URL not configured. Blog page will show no posts.');
+}
 ---
 
 <!doctype html>

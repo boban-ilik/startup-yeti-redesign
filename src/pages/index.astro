@@ -6,43 +6,49 @@ const year = new Date().getFullYear();
 const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 
 let posts = [];
-try {
-  const response = await fetch(WORDPRESS_URL, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({
-      query: `
-        query GetRecentPosts {
-          posts(first: 3, where: {orderby: {field: DATE, order: DESC}}) {
-            nodes {
-              slug
-              title
-              excerpt
-              date
-              featuredImage {
-                node {
-                  sourceUrl
-                  altText
+
+// Only fetch if WordPress is configured
+if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query GetRecentPosts {
+            posts(first: 3, where: {orderby: {field: DATE, order: DESC}}) {
+              nodes {
+                slug
+                title
+                excerpt
+                date
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
                 }
-              }
-              categories {
-                nodes {
-                  name
-                  slug
+                categories {
+                  nodes {
+                    name
+                    slug
+                  }
                 }
               }
             }
           }
-        }
-      `,
-    }),
-  });
+        `,
+      }),
+    });
 
-  const { data } = await response.json();
-  posts = data?.posts?.nodes || [];
-} catch (error) {
-  console.error("Error fetching WordPress posts:", error);
-  // posts will remain empty array if fetch fails
+    const { data } = await response.json();
+    posts = data?.posts?.nodes || [];
+  } catch (error) {
+    console.error("Error fetching WordPress posts:", error);
+    // posts will remain empty array if fetch fails
+  }
+} else {
+  console.warn('WordPress URL not configured. Homepage will show no blog posts.');
 }
 
 // Helper function to calculate reading time
