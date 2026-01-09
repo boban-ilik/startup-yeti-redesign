@@ -12,7 +12,10 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
   try {
     const response = await fetch(WORDPRESS_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: {
+        "Content-Type": "application/json",
+        "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)"
+      },
       body: JSON.stringify({
         query: `
           query GetRecentPosts {
