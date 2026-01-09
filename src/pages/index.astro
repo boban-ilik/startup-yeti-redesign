@@ -158,7 +158,7 @@ function getCategoryColors(categorySlug: string) {
             </div>
           </div>
 
-          <a href="#" class="ml-2 px-7 py-3 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg shadow-yeti-500/30 transition-all transform hover:-translate-y-1 hover:shadow-xl hover:shadow-yeti-500/40">
+          <a href="/blog" class="ml-2 px-7 py-3 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg shadow-yeti-500/30 transition-all transform hover:-translate-y-1 hover:shadow-xl hover:shadow-yeti-500/40">
             Get the Guides
           </a>
         </div>
@@ -186,7 +186,7 @@ function getCategoryColors(categorySlug: string) {
           <a href="/remote-work" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Remote Work</a>
           <a href="/productivity" class="block text-slate-600 py-3 px-4 rounded-xl font-semibold hover:bg-yeti-50 hover:text-yeti-700 transition-all hover:pl-6">Productivity</a>
           <div class="pt-6 mt-6 border-t border-slate-200">
-            <a href="#" class="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold shadow-lg hover:from-yeti-700 hover:to-yeti-800 transition-all">Get the Guides</a>
+            <a href="/blog" class="block w-full text-center py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold shadow-lg hover:from-yeti-700 hover:to-yeti-800 transition-all">Get the Guides</a>
           </div>
         </nav>
       </aside>
@@ -287,11 +287,11 @@ function getCategoryColors(categorySlug: string) {
 
           <!-- Enhanced CTA buttons with better effects -->
           <div class="flex flex-col sm:flex-row gap-5 justify-center items-center animate-slide-up" style="animation-delay: 0.2s;">
-            <a href="#" class="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-lg overflow-hidden shadow-2xl shadow-yeti-500/30 hover:shadow-glow-lg transition-all transform hover:-translate-y-2 hover:scale-105">
+            <a href="/blog" class="group relative px-10 py-5 rounded-2xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-lg overflow-hidden shadow-2xl shadow-yeti-500/30 hover:shadow-glow-lg transition-all transform hover:-translate-y-2 hover:scale-105">
               <span class="relative z-10">Explore Our Guides</span>
               <div class="absolute inset-0 shimmer opacity-0 group-hover:opacity-100 transition-opacity"></div>
             </a>
-            <a href="#" class="px-10 py-5 rounded-2xl glass text-slate-800 font-bold text-lg border-slate-300 hover:border-yeti-400 hover:bg-white shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
+            <a href="#newsletter" class="px-10 py-5 rounded-2xl glass text-slate-800 font-bold text-lg border-slate-300 hover:border-yeti-400 hover:bg-white shadow-lg hover:shadow-xl transition-all transform hover:-translate-y-1">
               Join Newsletter
             </a>
           </div>
@@ -326,11 +326,30 @@ function getCategoryColors(categorySlug: string) {
         <div class="max-w-7xl mx-auto">
           <p class="text-center text-xs font-bold text-slate-400 uppercase tracking-widest mb-12">Explore Topics</p>
           <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-8 gap-4">
-            {["Business", "Marketing", "Innovation", "Remote", "Sales", "Wellbeing", "Productivity", "Trends"].map((topic) => (
-              <a href="#" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
-                {topic}
-              </a>
-            ))}
+            <a href="/business" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Business
+            </a>
+            <a href="/marketing" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Marketing
+            </a>
+            <a href="/startup" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Innovation
+            </a>
+            <a href="/remote-work" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Remote
+            </a>
+            <a href="/business" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Sales
+            </a>
+            <a href="/productivity" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Wellbeing
+            </a>
+            <a href="/productivity" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Productivity
+            </a>
+            <a href="/blog" class="group flex items-center justify-center px-5 py-4 rounded-xl border border-slate-200 glass text-slate-700 font-bold shadow-sm hover:border-yeti-400 hover:shadow-lg hover:text-yeti-700 hover:-translate-y-1 transition-all text-sm text-center">
+              Trends
+            </a>
           </div>
         </div>
       </section>
@@ -723,10 +742,10 @@ function getCategoryColors(categorySlug: string) {
         <div>
           <h4 class="font-bold text-xl mb-8 text-white">Explore</h4>
           <ul class="space-y-4 text-slate-400">
-            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Business Strategy</a></li>
-            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Remote Work</a></li>
-            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Team Management</a></li>
-            <li><a href="#" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Founder Wellbeing</a></li>
+            <li><a href="/business" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Business Strategy</a></li>
+            <li><a href="/remote-work" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Remote Work</a></li>
+            <li><a href="/startup" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Team Management</a></li>
+            <li><a href="/productivity" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Founder Wellbeing</a></li>
           </ul>
         </div>
 
