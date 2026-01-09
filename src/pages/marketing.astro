@@ -1,0 +1,273 @@
+---
+// src/pages/marketing.astro
+// Marketing category landing page
+
+const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+const categorySlug = "marketing";
+const categoryName = "Marketing";
+
+let posts = [];
+
+// Fetch posts from this category
+if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        query: `
+          query GetCategoryPosts($categoryName: String!) {
+            posts(first: 100, where: {categoryName: $categoryName, orderby: {field: DATE, order: DESC}}) {
+              nodes {
+                slug
+                title
+                excerpt
+                date
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
+                }
+                author {
+                  node {
+                    name
+                  }
+                }
+                categories {
+                  nodes {
+                    name
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: { categoryName }
+      }),
+    });
+
+    const { data } = await response.json();
+    if (data?.posts?.nodes) {
+      posts = data.posts.nodes;
+    }
+  } catch (error) {
+    console.error('Error fetching category posts:', error);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark:bg-slate-900">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Growth Marketing & Customer Acquisition | Startup Yeti</title>
+    <meta name="description" content="Master growth marketing, content strategy, and customer acquisition. Proven tactics for startups to grow efficiently." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="/src/styles/global.css">
+
+    <style>
+      img[src="/logo.png"] {
+        background: transparent !important;
+        mix-blend-mode: normal;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900 dark:selection:bg-yeti-900 dark:selection:text-yeti-100 transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-500">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="block hover:opacity-80 transition-all duration-300 hover:scale-105">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto" />
+        </a>
+
+        <div class="flex items-center gap-6">
+          <a href="/startup" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Startup
+          </a>
+          <a href="/marketing" class="text-sm font-semibold text-yeti-600 dark:text-yeti-400">
+            Marketing
+          </a>
+          <a href="/blog" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Blog
+          </a>
+          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-20">
+
+      <!-- Hero Section -->
+      <section class="relative py-24 px-6 bg-gradient-to-br from-white via-orange-50/30 to-red-50/30 dark:from-slate-900 dark:via-orange-900/10 dark:to-red-900/10">
+        <div class="absolute top-20 right-20 w-64 h-64 bg-orange-500/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-20 left-20 w-64 h-64 bg-red-500/10 rounded-full blur-[120px]"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 dark:border-slate-700 shadow-lg text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-widest mb-8">
+            <svg class="w-4 h-4 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"></path></svg>
+            {posts.length} Articles
+          </div>
+
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight font-serif">
+            Growth Marketing <br class="hidden sm:block" />
+            <span class="text-gradient from-orange-600 via-red-500 to-pink-600">That Scales</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
+            Proven tactics for customer acquisition, content strategy, and efficient growth. Learn from founders who've scaled.
+          </p>
+        </div>
+      </section>
+
+      <!-- Featured Topics -->
+      <section class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-orange-100 to-red-100 dark:from-orange-900 dark:to-red-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-orange-600 dark:text-orange-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Growth Tactics</h3>
+            <p class="text-slate-600 dark:text-slate-400">Acquisition strategies that drive sustainable growth.</p>
+          </div>
+
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Content Strategy</h3>
+            <p class="text-slate-600 dark:text-slate-400">Build an audience through valuable content.</p>
+          </div>
+
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-100 to-blue-100 dark:from-cyan-900 dark:to-blue-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-cyan-600 dark:text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Analytics & CAC</h3>
+            <p class="text-slate-600 dark:text-slate-400">Measure what matters and optimize your funnel.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Articles Grid -->
+      <section class="max-w-7xl mx-auto px-6 py-12 pb-28">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-12 font-serif">Latest Marketing Articles</h2>
+
+        {posts.length > 0 ? (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {posts.map((post) => {
+              const category = post.categories.nodes[0];
+              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+
+              return (
+                <article class="group bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:shadow-2xl hover:border-orange-200 dark:hover:border-orange-800 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col">
+                  <a href={`/${category.slug}/${post.slug}`} class="block">
+                    {post.featuredImage ? (
+                      <div class="h-60 relative overflow-hidden">
+                        <img
+                          src={post.featuredImage.node.sourceUrl}
+                          alt={post.featuredImage.node.altText || post.title}
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute top-5 left-5 glass border-orange-300 dark:border-orange-700 px-4 py-1.5 rounded-full text-xs font-bold text-orange-700 dark:text-orange-300">
+                          {category.name}
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="h-60 bg-gradient-to-br from-orange-100 via-red-50 to-pink-50 dark:from-orange-900/30 dark:via-red-900/20 dark:to-pink-900/30 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute top-5 left-5 glass border-orange-300 dark:border-orange-700 px-4 py-1.5 rounded-full text-xs font-bold text-orange-700 dark:text-orange-300">
+                          {category.name}
+                        </div>
+                      </div>
+                    )}
+
+                    <div class="p-8 flex flex-col flex-grow">
+                      <h3 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors leading-tight">
+                        {post.title}
+                      </h3>
+
+                      <p class="text-slate-600 dark:text-slate-400 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
+
+                      <div class="flex items-center justify-between text-sm text-slate-400 font-semibold border-t border-slate-100 dark:border-slate-700 pt-5 mt-auto">
+                        <div class="flex items-center gap-2">
+                          <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                          <span>•</span>
+                          <span>{readingTime} min read</span>
+                        </div>
+                        <svg class="w-5 h-5 text-orange-600 dark:text-orange-400 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <div class="text-6xl mb-6">📈</div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">No articles yet</h3>
+            <p class="text-slate-600 dark:text-slate-400">Check back soon for marketing content!</p>
+          </div>
+        )}
+      </section>
+
+      <!-- Newsletter CTA -->
+      <section class="py-20 px-6 bg-gradient-to-b from-slate-50 dark:from-slate-800 to-white dark:to-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="glass dark:border-slate-700 rounded-3xl p-12 shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-serif">
+              Master Growth Marketing
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+              Get weekly growth tactics and acquisition strategies delivered to your inbox.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" data-newsletter-form>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-6 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all"
+                required
+              />
+              <button
+                type="submit"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6 text-center">
+        <img src="/logo.png" class="h-16 w-auto mx-auto mb-6" style="filter: brightness(0) invert(1) !important; image-rendering: crisp-edges;" alt="Startup Yeti" />
+        <p class="text-slate-300 mb-4 text-base">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+        <div class="flex justify-center gap-6">
+          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
+          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
+          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
+          <a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="hover:text-yeti-400 transition-colors">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Newsletter Form Handler -->
+    <script is:inline src="/js/newsletter.js"></script>
+  </body>
+</html>
