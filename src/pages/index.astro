@@ -70,7 +70,7 @@ function getCategoryColors(categorySlug: string) {
 }
 ---
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth dark:bg-slate-900">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width,initial-scale=1" />
@@ -116,38 +116,38 @@ function getCategoryColors(categorySlug: string) {
     </style>
   </head>
 
-  <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900">
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900 dark:selection:bg-yeti-900 dark:selection:text-yeti-100 transition-colors duration-300">
 
     <!-- Enhanced Navigation with better glassmorphism -->
-    <nav id="main-nav" class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm transition-all duration-500">
+    <nav id="main-nav" class="fixed w-full top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-500">
       <div class="max-w-7xl mx-auto px-6 h-28 flex items-center justify-between">
         <a href="/" class="block hover:opacity-80 transition-all duration-300 hover:scale-105">
           <img src="/logo.png" alt="Startup Yeti" class="h-20 w-auto" />
         </a>
 
-        <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-600">
-          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Business</a>
-          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Marketing</a>
-          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Remote Work</a>
-          <a href="#" class="relative hover:text-yeti-600 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 after:transition-all hover:after:w-full">Productivity</a>
+        <div class="hidden lg:flex items-center space-x-6 text-sm font-semibold text-slate-600 dark:text-slate-300">
+          <a href="#" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Business</a>
+          <a href="#" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Marketing</a>
+          <a href="#" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Remote Work</a>
+          <a href="#" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Productivity</a>
 
           <!-- Search Bar -->
           <div class="relative">
-            <button id="search-toggle" class="p-2.5 hover:bg-slate-100 rounded-lg transition-colors" aria-label="Search">
+            <button id="search-toggle" class="p-2.5 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors" aria-label="Search">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
             </button>
-            <div id="search-dropdown" class="absolute top-full right-0 mt-2 w-80 glass border-slate-300 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-200 transform translate-y-2">
+            <div id="search-dropdown" class="absolute top-full right-0 mt-2 w-80 glass border-slate-300 dark:border-slate-700 rounded-2xl shadow-2xl opacity-0 pointer-events-none transition-all duration-200 transform translate-y-2">
               <div class="p-4">
                 <div class="relative">
-                  <input type="text" placeholder="Search articles..." class="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all" />
+                  <input type="text" placeholder="Search articles..." class="w-full pl-10 pr-4 py-3 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all" />
                   <svg class="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
                 </div>
-                <div class="mt-3 text-xs text-slate-500">
+                <div class="mt-3 text-xs text-slate-500 dark:text-slate-400">
                   <p class="font-semibold mb-2">Popular searches:</p>
                   <div class="flex flex-wrap gap-2">
-                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">EOS</span>
-                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">Remote Teams</span>
-                    <span class="px-3 py-1 bg-slate-100 rounded-full hover:bg-yeti-100 cursor-pointer transition-colors">Productivity</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full hover:bg-yeti-100 dark:hover:bg-yeti-900 cursor-pointer transition-colors">EOS</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full hover:bg-yeti-100 dark:hover:bg-yeti-900 cursor-pointer transition-colors">Remote Teams</span>
+                    <span class="px-3 py-1 bg-slate-100 dark:bg-slate-700 rounded-full hover:bg-yeti-100 dark:hover:bg-yeti-900 cursor-pointer transition-colors">Productivity</span>
                   </div>
                 </div>
               </div>
@@ -159,7 +159,7 @@ function getCategoryColors(categorySlug: string) {
           </a>
         </div>
 
-        <button id="menu-button" aria-controls="mobile-menu" aria-expanded="false" class="lg:hidden text-slate-800 p-2 rounded-lg hover:bg-slate-100 transition-colors" aria-label="Open menu">
+        <button id="menu-button" aria-controls="mobile-menu" aria-expanded="false" class="lg:hidden text-slate-800 dark:text-slate-200 p-2 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Open menu">
           <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
         </button>
       </div>
@@ -208,44 +208,44 @@ function getCategoryColors(categorySlug: string) {
     <!-- Newsletter Modal -->
     <div id="newsletter-modal" class="fixed inset-0 z-[60] flex items-center justify-center pointer-events-none opacity-0 transition-opacity duration-300">
       <div class="absolute inset-0 bg-slate-900/70 backdrop-blur-md" id="modal-backdrop"></div>
-      <div class="relative bg-white max-w-lg w-full mx-6 rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 border border-slate-200" id="modal-content">
-        <button id="modal-close" class="absolute top-6 right-6 w-10 h-10 rounded-full hover:bg-slate-100 transition-colors flex items-center justify-center" aria-label="Close modal">
-          <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+      <div class="relative bg-white dark:bg-slate-800 max-w-lg w-full mx-6 rounded-3xl shadow-2xl transform scale-95 transition-transform duration-300 border border-slate-200 dark:border-slate-700" id="modal-content">
+        <button id="modal-close" class="absolute top-6 right-6 w-10 h-10 rounded-full hover:bg-slate-100 dark:hover:bg-slate-700 transition-colors flex items-center justify-center" aria-label="Close modal">
+          <svg class="w-5 h-5 text-slate-500 dark:text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
         </button>
 
         <div class="p-10">
           <div class="text-center mb-8">
-            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-yeti-100 to-cyan-100 flex items-center justify-center">
-              <svg class="w-8 h-8 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-yeti-100 to-cyan-100 dark:from-yeti-900 dark:to-cyan-900 flex items-center justify-center">
+              <svg class="w-8 h-8 text-yeti-600 dark:text-yeti-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
             </div>
-            <h3 class="text-3xl font-bold text-slate-900 mb-3 font-serif">Join 50k+ Founders</h3>
-            <p class="text-slate-600 text-lg">Get weekly tactical advice on building and scaling remote teams.</p>
+            <h3 class="text-3xl font-bold text-slate-900 dark:text-slate-100 mb-3 font-serif">Join 50k+ Founders</h3>
+            <p class="text-slate-600 dark:text-slate-300 text-lg">Get weekly tactical advice on building and scaling remote teams.</p>
           </div>
 
           <form class="space-y-4" data-newsletter-form>
-            <input type="email" name="email" placeholder="Enter your email" class="w-full bg-white border-2 border-slate-200 rounded-xl px-5 py-4 text-base placeholder-slate-400 text-slate-900 focus:ring-2 focus:ring-yeti-500 focus:border-yeti-500 transition-all" required />
+            <input type="email" name="email" placeholder="Enter your email" class="w-full bg-white dark:bg-slate-700 border-2 border-slate-200 dark:border-slate-600 rounded-xl px-5 py-4 text-base placeholder-slate-400 dark:placeholder-slate-500 text-slate-900 dark:text-slate-100 focus:ring-2 focus:ring-yeti-500 focus:border-yeti-500 transition-all" required />
             <button type="submit" class="w-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white text-base font-bold py-4 rounded-xl hover:from-yeti-700 hover:to-yeti-800 transition-all shadow-lg hover:shadow-glow transform hover:-translate-y-0.5">
               Subscribe Now
             </button>
           </form>
 
-          <p class="text-xs text-slate-500 text-center mt-6">No spam. Unsubscribe anytime. We respect your privacy.</p>
+          <p class="text-xs text-slate-500 dark:text-slate-400 text-center mt-6">No spam. Unsubscribe anytime. We respect your privacy.</p>
         </div>
       </div>
     </div>
 
     <!-- Sticky CTA Bar -->
-    <div id="sticky-cta" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 backdrop-blur-xl border-t border-slate-200 shadow-2xl transform translate-y-full transition-transform duration-300">
+    <div id="sticky-cta" class="fixed bottom-0 left-0 right-0 z-40 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-t border-slate-200 dark:border-slate-700 shadow-2xl transform translate-y-full transition-transform duration-300">
       <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="text-center sm:text-left">
-          <p class="font-bold text-slate-900 text-lg">Ready to scale your remote team?</p>
-          <p class="text-sm text-slate-600">Get our proven frameworks and tactics.</p>
+          <p class="font-bold text-slate-900 dark:text-slate-100 text-lg">Ready to scale your remote team?</p>
+          <p class="text-sm text-slate-600 dark:text-slate-400">Get our proven frameworks and tactics.</p>
         </div>
         <div class="flex gap-3">
           <button id="sticky-newsletter-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all whitespace-nowrap">
             Get Free Guides
           </button>
-          <button id="close-sticky-cta" class="p-3 rounded-xl hover:bg-slate-100 transition-colors" aria-label="Close">
+          <button id="close-sticky-cta" class="p-3 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors" aria-label="Close">
             <svg class="w-5 h-5 text-slate-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
           </button>
         </div>
