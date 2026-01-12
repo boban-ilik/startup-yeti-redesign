@@ -326,8 +326,7 @@ function getCategoryColors(categorySlug: string) {
 
           <!-- Enhanced heading with better gradient -->
           <h1 class="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-slate-900 mb-8 leading-[1.05] tracking-tight font-serif animate-slide-up">
-            The Founder's Guide to<br />
-            <span class="text-gradient from-yeti-600 via-cyan-500 to-blue-600 drop-shadow-sm">Remote Growth</span>
+            The Founder's Guide to <br /><span class="text-gradient from-yeti-600 via-cyan-500 to-blue-600 drop-shadow-sm">Remote Growth</span>
           </h1>
 
           <p class="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto mb-12 leading-relaxed font-light animate-slide-up" style="animation-delay: 0.1s;">
@@ -980,9 +979,27 @@ function getCategoryColors(categorySlug: string) {
           document.body.style.overflow = '';
         }
 
-        // Show modal after 10 seconds if not shown before
+        // Show modal when user scrolls past the team section
         if (!modalShown) {
-          setTimeout(openModal, 10000);
+          const teamSection = document.querySelector('section:has(h2:contains("Meet the Experts"))') ||
+                             Array.from(document.querySelectorAll('section')).find(section =>
+                               section.textContent.includes('Meet the Experts')
+                             );
+
+          if (teamSection) {
+            const observer = new IntersectionObserver((entries) => {
+              entries.forEach(entry => {
+                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
+                  openModal();
+                  observer.disconnect();
+                }
+              });
+            }, {
+              threshold: 0.5
+            });
+
+            observer.observe(teamSection);
+          }
         }
 
         modalClose.addEventListener('click', closeModal);
