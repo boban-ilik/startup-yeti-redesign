@@ -6,6 +6,7 @@ const envCheck = {
   nodeEnv: import.meta.env.MODE,
   buildTime: new Date().toISOString(),
   cacheCleared: true,
+  deployTrigger: Date.now(),
 };
 
 let wpTest = null;
