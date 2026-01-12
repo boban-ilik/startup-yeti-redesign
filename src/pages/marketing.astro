@@ -313,7 +313,9 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <!-- Footer -->
     <footer class="bg-slate-900 text-white py-12">
       <div class="max-w-7xl mx-auto px-6 text-center">
-        <img src="/logo.png" class="h-16 w-auto mx-auto mb-6" style="filter: brightness(0) invert(1) !important; image-rendering: crisp-edges;" alt="Startup Yeti" />
+        <div class="h-40 md:h-48 w-64 md:w-80 mb-6 overflow-hidden mx-auto">
+          <img src="/footer logo.png" class="h-full w-full object-cover object-center scale-110" alt="Startup Yeti" />
+        </div>
         <p class="text-slate-300 mb-4 text-base">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
         <div class="flex justify-center gap-6">
           <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
