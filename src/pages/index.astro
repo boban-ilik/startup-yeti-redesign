@@ -408,7 +408,7 @@ function getCategoryColors(categorySlug: string) {
              <div class="relative w-full">
                 <!-- Central Logo -->
                 <div class="flex items-center justify-center mb-8 group">
-                  <div class="relative w-48 h-48">
+                  <div class="relative w-64 h-64">
                     <div class="absolute inset-0 bg-gradient-to-br from-yeti-200/60 to-cyan-200/40 rounded-full blur-3xl opacity-70 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <img src="/logo.png" alt="Yeti Mascot" class="relative w-full h-auto drop-shadow-2xl transform group-hover:scale-105 transition-transform duration-500" />
                   </div>
@@ -767,7 +767,7 @@ function getCategoryColors(categorySlug: string) {
                     )}
 
                     <div class="p-8 flex flex-col flex-grow">
-                      <h3 class={`text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:${colors.icon} transition-colors leading-tight`}>
+                      <h3 class={`text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:${colors.icon} transition-colors leading-tight min-h-[4rem]`}>
                         {post.title}
                       </h3>
 
