@@ -136,7 +136,6 @@ function getCategoryColors(categorySlug: string) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="/src/styles/global.css">
 
     <style>
       .bg-grid-pattern {
@@ -1045,10 +1044,9 @@ function getCategoryColors(categorySlug: string) {
 
         // Show modal when user scrolls past the team section
         if (!modalShown) {
-          const teamSection = document.querySelector('section:has(h2:contains("Meet the Experts"))') ||
-                             Array.from(document.querySelectorAll('section')).find(section =>
-                               section.textContent.includes('Meet the Experts')
-                             );
+          const teamSection = Array.from(document.querySelectorAll('section')).find(section =>
+            section.textContent.includes('Meet the Experts')
+          );
 
           if (teamSection) {
             const observer = new IntersectionObserver((entries) => {
