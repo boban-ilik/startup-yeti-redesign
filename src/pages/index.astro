@@ -1275,11 +1275,12 @@ function getCategoryColors(categorySlug: string) {
         });
 
         // Toggle search dropdown
-        searchToggle.addEventListener('click', async () => {
+        searchToggle.addEventListener('click', async (e) => {
+          e.stopPropagation();
           searchOpen = !searchOpen;
           if (searchOpen) {
             searchDropdown.classList.remove('opacity-0', 'pointer-events-none', 'translate-y-2');
-            searchDropdown.classList.add('opacity-100', 'translate-y-0');
+            searchDropdown.classList.add('opacity-100', 'pointer-events-auto', 'translate-y-0');
             searchInput.focus();
 
             // Fetch posts if not already loaded
@@ -1288,7 +1289,7 @@ function getCategoryColors(categorySlug: string) {
             }
           } else {
             searchDropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-            searchDropdown.classList.remove('opacity-100', 'translate-y-0');
+            searchDropdown.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
             // Reset search state
             searchInput.value = '';
             searchResults.classList.add('hidden');
@@ -1300,15 +1301,17 @@ function getCategoryColors(categorySlug: string) {
 
         document.addEventListener('click', (e) => {
           if (!searchToggle.contains(e.target) && !searchDropdown.contains(e.target)) {
-            searchDropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
-            searchDropdown.classList.remove('opacity-100', 'translate-y-0');
-            searchOpen = false;
-            // Reset search state
-            searchInput.value = '';
-            searchResults.classList.add('hidden');
-            searchNoResults.classList.add('hidden');
-            searchLoading.classList.add('hidden');
-            searchPopular.classList.remove('hidden');
+            if (searchOpen) {
+              searchDropdown.classList.add('opacity-0', 'pointer-events-none', 'translate-y-2');
+              searchDropdown.classList.remove('opacity-100', 'pointer-events-auto', 'translate-y-0');
+              searchOpen = false;
+              // Reset search state
+              searchInput.value = '';
+              searchResults.classList.add('hidden');
+              searchNoResults.classList.add('hidden');
+              searchLoading.classList.add('hidden');
+              searchPopular.classList.remove('hidden');
+            }
           }
         });
       })();
