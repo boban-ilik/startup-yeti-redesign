@@ -38,36 +38,46 @@ export async function onRequestPost(context) {
     }
     */
 
-    // Example: Mailchimp Integration
-    // Uncomment and configure when you have your Mailchimp API key
-    /*
+    // Mailchimp Integration
     const MAILCHIMP_API_KEY = env.MAILCHIMP_API_KEY;
     const MAILCHIMP_SERVER_PREFIX = env.MAILCHIMP_SERVER_PREFIX; // e.g., 'us1'
     const MAILCHIMP_LIST_ID = env.MAILCHIMP_LIST_ID;
 
-    const response = await fetch(
-      `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
-      {
-        method: 'POST',
-        headers: {
-          'Authorization': `apikey ${MAILCHIMP_API_KEY}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          email_address: email,
-          status: 'subscribed'
-        })
+    // If Mailchimp is configured, use it
+    if (MAILCHIMP_API_KEY && MAILCHIMP_SERVER_PREFIX && MAILCHIMP_LIST_ID) {
+      const response = await fetch(
+        `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
+        {
+          method: 'POST',
+          headers: {
+            'Authorization': `apikey ${MAILCHIMP_API_KEY}`,
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            email_address: email,
+            status: 'subscribed'
+          })
+        }
+      );
+
+      if (!response.ok) {
+        const error = await response.json();
+        // Handle already subscribed case gracefully
+        if (error.title === 'Member Exists') {
+          return new Response(JSON.stringify({
+            success: true,
+            message: 'You are already subscribed!'
+          }), {
+            status: 200,
+            headers: { 'Content-Type': 'application/json' }
+          });
+        }
+        throw new Error(error.detail || 'Failed to subscribe');
       }
-    );
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(error.detail || 'Failed to subscribe');
+    } else {
+      // If not configured, just log (for development/testing)
+      console.log('Newsletter signup (Mailchimp not configured):', email);
     }
-    */
-
-    // For now, just log the email (replace with actual integration)
-    console.log('Newsletter signup:', email);
 
     return new Response(JSON.stringify({
       success: true,
