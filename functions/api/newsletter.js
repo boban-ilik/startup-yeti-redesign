@@ -104,3 +104,16 @@ function isValidEmail(email) {
   const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   return regex.test(email);
 }
+
+// Add GET handler for testing
+export async function onRequestGet() {
+  return new Response(JSON.stringify({
+    success: true,
+    message: 'Newsletter API is ready',
+    endpoint: '/api/newsletter',
+    method: 'POST'
+  }), {
+    status: 200,
+    headers: { 'Content-Type': 'application/json' }
+  });
+}
