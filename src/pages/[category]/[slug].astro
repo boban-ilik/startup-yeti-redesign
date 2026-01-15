@@ -4,50 +4,62 @@
 
 // 1. Get all paths (category/slug combinations) from WordPress to generate pages
 export async function getStaticPaths() {
-  const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
-
-  // Return empty array if WordPress isn't configured
-  if (!import.meta.env.WORDPRESS_URL || WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
-    console.warn('WordPress URL not configured. Blog pages will not be generated.');
-    return [];
-  }
+  // Use admin subdomain for WordPress REST API
+  const WORDPRESS_BASE = "https://admin.startupyeti.com";
 
   try {
-    const response = await fetch(WORDPRESS_URL, {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" },
-      body: JSON.stringify({
-        query: `
-          query GetAllPosts {
-            posts(first: 1000) {
-              nodes {
-                slug
-                title
-                excerpt
-                date
-                categories {
-                  nodes {
-                    name
-                    slug
-                  }
-                }
-              }
-            }
-          }
-        `,
-      }),
-    });
+    // Fetch all published posts using REST API with pagination
+    let allPosts = [];
+    let page = 1;
+    let hasMore = true;
 
-    const { data } = await response.json();
+    console.log(`Fetching posts from: ${WORDPRESS_BASE}/wp-json/wp/v2/posts`);
 
-    if (!data?.posts?.nodes) {
+    while (hasMore) {
+      const url = `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=100&page=${page}&status=publish&_fields=slug,categories`;
+
+      const response = await fetch(url, {
+        headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+      });
+
+      if (!response.ok) {
+        console.error(`Failed to fetch posts page ${page}: ${response.status}`);
+        const text = await response.text();
+        console.error(`Response: ${text.substring(0, 200)}`);
+        break;
+      }
+
+      const posts = await response.json();
+      allPosts.push(...posts);
+      console.log(`Fetched page ${page}: ${posts.length} posts`);
+
+      // Check if there are more pages
+      const totalPages = parseInt(response.headers.get('X-WP-TotalPages') || '1');
+      hasMore = page < totalPages;
+      page++;
+    }
+
+    console.log(`✅ Fetched ${allPosts.length} posts from WordPress REST API`);
+
+    if (allPosts.length === 0) {
       console.warn('No posts found in WordPress.');
       return [];
     }
 
+    // Fetch category data to map IDs to slugs
+    const categoriesResponse = await fetch(
+      `${WORDPRESS_BASE}/wp-json/wp/v2/categories?per_page=100&_fields=id,slug`,
+      {
+        headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+      }
+    );
+    const categories = await categoriesResponse.json();
+    const categoryMap = Object.fromEntries(categories.map(c => [c.id, c.slug]));
+
     // Create paths using category slug + post slug to match existing URLs
-    return data.posts.nodes.map((post) => {
-      const categorySlug = post.categories.nodes[0]?.slug || 'uncategorized';
+    return allPosts.map((post) => {
+      const categoryId = post.categories[0];
+      const categorySlug = categoryMap[categoryId] || 'uncategorized';
       return {
         params: {
           category: categorySlug.toLowerCase(),
@@ -63,53 +75,54 @@ export async function getStaticPaths() {
 
 // 2. Get the specific data for the current page
 const { category, slug } = Astro.params;
-const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+const WORDPRESS_BASE = "https://admin.startupyeti.com";
 
-const response = await fetch(WORDPRESS_URL, {
-  method: "POST",
-  headers: { "Content-Type": "application/json", "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" },
-  body: JSON.stringify({
-    query: `
-      query GetPostBySlug($id: ID!) {
-        post(id: $id, idType: SLUG) {
-          title
-          content
-          date
-          excerpt
-          featuredImage {
-            node {
-              sourceUrl
-              altText
-            }
-          }
-          author {
-            node {
-              name
-              avatar {
-                url
-              }
-            }
-          }
-          categories {
-            nodes {
-              name
-              slug
-            }
-          }
-          tags {
-            nodes {
-              name
-            }
-          }
-        }
+const response = await fetch(
+  `${WORDPRESS_BASE}/wp-json/wp/v2/posts?slug=${slug}&_embed`,
+  {
+    headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+  }
+);
+
+const posts = await response.json();
+const restPost = posts[0];
+
+if (!restPost) {
+  throw new Error(`Post not found: ${slug}`);
+}
+
+// Transform REST API response to match the GraphQL structure
+const post = {
+  title: restPost.title.rendered,
+  content: restPost.content.rendered,
+  date: restPost.date,
+  excerpt: restPost.excerpt.rendered,
+  featuredImage: restPost._embedded?.['wp:featuredmedia']?.[0] ? {
+    node: {
+      sourceUrl: restPost._embedded['wp:featuredmedia'][0].source_url,
+      altText: restPost._embedded['wp:featuredmedia'][0].alt_text || restPost.title.rendered
+    }
+  } : null,
+  author: {
+    node: {
+      name: restPost._embedded?.author?.[0]?.name || 'Startup Yeti',
+      avatar: {
+        url: restPost._embedded?.author?.[0]?.avatar_urls?.['96'] || ''
       }
-    `,
-    variables: { id: slug },
-  }),
-});
-
-const { data } = await response.json();
-const post = data.post;
+    }
+  },
+  categories: {
+    nodes: (restPost._embedded?.['wp:term']?.[0] || []).map(cat => ({
+      name: cat.name,
+      slug: cat.slug
+    }))
+  },
+  tags: {
+    nodes: (restPost._embedded?.['wp:term']?.[1] || []).map(tag => ({
+      name: tag.name
+    }))
+  }
+};
 
 // Calculate reading time
 const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
