@@ -2,5 +2,11 @@
 User-agent: *
 Allow: /
 
+# Block old WordPress paths
+Disallow: /wp-admin/
+Disallow: /wp-content/
+Disallow: /wp-includes/
+Disallow: /wp-*.php
+
 # Sitemaps
 Sitemap: https://www.startupyeti.com/sitemap-index.xml
