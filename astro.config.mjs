@@ -5,6 +5,10 @@ import sitemap from '@astrojs/sitemap';
 // https://astro.build/config
 export default defineConfig({
   site: 'https://www.startupyeti.com',
+  trailingSlash: 'never',
+  build: {
+    format: 'file'
+  },
   integrations: [
     tailwind(),
     sitemap({
