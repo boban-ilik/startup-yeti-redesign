@@ -370,14 +370,14 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
             <img
               src={post.featuredImage.node.sourceUrl}
               alt={post.featuredImage.node.altText || post.title}
-              class="w-full h-auto max-h-[500px] object-cover rounded-3xl shadow-2xl mb-12"
+              class="w-full h-auto max-h-[500px] object-cover rounded-3xl shadow-2xl mb-6"
             />
           )}
         </div>
       </section>
 
       <!-- Article Content -->
-      <section class="py-12 px-6">
+      <section class="pt-6 pb-12 px-6">
         <article
           class="prose prose-lg prose-slate max-w-4xl mx-auto
                  prose-headings:font-serif prose-headings:font-bold prose-headings:text-slate-900
