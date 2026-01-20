@@ -136,13 +136,51 @@ function getCategoryColors(categorySlug: string) {
     }
     </script>
 
-    <!-- Google Analytics -->
+    <!-- Google Analytics with Bot Detection -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-5Y6SRMMDYG"></script>
     <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-5Y6SRMMDYG');
+      // Bot detection function
+      function isLikelyBot() {
+        const ua = navigator.userAgent.toLowerCase();
+        const botPatterns = [
+          'bot', 'crawler', 'spider', 'crawling', 'headless',
+          'slurp', 'mediapartners', 'googlebot', 'bingbot',
+          'phantomjs', 'selenium', 'puppeteer', 'webdriver'
+        ];
+
+        // Check user agent for bot patterns
+        if (botPatterns.some(pattern => ua.includes(pattern))) {
+          return true;
+        }
+
+        // Check for headless browser indicators
+        if (navigator.webdriver) {
+          return true;
+        }
+
+        // Check for missing features that real browsers have
+        if (!navigator.languages || navigator.languages.length === 0) {
+          return true;
+        }
+
+        // Check for suspicious plugin configuration
+        if (navigator.plugins.length === 0 && !ua.includes('mobile')) {
+          return true;
+        }
+
+        return false;
+      }
+
+      // Only initialize GA if not a bot
+      if (!isLikelyBot()) {
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-5Y6SRMMDYG', {
+          'send_page_view': true,
+          'anonymize_ip': true
+        });
+      }
     </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">

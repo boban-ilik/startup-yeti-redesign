@@ -1,4 +1,35 @@
 # https://www.robotstxt.org/robotstxt.html
+
+# Allow legitimate crawlers
+User-agent: Googlebot
+User-agent: Googlebot-Image
+User-agent: Bingbot
+User-agent: Slurp
+User-agent: DuckDuckBot
+User-agent: Baiduspider
+User-agent: YandexBot
+User-agent: facebookexternalhit
+User-agent: LinkedInBot
+User-agent: Twitterbot
+Allow: /
+
+# Block aggressive/scraping bots
+User-agent: AhrefsBot
+User-agent: SemrushBot
+User-agent: DotBot
+User-agent: MJ12bot
+User-agent: rogerbot
+User-agent: SeznamBot
+User-agent: proximic
+User-agent: VelenPublicWebCrawler
+User-agent: GPTBot
+User-agent: ChatGPT-User
+User-agent: CCBot
+User-agent: anthropic-ai
+User-agent: Claude-Web
+Disallow: /
+
+# Default for all other bots
 User-agent: *
 Allow: /
 
