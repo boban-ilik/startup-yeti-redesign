@@ -1,0 +1,334 @@
+---
+// src/pages/innovation.astro
+// Innovation category landing page
+
+const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+const categorySlug = "innovation";
+const categoryName = "Innovation";
+
+let posts = [];
+
+// Fetch posts from this category
+if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" },
+      body: JSON.stringify({
+        query: `
+          query GetCategoryPosts($categoryName: String!) {
+            posts(first: 100, where: {categoryName: $categoryName, orderby: {field: DATE, order: DESC}}) {
+              nodes {
+                slug
+                title
+                excerpt
+                date
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
+                }
+                author {
+                  node {
+                    name
+                  }
+                }
+                categories {
+                  nodes {
+                    name
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: { categoryName }
+      }),
+    });
+
+    const { data } = await response.json();
+    if (data?.posts?.nodes) {
+      posts = data.posts.nodes;
+    }
+  } catch (error) {
+    console.error('Error fetching category posts:', error);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth dark:bg-slate-900">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+
+    <!-- Primary Meta Tags -->
+    <title>Innovation Insights & Trends | Startup Yeti</title>
+    <meta name="title" content="Innovation Insights & Trends | Startup Yeti" />
+    <meta name="description" content="Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship." />
+    <link rel="canonical" href="https://www.startupyeti.com/innovation/" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.startupyeti.com/innovation/" />
+    <meta property="og:title" content="Innovation Insights & Trends | Startup Yeti" />
+    <meta property="og:description" content="Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship." />
+    <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+    <meta property="og:site_name" content="Startup Yeti" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.startupyeti.com/innovation/" />
+    <meta name="twitter:title" content="Innovation Insights & Trends | Startup Yeti" />
+    <meta name="twitter:description" content="Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship." />
+    <meta name="twitter:image" content="https://www.startupyeti.com/logo.png" />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Innovation",
+      "description": "Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship.",
+      "url": "https://www.startupyeti.com/innovation/",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Startup Yeti",
+        "url": "https://www.startupyeti.com"
+      }
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.startupyeti.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Innovation",
+          "item": "https://www.startupyeti.com/innovation/"
+        }
+      ]
+    }
+    </script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+
+    <style>
+      img[src="/logo.png"] {
+        background: transparent !important;
+        mix-blend-mode: normal;
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 dark:bg-slate-900 text-slate-700 dark:text-slate-300 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900 dark:selection:bg-yeti-900 dark:selection:text-yeti-100 transition-colors duration-300">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 dark:bg-slate-900/95 backdrop-blur-xl border-b border-slate-200/60 dark:border-slate-700/60 shadow-sm transition-all duration-500">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center hover:opacity-80 transition-all duration-300 hover:scale-105">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto object-contain" />
+        </a>
+
+        <div class="flex items-center gap-6">
+          <a href="/startup" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Startup
+          </a>
+          <a href="/business" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Business
+          </a>
+          <a href="/innovation" class="text-sm font-semibold text-yeti-600 dark:text-yeti-400">
+            Innovation
+          </a>
+          <a href="/blog" class="text-sm font-semibold text-slate-600 dark:text-slate-300 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+            Blog
+          </a>
+          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">
+            Subscribe
+          </a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-28">
+
+      <!-- Hero Section -->
+      <section class="relative py-24 px-6 bg-gradient-to-br from-white via-indigo-50/30 to-cyan-50/30 dark:from-slate-900 dark:via-indigo-900/10 dark:to-cyan-900/10">
+        <div class="absolute top-20 right-20 w-64 h-64 bg-indigo-500/10 rounded-full blur-[120px]"></div>
+        <div class="absolute bottom-20 left-20 w-64 h-64 bg-cyan-500/10 rounded-full blur-[120px]"></div>
+
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 dark:border-slate-700 shadow-lg text-slate-700 dark:text-slate-300 text-xs font-bold uppercase tracking-widest mb-8">
+            <svg class="w-4 h-4 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"></path></svg>
+            {posts.length} Articles
+          </div>
+
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 dark:text-slate-100 mb-6 leading-tight tracking-tight font-serif">
+            Innovation & <br class="hidden sm:block" />
+            <span class="text-gradient from-indigo-600 via-cyan-500 to-teal-500">Future Trends</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto leading-relaxed font-light">
+            Cutting-edge strategies, emerging technologies, and disruptive business models shaping the future of entrepreneurship.
+          </p>
+        </div>
+      </section>
+
+      <!-- Featured Topics -->
+      <section class="max-w-7xl mx-auto px-6 py-16">
+        <div class="grid md:grid-cols-3 gap-6">
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-indigo-100 to-cyan-100 dark:from-indigo-900 dark:to-cyan-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-indigo-600 dark:text-indigo-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Emerging Tech</h3>
+            <p class="text-slate-600 dark:text-slate-400">AI, blockchain, IoT, and technologies reshaping industries and creating new opportunities.</p>
+          </div>
+
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-purple-100 to-pink-100 dark:from-purple-900 dark:to-pink-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Disruptive Models</h3>
+            <p class="text-slate-600 dark:text-slate-400">Business models that challenge conventions and create entirely new markets.</p>
+          </div>
+
+          <div class="glass dark:border-slate-700 rounded-2xl p-6 hover:shadow-xl transition-all">
+            <div class="w-12 h-12 rounded-full bg-gradient-to-br from-teal-100 to-green-100 dark:from-teal-900 dark:to-green-900 flex items-center justify-center mb-4">
+              <svg class="w-6 h-6 text-teal-600 dark:text-teal-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"></path></svg>
+            </div>
+            <h3 class="text-xl font-bold text-slate-900 dark:text-slate-100 mb-2">Future of Work</h3>
+            <p class="text-slate-600 dark:text-slate-400">How innovation is transforming workplaces, teams, and the nature of employment.</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Articles Grid -->
+      <section class="max-w-7xl mx-auto px-6 py-12 pb-28">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-12 font-serif">Latest Innovation Articles</h2>
+
+        {posts.length > 0 ? (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {posts.map((post) => {
+              const category = post.categories.nodes[0];
+              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+
+              return (
+                <article class="group bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:shadow-2xl hover:border-indigo-200 dark:hover:border-indigo-800 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col">
+                  <a href={`/${category.slug}/${post.slug}`} class="block">
+                    {post.featuredImage ? (
+                      <div class="h-60 relative overflow-hidden">
+                        <img
+                          src={post.featuredImage.node.sourceUrl}
+                          alt={post.featuredImage.node.altText || post.title}
+                          class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                        />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute top-5 left-5 glass border-indigo-300 dark:border-indigo-700 px-4 py-1.5 rounded-full text-xs font-bold text-indigo-700 dark:text-indigo-300">
+                          {category.name}
+                        </div>
+                      </div>
+                    ) : (
+                      <div class="h-60 bg-gradient-to-br from-indigo-100 via-cyan-50 to-teal-50 dark:from-indigo-900/30 dark:via-cyan-900/20 dark:to-teal-900/30 relative overflow-hidden">
+                        <div class="absolute inset-0 bg-gradient-to-tr from-indigo-500/20 to-transparent group-hover:scale-110 transition-transform duration-700"></div>
+                        <div class="absolute top-5 left-5 glass border-indigo-300 dark:border-indigo-700 px-4 py-1.5 rounded-full text-xs font-bold text-indigo-700 dark:text-indigo-300">
+                          {category.name}
+                        </div>
+                      </div>
+                    )}
+
+                    <div class="p-8 flex flex-col flex-grow">
+                      <h3 class="text-xl md:text-2xl font-bold text-slate-900 dark:text-slate-100 mb-4 group-hover:text-indigo-600 dark:group-hover:text-indigo-400 transition-colors leading-tight">
+                        {post.title}
+                      </h3>
+
+                      <p class="text-slate-600 dark:text-slate-400 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
+
+                      <div class="flex items-center justify-between text-sm text-slate-400 font-semibold border-t border-slate-100 dark:border-slate-700 pt-5 mt-auto">
+                        <div class="flex items-center gap-2">
+                          <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                          <span>•</span>
+                          <span>{readingTime} min read</span>
+                        </div>
+                        <svg class="w-5 h-5 text-indigo-600 dark:text-indigo-400 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <div class="text-6xl mb-6">💡</div>
+            <h3 class="text-2xl font-bold text-slate-900 dark:text-slate-100 mb-3">No articles yet</h3>
+            <p class="text-slate-600 dark:text-slate-400">Check back soon for innovation content!</p>
+          </div>
+        )}
+      </section>
+
+      <!-- Newsletter CTA -->
+      <section class="py-20 px-6 bg-gradient-to-b from-slate-50 dark:from-slate-800 to-white dark:to-slate-900">
+        <div class="max-w-4xl mx-auto text-center">
+          <div class="glass dark:border-slate-700 rounded-3xl p-12 shadow-2xl">
+            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 dark:text-slate-100 mb-4 font-serif">
+              Stay Ahead of the Curve
+            </h2>
+            <p class="text-lg text-slate-600 dark:text-slate-300 mb-8 max-w-2xl mx-auto">
+              Get weekly insights on emerging technologies and innovative business strategies delivered to your inbox.
+            </p>
+            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto" data-newsletter-form>
+              <input
+                type="email"
+                placeholder="Enter your email"
+                class="flex-1 px-6 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all"
+                required
+              />
+              <button
+                type="submit"
+                class="px-8 py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all whitespace-nowrap"
+              >
+                Subscribe
+              </button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="h-20 md:h-24 mb-2">
+          <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
+        </div>
+        <p class="text-slate-300 mb-4 text-base text-left">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
+          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
+          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
+          <a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="hover:text-yeti-400 transition-colors">LinkedIn</a>
+        </div>
+      </div>
+    </footer>
+
+    <!-- Newsletter Form Handler -->
+    <script is:inline src="/js/newsletter.js"></script>
+  </body>
+</html>
