@@ -141,9 +141,29 @@ if (!restPost) {
   throw new Error(`Post not found: ${slug}`);
 }
 
+// Helper function to decode HTML entities
+function decodeHtmlEntities(text) {
+  const entities = {
+    '&#8217;': "'",
+    '&#8216;': "'",
+    '&#8220;': '"',
+    '&#8221;': '"',
+    '&#8211;': '–',
+    '&#8212;': '—',
+    '&#038;': '&',
+    '&amp;': '&',
+    '&lt;': '<',
+    '&gt;': '>',
+    '&quot;': '"',
+    '&apos;': "'",
+    '&#39;': "'"
+  };
+  return text.replace(/&#?\w+;/g, entity => entities[entity] || entity);
+}
+
 // Transform REST API response to match the GraphQL structure
 const post = {
-  title: restPost.title.rendered,
+  title: decodeHtmlEntities(restPost.title.rendered),
   content: restPost.content.rendered,
   date: restPost.date,
   excerpt: restPost.excerpt.rendered,
