@@ -4,11 +4,13 @@
 User-agent: *
 Allow: /
 
-# Block old WordPress paths
+# Block old WordPress admin paths (but allow images)
 Disallow: /wp-admin/
-Disallow: /wp-content/
 Disallow: /wp-includes/
 Disallow: /wp-*.php
+
+# Allow WordPress uploaded images to be indexed
+Allow: /wp-content/uploads/
 
 # Sitemaps
 Sitemap: https://www.startupyeti.com/sitemap-index.xml
