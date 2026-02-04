@@ -16,7 +16,7 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
       body: JSON.stringify({
         query: `
           query GetAllPosts {
-            posts(first: 100, where: {orderby: {field: DATE, order: DESC}}) {
+            posts(first: 500, where: {orderby: {field: DATE, order: DESC}}) {
               nodes {
                 slug
                 title

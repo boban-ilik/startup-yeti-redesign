@@ -1,0 +1,202 @@
+---
+// src/pages/sales.astro
+// Sales category landing page
+
+const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
+const categorySlug = "sales";
+const categoryName = "Sales";
+
+let posts = [];
+
+// Fetch posts from this category
+if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
+  try {
+    const response = await fetch(WORDPRESS_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" },
+      body: JSON.stringify({
+        query: `
+          query GetCategoryPosts($categoryName: String!) {
+            posts(first: 100, where: {categoryName: $categoryName, orderby: {field: DATE, order: DESC}}) {
+              nodes {
+                slug
+                title
+                excerpt
+                date
+                featuredImage {
+                  node {
+                    sourceUrl
+                    altText
+                  }
+                }
+                author {
+                  node {
+                    name
+                  }
+                }
+                categories {
+                  nodes {
+                    name
+                    slug
+                  }
+                }
+              }
+            }
+          }
+        `,
+        variables: { categoryName }
+      }),
+    });
+
+    const { data } = await response.json();
+    if (data?.posts?.nodes) {
+      posts = data.posts.nodes;
+    }
+  } catch (error) {
+    console.error('Error fetching category posts:', error);
+  }
+}
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
+
+    <!-- Primary Meta Tags -->
+    <title>Sales Strategies for Startups | Startup Yeti</title>
+    <meta name="title" content="Sales Strategies for Startups | Startup Yeti" />
+    <meta name="description" content="Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders." />
+    <link rel="canonical" href="https://www.startupyeti.com/sales" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.startupyeti.com/sales" />
+    <meta property="og:title" content="Sales Strategies for Startups | Startup Yeti" />
+    <meta property="og:description" content="Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders." />
+    <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Sales Strategies for Startups | Startup Yeti" />
+    <meta name="twitter:description" content="Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+  </head>
+
+  <body class="bg-slate-50 text-slate-700 font-sans antialiased">
+
+    <!-- Navigation -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center hover:opacity-80 transition-all">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto object-contain" />
+        </a>
+        <div class="flex items-center gap-6">
+          <a href="/startup" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">Startup</a>
+          <a href="/business" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">Business</a>
+          <a href="/marketing" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">Marketing</a>
+          <a href="/blog" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">Blog</a>
+          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">Subscribe</a>
+        </div>
+      </div>
+    </nav>
+
+    <main class="pt-28">
+
+      <!-- Hero Section -->
+      <section class="relative py-24 px-6 bg-gradient-to-br from-white via-emerald-50/30 to-teal-50/30">
+        <div class="absolute top-20 right-20 w-64 h-64 bg-emerald-500/10 rounded-full blur-[120px]"></div>
+        <div class="max-w-5xl mx-auto text-center relative z-10">
+          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-widest mb-8">
+            <svg class="w-4 h-4 text-emerald-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            {posts.length} Articles
+          </div>
+
+          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-tight tracking-tight font-serif">
+            Sales Strategies <br class="hidden sm:block" />
+            <span class="text-gradient from-emerald-600 via-teal-500 to-cyan-600">That Convert</span>
+          </h1>
+
+          <p class="text-xl md:text-2xl text-slate-600 max-w-3xl mx-auto leading-relaxed font-light">
+            Proven tactics for closing deals, building customer relationships, and driving revenue growth.
+          </p>
+        </div>
+      </section>
+
+      <!-- Articles Grid -->
+      <section class="max-w-7xl mx-auto px-6 py-12 pb-28">
+        <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-12 font-serif">Latest Sales Articles</h2>
+
+        {posts.length > 0 ? (
+          <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
+            {posts.map((post) => {
+              const category = post.categories.nodes[0];
+              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+
+              return (
+                <article class="group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:border-emerald-200 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col">
+                  <a href={`/${category.slug}/${post.slug}`} class="block">
+                    {post.featuredImage ? (
+                      <div class="h-60 relative overflow-hidden">
+                        <img src={post.featuredImage.node.sourceUrl} alt={post.featuredImage.node.altText || post.title} class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
+                        <div class="absolute top-5 left-5 glass border-emerald-300 px-4 py-1.5 rounded-full text-xs font-bold text-emerald-700">{category.name}</div>
+                      </div>
+                    ) : (
+                      <div class="h-60 bg-gradient-to-br from-emerald-100 via-teal-50 to-cyan-50 relative overflow-hidden">
+                        <div class="absolute top-5 left-5 glass border-emerald-300 px-4 py-1.5 rounded-full text-xs font-bold text-emerald-700">{category.name}</div>
+                      </div>
+                    )}
+                    <div class="p-8 flex flex-col flex-grow">
+                      <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:text-emerald-600 transition-colors leading-tight">{post.title}</h3>
+                      <p class="text-slate-600 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
+                      <div class="flex items-center justify-between text-sm text-slate-400 font-semibold border-t border-slate-100 pt-5 mt-auto">
+                        <div class="flex items-center gap-2">
+                          <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
+                          <span>•</span>
+                          <span>{readingTime} min read</span>
+                        </div>
+                        <svg class="w-5 h-5 text-emerald-600 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
+                      </div>
+                    </div>
+                  </a>
+                </article>
+              );
+            })}
+          </div>
+        ) : (
+          <div class="text-center py-20">
+            <div class="text-6xl mb-6">💰</div>
+            <h3 class="text-2xl font-bold text-slate-900 mb-3">No articles yet</h3>
+            <p class="text-slate-600">Check back soon for sales content!</p>
+          </div>
+        )}
+      </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-white py-12">
+      <div class="max-w-7xl mx-auto px-6">
+        <div class="h-20 md:h-24 mb-2">
+          <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
+        </div>
+        <p class="text-slate-300 mb-4 text-base text-left">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+        <div class="flex gap-6">
+          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
+          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
+          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
+        </div>
+      </div>
+    </footer>
+
+    <script is:inline src="/js/newsletter.js"></script>
+  </body>
+</html>

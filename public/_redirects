@@ -50,24 +50,8 @@
 /startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey /founder-wellbeing 301
 /startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey/ /founder-wellbeing 301
 
-# Deprecated category pages redirect to main categories
-/sales /business 301
-/sales/ /business 301
-/trends /startup 301
-/trends/ /startup 301
-/employment /startup 301
-/employment/ /startup 301
-/content-marketing /marketing 301
-/content-marketing/ /marketing 301
-/customer-experience /business 301
-/customer-experience/ /business 301
-
-# Deprecated category posts redirect to main categories
-/sales/* /business/:splat 301
-/trends/* /startup/:splat 301
-/employment/* /startup/:splat 301
-/content-marketing/* /marketing/:splat 301
-/customer-experience/* /business/:splat 301
+# Note: sales, trends, employment, content-marketing, customer-experience, leadership
+# now have their own category pages - no longer redirecting these
 
 # Trailing slash normalization (redirect with slash to without)
 /startup/ /startup 301
