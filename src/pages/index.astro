@@ -234,8 +234,29 @@ function getCategoryColors(categorySlug: string) {
           <a href="/startup" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Startup</a>
           <a href="/business" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Business</a>
           <a href="/marketing" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Marketing</a>
-          <a href="/remote-work" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Remote Work</a>
-          <a href="/productivity" class="relative hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors after:absolute after:bottom-0 after:left-0 after:w-0 after:h-0.5 after:bg-yeti-600 dark:after:bg-yeti-400 after:transition-all hover:after:w-full">Productivity</a>
+
+          <!-- Categories Dropdown -->
+          <div class="relative group">
+            <button class="flex items-center gap-1 hover:text-yeti-600 dark:hover:text-yeti-400 transition-colors">
+              Categories
+              <svg class="w-4 h-4 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            <div class="absolute top-full left-0 mt-2 w-56 bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl shadow-xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="p-2">
+                <a href="/remote-work" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Remote Work</a>
+                <a href="/productivity" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Productivity</a>
+                <a href="/team-management" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Team Management</a>
+                <a href="/founder-wellbeing" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Founder Wellbeing</a>
+                <a href="/innovation" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Innovation</a>
+                <div class="border-t border-slate-200 dark:border-slate-700 my-2"></div>
+                <a href="/sales" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Sales</a>
+                <a href="/trends" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Trends</a>
+                <a href="/content-marketing" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Content Marketing</a>
+                <a href="/employment" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Employment</a>
+                <a href="/leadership" class="block px-4 py-2 text-sm text-slate-600 dark:text-slate-300 hover:bg-yeti-50 dark:hover:bg-yeti-900/30 hover:text-yeti-600 dark:hover:text-yeti-400 rounded-lg transition-colors">Leadership</a>
+              </div>
+            </div>
+          </div>
 
           <!-- Search Bar -->
           <div class="relative z-50">
@@ -888,12 +909,22 @@ function getCategoryColors(categorySlug: string) {
         </div>
 
         <div>
-          <h4 class="font-bold text-xl mb-8 text-white">Explore</h4>
-          <ul class="space-y-4 text-slate-400">
-            <li><a href="/business" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Business Strategy</a></li>
+          <h4 class="font-bold text-xl mb-8 text-white">Categories</h4>
+          <ul class="space-y-3 text-slate-400 text-sm">
+            <li><a href="/startup" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Startup</a></li>
+            <li><a href="/business" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Business</a></li>
+            <li><a href="/marketing" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Marketing</a></li>
             <li><a href="/remote-work" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Remote Work</a></li>
+            <li><a href="/productivity" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Productivity</a></li>
             <li><a href="/team-management" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Team Management</a></li>
             <li><a href="/founder-wellbeing" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Founder Wellbeing</a></li>
+            <li><a href="/innovation" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Innovation</a></li>
+            <li><a href="/sales" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Sales</a></li>
+            <li><a href="/trends" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Trends</a></li>
+            <li><a href="/content-marketing" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Content Marketing</a></li>
+            <li><a href="/employment" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Employment</a></li>
+            <li><a href="/leadership" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Leadership</a></li>
+            <li><a href="/customer-experience" class="hover:text-yeti-400 hover:pl-2 transition-all inline-block">Customer Experience</a></li>
           </ul>
         </div>
 
