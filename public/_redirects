@@ -27,3 +27,36 @@
 /category/team-management /team-management/ 301
 /category/founder-wellbeing /founder-wellbeing/ 301
 /category/content-marketing /marketing/ 301
+
+# Fix broken links (404s from SEO audit)
+/startup/why-are-remote-workers-ideal-for-a-startup /remote-work 301
+/startup/why-are-remote-workers-ideal-for-a-startup/ /remote-work 301
+/team-management/how-to-set-up-a-stellar-onboarding-process /team-management 301
+/team-management/how-to-set-up-a-stellar-onboarding-process/ /team-management 301
+/marketing/10-actionable-pr-tips-to-create-name-recognition /marketing 301
+/marketing/10-actionable-pr-tips-to-create-name-recognition/ /marketing 301
+/marketing/which-marketing-strategies-are-best-for-a-startup-budget /marketing 301
+/marketing/which-marketing-strategies-are-best-for-a-startup-budget/ /marketing 301
+/productivity/how-to-boost-your-companys-success-with-flexible-talent /productivity 301
+/productivity/how-to-boost-your-companys-success-with-flexible-talent/ /productivity 301
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy /team-management 301
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/ /team-management 301
+/trends/employee-wellness-programs /founder-wellbeing 301
+/trends/employee-wellness-programs/ /founder-wellbeing 301
+/team-management/hybrid-learning /team-management 301
+/team-management/hybrid-learning/ /team-management 301
+/marketing/5-ways-to-build-your-brand-reputation /marketing 301
+/marketing/5-ways-to-build-your-brand-reputation/ /marketing 301
+/startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey /founder-wellbeing 301
+/startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey/ /founder-wellbeing 301
+
+# Trailing slash normalization (redirect with slash to without)
+/startup/ /startup 301
+/business/ /business 301
+/marketing/ /marketing 301
+/remote-work/ /remote-work 301
+/productivity/ /productivity 301
+/innovation/ /innovation 301
+/team-management/ /team-management 301
+/founder-wellbeing/ /founder-wellbeing 301
+/blog/ /blog 301
