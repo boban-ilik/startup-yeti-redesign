@@ -79,11 +79,52 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta property="og:title" content="Sales Strategies for Startups | Startup Yeti" />
     <meta property="og:description" content="Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders." />
     <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+    <meta property="og:site_name" content="Startup Yeti" />
 
     <!-- Twitter -->
     <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.startupyeti.com/sales" />
     <meta name="twitter:title" content="Sales Strategies for Startups | Startup Yeti" />
     <meta name="twitter:description" content="Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders." />
+    <meta name="twitter:image" content="https://www.startupyeti.com/logo.png" />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Sales",
+      "description": "Proven sales tactics, conversion strategies, and customer acquisition techniques for startup founders.",
+      "url": "https://www.startupyeti.com/sales",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Startup Yeti",
+        "url": "https://www.startupyeti.com"
+      }
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.startupyeti.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Sales",
+          "item": "https://www.startupyeti.com/sales"
+        }
+      ]
+    }
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>

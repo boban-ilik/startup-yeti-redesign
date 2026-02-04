@@ -47,12 +47,67 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta name="viewport" content="width=device-width,initial-scale=1" />
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
+
+    <!-- Primary Meta Tags -->
     <title>Employment & HR for Startups | Startup Yeti</title>
+    <meta name="title" content="Employment & HR for Startups | Startup Yeti" />
     <meta name="description" content="Employment trends, HR best practices, and workforce strategies for growing startups." />
     <link rel="canonical" href="https://www.startupyeti.com/employment" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://www.startupyeti.com/employment" />
     <meta property="og:title" content="Employment & HR for Startups | Startup Yeti" />
     <meta property="og:description" content="Employment trends, HR best practices, and workforce strategies for growing startups." />
-    <meta property="og:url" content="https://www.startupyeti.com/employment" />
+    <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+    <meta property="og:site_name" content="Startup Yeti" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://www.startupyeti.com/employment" />
+    <meta name="twitter:title" content="Employment & HR for Startups | Startup Yeti" />
+    <meta name="twitter:description" content="Employment trends, HR best practices, and workforce strategies for growing startups." />
+    <meta name="twitter:image" content="https://www.startupyeti.com/logo.png" />
+
+    <!-- JSON-LD Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "CollectionPage",
+      "name": "Employment",
+      "description": "Employment trends, HR best practices, and workforce strategies for growing startups.",
+      "url": "https://www.startupyeti.com/employment",
+      "isPartOf": {
+        "@type": "WebSite",
+        "name": "Startup Yeti",
+        "url": "https://www.startupyeti.com"
+      }
+    }
+    </script>
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Home",
+          "item": "https://www.startupyeti.com"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Employment",
+          "item": "https://www.startupyeti.com/employment"
+        }
+      ]
+    }
+    </script>
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">

@@ -5,28 +5,30 @@
 /category/remote-work/* /remote-work/:splat 301
 /category/productivity/* /productivity/:splat 301
 /category/innovation/* /innovation/:splat 301
-/category/sales/* /business/:splat 301
-/category/trends/* /startup/:splat 301
-/category/customer-experience/* /business/:splat 301
-/category/employment/* /startup/:splat 301
+/category/sales/* /sales/:splat 301
+/category/trends/* /trends/:splat 301
+/category/customer-experience/* /customer-experience/:splat 301
+/category/employment/* /employment/:splat 301
 /category/team-management/* /team-management/:splat 301
 /category/founder-wellbeing/* /founder-wellbeing/:splat 301
-/category/content-marketing/* /marketing/:splat 301
+/category/content-marketing/* /content-marketing/:splat 301
+/category/leadership/* /leadership/:splat 301
 
 # Redirect category pages themselves
-/category/startup /startup/ 301
-/category/business /business/ 301
-/category/marketing /marketing/ 301
-/category/remote-work /remote-work/ 301
-/category/productivity /productivity/ 301
-/category/innovation /innovation/ 301
-/category/sales /business/ 301
-/category/trends /startup/ 301
-/category/customer-experience /business/ 301
-/category/employment /startup/ 301
-/category/team-management /team-management/ 301
-/category/founder-wellbeing /founder-wellbeing/ 301
-/category/content-marketing /marketing/ 301
+/category/startup /startup 301
+/category/business /business 301
+/category/marketing /marketing 301
+/category/remote-work /remote-work 301
+/category/productivity /productivity 301
+/category/innovation /innovation 301
+/category/sales /sales 301
+/category/trends /trends 301
+/category/customer-experience /customer-experience 301
+/category/employment /employment 301
+/category/team-management /team-management 301
+/category/founder-wellbeing /founder-wellbeing 301
+/category/content-marketing /content-marketing 301
+/category/leadership /leadership 301
 
 # Fix broken links (404s from SEO audit)
 /startup/why-are-remote-workers-ideal-for-a-startup /remote-work 301
@@ -62,4 +64,12 @@
 /innovation/ /innovation 301
 /team-management/ /team-management 301
 /founder-wellbeing/ /founder-wellbeing 301
+/sales/ /sales 301
+/trends/ /trends 301
+/content-marketing/ /content-marketing 301
+/employment/ /employment 301
+/leadership/ /leadership 301
+/customer-experience/ /customer-experience 301
 /blog/ /blog 301
+/calculator/ /calculator 301
+/privacy-policy/ /privacy-policy 301
