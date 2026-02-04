@@ -1,6 +1,7 @@
 ---
 // src/pages/team-management.astro
 // Team Management category landing page
+import Footer from "../components/Footer.astro";
 
 const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 const categorySlug = "team-management";
@@ -62,7 +63,6 @@ function calculateReadingTime(excerpt: string) {
   const words = excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length;
   return Math.max(1, Math.ceil(words / 200));
 }
-import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>

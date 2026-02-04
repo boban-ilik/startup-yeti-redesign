@@ -1,6 +1,7 @@
 ---
 // src/pages/employment.astro
 // Employment category landing page
+import Footer from "../components/Footer.astro";
 
 const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
 const categorySlug = "employment";
@@ -38,7 +39,6 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     console.error('Error fetching category posts:', error);
   }
 }
-import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
