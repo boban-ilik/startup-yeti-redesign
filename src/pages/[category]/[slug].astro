@@ -194,6 +194,31 @@ const post = {
   }
 };
 
+// Fetch related posts from the same category for internal linking
+const currentCategoryId = restPost.categories[0];
+let relatedPosts = [];
+
+try {
+  const relatedResponse = await fetchWithRetry(
+    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?categories=${currentCategoryId}&per_page=4&exclude=${restPost.id}&_embed&_fields=id,slug,title,excerpt,date,_links,_embedded`,
+    {
+      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+    }
+  );
+  const relatedData = await relatedResponse.json();
+
+  relatedPosts = relatedData.map(p => ({
+    slug: p.slug,
+    title: decodeHtmlEntities(p.title.rendered),
+    excerpt: p.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 120) + '...',
+    date: p.date,
+    featuredImage: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
+    category: category
+  })).slice(0, 3); // Limit to 3 related posts
+} catch (error) {
+  console.log('Could not fetch related posts:', error.message);
+}
+
 // Calculate reading time
 const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
 const readingTime = Math.ceil(wordCount / 200);
@@ -463,6 +488,59 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
                   {tag.name}
                 </span>
               ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      <!-- Related Posts Section (for internal linking / SEO) -->
+      {relatedPosts.length > 0 && (
+        <section class="py-16 px-6 bg-white border-t border-slate-200">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-slate-900 font-serif mb-4">Related Articles</h2>
+              <p class="text-slate-600">Continue exploring more insights in {categoryName}</p>
+            </div>
+            <div class="grid md:grid-cols-3 gap-8">
+              {relatedPosts.map((related) => (
+                <a href={`/${related.category}/${related.slug}`} class="group block bg-white rounded-2xl border border-slate-200 overflow-hidden hover:shadow-xl hover:border-yeti-300 transition-all duration-300">
+                  {related.featuredImage && (
+                    <div class="aspect-video overflow-hidden">
+                      <img
+                        src={related.featuredImage}
+                        alt={related.title}
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div class="p-6">
+                    <p class="text-xs font-bold text-yeti-600 uppercase tracking-wider mb-2">
+                      {new Date(related.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
+                    </p>
+                    <h3 class="text-lg font-bold text-slate-900 mb-3 group-hover:text-yeti-700 transition-colors line-clamp-2">
+                      {related.title}
+                    </h3>
+                    <p class="text-slate-600 text-sm line-clamp-2">
+                      {related.excerpt}
+                    </p>
+                    <span class="inline-flex items-center mt-4 text-sm font-semibold text-yeti-600 group-hover:text-yeti-700">
+                      Read more
+                      <svg class="w-4 h-4 ml-1 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path>
+                      </svg>
+                    </span>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <div class="text-center mt-10">
+              <a href={`/${category}`} class="inline-flex items-center px-6 py-3 rounded-xl bg-slate-100 text-slate-700 font-semibold hover:bg-yeti-100 hover:text-yeti-700 transition-all">
+                View all {categoryName} articles
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
             </div>
           </div>
         </section>

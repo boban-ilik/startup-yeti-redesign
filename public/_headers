@@ -1,9 +1,81 @@
-# Disable caching for HTML files to ensure updates are immediate
+# Security Headers (apply to all pages)
 /*
-  Cache-Control: no-cache, no-store, must-revalidate
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: geolocation=(), microphone=(), camera=()
 
+# HTML pages - short cache for freshness
 /*.html
-  Cache-Control: no-cache, no-store, must-revalidate
+  Cache-Control: public, max-age=3600
 
 /
-  Cache-Control: no-cache, no-store, must-revalidate
+  Cache-Control: public, max-age=3600
+
+# Category pages
+/startup
+  Cache-Control: public, max-age=3600
+
+/business
+  Cache-Control: public, max-age=3600
+
+/marketing
+  Cache-Control: public, max-age=3600
+
+/remote-work
+  Cache-Control: public, max-age=3600
+
+/productivity
+  Cache-Control: public, max-age=3600
+
+/team-management
+  Cache-Control: public, max-age=3600
+
+/founder-wellbeing
+  Cache-Control: public, max-age=3600
+
+/innovation
+  Cache-Control: public, max-age=3600
+
+/blog
+  Cache-Control: public, max-age=3600
+
+# Static assets - long cache (hashed filenames)
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images
+/*.png
+  Cache-Control: public, max-age=604800
+
+/*.jpg
+  Cache-Control: public, max-age=604800
+
+/*.jpeg
+  Cache-Control: public, max-age=604800
+
+/*.webp
+  Cache-Control: public, max-age=604800
+
+/*.svg
+  Cache-Control: public, max-age=604800
+
+/*.ico
+  Cache-Control: public, max-age=604800
+
+# Fonts
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+
+# JS and CSS
+/*.js
+  Cache-Control: public, max-age=604800
+
+/*.css
+  Cache-Control: public, max-age=604800
