@@ -1,24 +1,26 @@
 # StartupYeti SEO Audit Report
 
 **Last Updated:** February 4, 2026
-**Source:** Screaming Frog Crawl Exports (3 crawls compared)
+**Source:** Screaming Frog Crawl Exports (4 crawls compared)
 
 ---
 
 ## Progress Summary
 
-| Metric | Original | Latest | Change | Status |
-|--------|----------|--------|--------|--------|
-| Total URLs | 495 | 333 | -162 | ✅ Cleaner |
+| Metric | Original | Final | Change | Status |
+|--------|----------|-------|--------|--------|
+| Total URLs | 495 | 396 | -99 | ✅ Cleaner |
+| Indexable Pages | 183 | 184 | +1 | ✅ Good |
 | 404 Page Errors | 15 | 0 | -15 | ✅ Fixed |
 | 404 Image Errors | 0 | 30 | +30 | ⚠️ See below |
-| 307 Redirects | 116 | 110 | -6 | 🔴 Still needs fix |
+| 307 Redirects | 116 | 110 | -6 | ⚠️ Server config |
 | 301 Redirects | 2 | 17 | +15 | ✅ Improving |
 | Non-WWW URLs | 163 | 1 | -162 | ✅ Fixed |
 | Duplicate Titles | 148 | 0 | -148 | ✅ Fixed |
 | Duplicate Meta Descriptions | 148 | 0 | -148 | ✅ Fixed |
 | Canonicalised Pages | 149 | 1 | -148 | ✅ Fixed |
-| Orphan Pages | 84 | 76 | -8 | ⚠️ Ongoing |
+| Orphan Pages | 84 | 62 | -22 | ⚠️ Ongoing |
+| Missing Category Posts | 31 | 0 | -31 | ✅ Fixed |
 
 ---
 

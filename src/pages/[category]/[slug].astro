@@ -197,10 +197,11 @@ const post = {
 // Fetch related posts from the same category for internal linking
 const currentCategoryId = restPost.categories[0];
 let relatedPosts = [];
+let crossCategoryPosts = [];
 
 try {
   const relatedResponse = await fetchWithRetry(
-    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?categories=${currentCategoryId}&per_page=4&exclude=${restPost.id}&_embed&_fields=id,slug,title,excerpt,date,_links,_embedded`,
+    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?categories=${currentCategoryId}&per_page=4&exclude=${restPost.id}&_embed&_fields=id,slug,title,excerpt,date,categories,_links,_embedded`,
     {
       headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
     }
@@ -217,6 +218,44 @@ try {
   })).slice(0, 3); // Limit to 3 related posts
 } catch (error) {
   console.log('Could not fetch related posts:', error.message);
+}
+
+// Fetch cross-category posts for broader internal linking (SEO improvement)
+try {
+  // Fetch categories first to get their slugs
+  const categoriesResponse = await fetchWithRetry(
+    `${WORDPRESS_BASE}/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name`,
+    {
+      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+    }
+  );
+  const allCategories = await categoriesResponse.json();
+  const categoryMap = Object.fromEntries(allCategories.map(c => [c.id, { slug: c.slug, name: c.name }]));
+
+  // Fetch recent posts from other categories
+  const crossCategoryResponse = await fetchWithRetry(
+    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=6&exclude=${restPost.id}&categories_exclude=${currentCategoryId}&_embed&_fields=id,slug,title,excerpt,date,categories,_links,_embedded`,
+    {
+      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
+    }
+  );
+  const crossCategoryData = await crossCategoryResponse.json();
+
+  crossCategoryPosts = crossCategoryData.map(p => {
+    const catId = p.categories[0];
+    const catInfo = categoryMap[catId] || { slug: 'blog', name: 'Blog' };
+    return {
+      slug: p.slug,
+      title: decodeHtmlEntities(p.title.rendered),
+      excerpt: p.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...',
+      date: p.date,
+      featuredImage: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
+      category: catInfo.slug,
+      categoryName: catInfo.name
+    };
+  }).slice(0, 4); // Limit to 4 cross-category posts
+} catch (error) {
+  console.log('Could not fetch cross-category posts:', error.message);
 }
 
 // Calculate reading time
@@ -546,6 +585,50 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
         </section>
       )}
 
+      <!-- Cross-Category Posts Section (for broader internal linking / SEO) -->
+      {crossCategoryPosts.length > 0 && (
+        <section class="py-16 px-6 bg-slate-50 border-t border-slate-200">
+          <div class="max-w-6xl mx-auto">
+            <div class="text-center mb-12">
+              <h2 class="text-3xl md:text-4xl font-bold text-slate-900 font-serif mb-4">More from Startup Yeti</h2>
+              <p class="text-slate-600">Explore insights across all our topics</p>
+            </div>
+            <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {crossCategoryPosts.map((post) => (
+                <a href={`/${post.category}/${post.slug}`} class="group block bg-white rounded-xl border border-slate-200 overflow-hidden hover:shadow-lg hover:border-yeti-300 transition-all duration-300">
+                  {post.featuredImage && (
+                    <div class="aspect-video overflow-hidden">
+                      <img
+                        src={post.featuredImage}
+                        alt={post.title}
+                        class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                        loading="lazy"
+                      />
+                    </div>
+                  )}
+                  <div class="p-4">
+                    <span class="inline-block px-2 py-1 bg-yeti-50 text-yeti-700 text-xs font-bold rounded-full mb-2">
+                      {post.categoryName}
+                    </span>
+                    <h3 class="text-sm font-bold text-slate-900 group-hover:text-yeti-700 transition-colors line-clamp-2">
+                      {post.title}
+                    </h3>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <div class="text-center mt-10">
+              <a href="/blog" class="inline-flex items-center px-6 py-3 rounded-xl bg-white border border-slate-200 text-slate-700 font-semibold hover:bg-yeti-50 hover:border-yeti-300 hover:text-yeti-700 transition-all">
+                Browse all articles
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path>
+                </svg>
+              </a>
+            </div>
+          </div>
+        </section>
+      )}
+
       <!-- CTA Section -->
       <section class="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
         <div class="max-w-4xl mx-auto text-center">
@@ -576,18 +659,57 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
 
     </main>
 
-    <!-- Simple Footer -->
-    <footer class="bg-slate-900 text-white py-12">
+    <!-- Enhanced Footer with Category Links -->
+    <footer class="bg-slate-900 text-white py-16">
       <div class="max-w-7xl mx-auto px-6">
-        <div class="h-20 md:h-24 mb-2">
-          <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
+        <div class="grid md:grid-cols-4 gap-12 mb-12">
+          <!-- Logo & About -->
+          <div class="md:col-span-1">
+            <div class="h-16 mb-4">
+              <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
+            </div>
+            <p class="text-slate-400 text-sm">Helping founders build and scale successful startups with actionable insights.</p>
+          </div>
+
+          <!-- Categories -->
+          <div>
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Categories</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/startup" class="text-slate-400 hover:text-yeti-400 transition-colors">Startup</a></li>
+              <li><a href="/business" class="text-slate-400 hover:text-yeti-400 transition-colors">Business</a></li>
+              <li><a href="/productivity" class="text-slate-400 hover:text-yeti-400 transition-colors">Productivity</a></li>
+              <li><a href="/team-management" class="text-slate-400 hover:text-yeti-400 transition-colors">Team Management</a></li>
+              <li><a href="/remote-work" class="text-slate-400 hover:text-yeti-400 transition-colors">Remote Work</a></li>
+            </ul>
+          </div>
+
+          <!-- More Topics -->
+          <div>
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">More Topics</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/trends" class="text-slate-400 hover:text-yeti-400 transition-colors">Trends</a></li>
+              <li><a href="/sales" class="text-slate-400 hover:text-yeti-400 transition-colors">Sales</a></li>
+              <li><a href="/marketing" class="text-slate-400 hover:text-yeti-400 transition-colors">Marketing</a></li>
+              <li><a href="/content-marketing" class="text-slate-400 hover:text-yeti-400 transition-colors">Content Marketing</a></li>
+              <li><a href="/employment" class="text-slate-400 hover:text-yeti-400 transition-colors">Employment</a></li>
+            </ul>
+          </div>
+
+          <!-- Quick Links -->
+          <div>
+            <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
+            <ul class="space-y-2 text-sm">
+              <li><a href="/" class="text-slate-400 hover:text-yeti-400 transition-colors">Home</a></li>
+              <li><a href="/blog" class="text-slate-400 hover:text-yeti-400 transition-colors">All Articles</a></li>
+              <li><a href="/resources" class="text-slate-400 hover:text-yeti-400 transition-colors">Resources</a></li>
+              <li><a href="/privacy-policy" class="text-slate-400 hover:text-yeti-400 transition-colors">Privacy Policy</a></li>
+              <li><a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-yeti-400 transition-colors">LinkedIn</a></li>
+            </ul>
+          </div>
         </div>
-        <p class="text-slate-300 mb-4 text-base text-left">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
-        <div class="flex gap-6">
-          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
-          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
-          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
-          <a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="hover:text-yeti-400 transition-colors">LinkedIn</a>
+
+        <div class="border-t border-slate-800 pt-8">
+          <p class="text-slate-500 text-sm text-center">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
         </div>
       </div>
     </footer>

@@ -1,0 +1,58 @@
+---
+// src/components/Footer.astro
+// Shared footer component with category links for better internal linking (SEO)
+---
+
+<footer class="bg-slate-900 text-white py-16">
+  <div class="max-w-7xl mx-auto px-6">
+    <div class="grid md:grid-cols-4 gap-12 mb-12">
+      <!-- Logo & About -->
+      <div class="md:col-span-1">
+        <div class="h-16 mb-4">
+          <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
+        </div>
+        <p class="text-slate-400 text-sm">Helping founders build and scale successful startups with actionable insights.</p>
+      </div>
+
+      <!-- Categories -->
+      <div>
+        <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Categories</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/startup" class="text-slate-400 hover:text-yeti-400 transition-colors">Startup</a></li>
+          <li><a href="/business" class="text-slate-400 hover:text-yeti-400 transition-colors">Business</a></li>
+          <li><a href="/productivity" class="text-slate-400 hover:text-yeti-400 transition-colors">Productivity</a></li>
+          <li><a href="/team-management" class="text-slate-400 hover:text-yeti-400 transition-colors">Team Management</a></li>
+          <li><a href="/remote-work" class="text-slate-400 hover:text-yeti-400 transition-colors">Remote Work</a></li>
+        </ul>
+      </div>
+
+      <!-- More Topics -->
+      <div>
+        <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">More Topics</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/trends" class="text-slate-400 hover:text-yeti-400 transition-colors">Trends</a></li>
+          <li><a href="/sales" class="text-slate-400 hover:text-yeti-400 transition-colors">Sales</a></li>
+          <li><a href="/marketing" class="text-slate-400 hover:text-yeti-400 transition-colors">Marketing</a></li>
+          <li><a href="/content-marketing" class="text-slate-400 hover:text-yeti-400 transition-colors">Content Marketing</a></li>
+          <li><a href="/employment" class="text-slate-400 hover:text-yeti-400 transition-colors">Employment</a></li>
+        </ul>
+      </div>
+
+      <!-- Quick Links -->
+      <div>
+        <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Quick Links</h4>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/" class="text-slate-400 hover:text-yeti-400 transition-colors">Home</a></li>
+          <li><a href="/blog" class="text-slate-400 hover:text-yeti-400 transition-colors">All Articles</a></li>
+          <li><a href="/resources" class="text-slate-400 hover:text-yeti-400 transition-colors">Resources</a></li>
+          <li><a href="/privacy-policy" class="text-slate-400 hover:text-yeti-400 transition-colors">Privacy Policy</a></li>
+          <li><a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="text-slate-400 hover:text-yeti-400 transition-colors">LinkedIn</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="border-t border-slate-800 pt-8">
+      <p class="text-slate-500 text-sm text-center">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
+    </div>
+  </div>
+</footer>

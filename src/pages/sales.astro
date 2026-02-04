@@ -56,6 +56,7 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     console.error('Error fetching category posts:', error);
   }
 }
+import Footer from "../components/Footer.astro";
 ---
 
 <!doctype html>
@@ -224,19 +225,7 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-white py-12">
-      <div class="max-w-7xl mx-auto px-6">
-        <div class="h-20 md:h-24 mb-2">
-          <img src="/footer logo.png" class="h-full w-auto" alt="Startup Yeti" />
-        </div>
-        <p class="text-slate-300 mb-4 text-base text-left">&copy; {new Date().getFullYear()} Startup Yeti. All rights reserved.</p>
-        <div class="flex gap-6">
-          <a href="/" class="hover:text-yeti-400 transition-colors">Home</a>
-          <a href="/blog" class="hover:text-yeti-400 transition-colors">Blog</a>
-          <a href="/privacy-policy" class="hover:text-yeti-400 transition-colors">Privacy Policy</a>
-        </div>
-      </div>
-    </footer>
+    <Footer />
 
     <script is:inline src="/js/newsletter.js"></script>
   </body>

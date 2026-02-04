@@ -1,5 +1,6 @@
 ---
 const year = new Date().getFullYear();
+import Footer from "../components/Footer.astro";
 ---
 <!doctype html>
 <html lang="en" class="scroll-smooth dark:bg-slate-900">
@@ -183,11 +184,7 @@ const year = new Date().getFullYear();
     </main>
 
     <!-- Footer -->
-    <footer class="bg-slate-900 text-white py-12">
-      <div class="max-w-7xl mx-auto px-6 text-center">
-        <p class="text-slate-400">&copy; {year} Startup Yeti. All rights reserved.</p>
-      </div>
-    </footer>
+    <Footer />
 
   </body>
 </html>
