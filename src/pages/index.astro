@@ -540,8 +540,8 @@ function getCategoryColors(categorySlug: string) {
         <div class="absolute bottom-20 right-10 w-72 h-72 bg-orange-100/30 rounded-full blur-[100px]"></div>
 
         <div class="max-w-6xl mx-auto text-center relative z-10">
-          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-serif">Meet the Experts</h2>
-          <p class="text-lg text-slate-600 mb-16 max-w-2xl mx-auto">Real founders with hands-on experience building and scaling remote teams.</p>
+          <h2 class="text-4xl md:text-5xl font-bold text-slate-900 mb-6 font-serif">Meet the Team</h2>
+          <p class="text-lg text-slate-600 mb-16 max-w-2xl mx-auto">Passionate writers and researchers dedicated to helping startups succeed.</p>
 
           <div class="grid md:grid-cols-3 gap-10">
             <!-- Team Member 1: Boban -->
@@ -1096,7 +1096,7 @@ function getCategoryColors(categorySlug: string) {
         // Show modal when user scrolls past the team section
         if (!modalShown) {
           const teamSection = Array.from(document.querySelectorAll('section')).find(section =>
-            section.textContent.includes('Meet the Experts')
+            section.textContent.includes('Meet the Team')
           );
 
           if (teamSection) {
