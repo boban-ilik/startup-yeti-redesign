@@ -33,8 +33,8 @@ export async function onRequestPost(context) {
       return jsonResponse({ success: true, message: 'Subscribed! (dev mode)' });
     }
 
-    // Extract data-centre prefix from the API key suffix (e.g. "abc123-us21" → "us21")
-    const serverPrefix = apiKey.split('-').pop();
+    // Use explicit env var if set, otherwise extract from API key suffix (e.g. "abc123-us18" → "us18")
+    const serverPrefix = env.MAILCHIMP_SERVER_PREFIX || apiKey.split('-').pop();
 
     // ── Call Mailchimp API ────────────────────────────────────────────────────
     // Basic auth: username = any string, password = API key (Mailchimp standard)
