@@ -2,33 +2,24 @@
 // src/pages/[category]/[slug].astro
 // Dynamic blog post page matching existing URL structure: /category/slug/
 
-// 1. Get all paths (category/slug combinations) from WordPress to generate pages
+// 1. Get all paths with ALL data pre-fetched — eliminates per-post API calls
 export async function getStaticPaths() {
-  // Helper function to fetch with retry (defined inside to have proper scope)
+  // Helper: fetch with retry logic
   async function fetchWithRetry(url, options = {}, retries = 3) {
     for (let i = 0; i < retries; i++) {
       try {
         const controller = new AbortController();
-        const timeout = setTimeout(() => controller.abort(), 30000); // 30 second timeout
-
-        const response = await fetch(url, {
-          ...options,
-          signal: controller.signal
-        });
-
+        const timeout = setTimeout(() => controller.abort(), 30000);
+        const response = await fetch(url, { ...options, signal: controller.signal });
         clearTimeout(timeout);
-
-        if (response.ok) {
-          return response;
-        }
-
+        if (response.ok) return response;
         if (i < retries - 1) {
           console.log(`Attempt ${i + 1} failed, retrying...`);
-          await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1))); // Exponential backoff
+          await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
         }
       } catch (error) {
         if (i < retries - 1) {
-          console.log(`Attempt ${i + 1} failed with error: ${error.message}, retrying...`);
+          console.log(`Attempt ${i + 1} failed: ${error.message}, retrying...`);
           await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
         } else {
           throw error;
@@ -38,225 +29,150 @@ export async function getStaticPaths() {
     throw new Error(`Failed after ${retries} attempts`);
   }
 
-  // Use admin subdomain for WordPress REST API
+  // Helper: decode HTML entities in titles
+  function decodeHtmlEntities(text) {
+    const entities = {
+      '&#8217;': "'", '&#8216;': "'", '&#8220;': '"', '&#8221;': '"',
+      '&#8211;': '–', '&#8212;': '—', '&#038;': '&', '&amp;': '&',
+      '&lt;': '<', '&gt;': '>', '&quot;': '"', '&apos;': "'", '&#39;': "'"
+    };
+    return text.replace(/&#?\w+;/g, entity => entities[entity] || entity);
+  }
+
+  // Helper: transform raw WP REST post into template-ready shape
+  function transformPost(rawPost) {
+    return {
+      id: rawPost.id,
+      slug: rawPost.slug,
+      title: decodeHtmlEntities(rawPost.title.rendered),
+      content: rawPost.content.rendered,
+      date: rawPost.date,
+      excerpt: rawPost.excerpt.rendered,
+      categoryId: rawPost.categories[0],
+      featuredImage: rawPost._embedded?.['wp:featuredmedia']?.[0] ? {
+        node: {
+          sourceUrl: rawPost._embedded['wp:featuredmedia'][0].source_url,
+          altText: rawPost._embedded['wp:featuredmedia'][0].alt_text || rawPost.title.rendered
+        }
+      } : null,
+      author: {
+        node: {
+          name: rawPost._embedded?.author?.[0]?.name || 'Startup Yeti',
+          avatar: {
+            url: rawPost._embedded?.author?.[0]?.avatar_urls?.['96'] || ''
+          }
+        }
+      },
+      categories: {
+        nodes: (rawPost._embedded?.['wp:term']?.[0] || []).map(cat => ({
+          name: cat.name,
+          slug: cat.slug
+        }))
+      },
+      tags: {
+        nodes: (rawPost._embedded?.['wp:term']?.[1] || []).map(tag => ({
+          name: tag.name
+        }))
+      }
+    };
+  }
+
   const WORDPRESS_BASE = "https://admin.startupyeti.com";
 
   try {
-    // Fetch all published posts using REST API with pagination
-    let allPosts = [];
+    // Fetch all categories once for ID→slug/name mapping
+    const categoriesResponse = await fetchWithRetry(
+      `${WORDPRESS_BASE}/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name`,
+      { headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" } }
+    );
+    const categories = await categoriesResponse.json();
+    const categoryMap = Object.fromEntries(categories.map(c => [c.id, { slug: c.slug, name: c.name }]));
+
+    // Fetch ALL posts with full data + embedded media/author/terms in one paginated pass.
+    // This replaces ~N individual per-post API calls with ceil(N/100) requests total.
+    let allRawPosts = [];
     let page = 1;
     let hasMore = true;
 
-    console.log(`Fetching posts from: ${WORDPRESS_BASE}/wp-json/wp/v2/posts`);
+    console.log(`Fetching all posts with embedded data from: ${WORDPRESS_BASE}`);
 
     while (hasMore) {
-      const url = `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=100&page=${page}&status=publish&_fields=slug,categories`;
-
+      const url = `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=100&page=${page}&status=publish&_embed&_fields=id,slug,title,content,excerpt,date,categories,_links,_embedded`;
       try {
         const response = await fetchWithRetry(url, {
           headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
         });
-
         const posts = await response.json();
-        allPosts.push(...posts);
+        allRawPosts.push(...posts);
         console.log(`Fetched page ${page}: ${posts.length} posts`);
-
-        // Check if there are more pages
         const totalPages = parseInt(response.headers.get('X-WP-TotalPages') || '1');
         hasMore = page < totalPages;
         page++;
       } catch (error) {
-        console.error(`Failed to fetch posts page ${page} after retries:`, error.message);
+        console.error(`Failed to fetch page ${page}:`, error.message);
         break;
       }
     }
 
-    console.log(`✅ Fetched ${allPosts.length} posts from WordPress REST API`);
+    console.log(`✅ Fetched ${allRawPosts.length} posts total (${page - 1} paginated API calls)`);
 
-    if (allPosts.length === 0) {
+    if (allRawPosts.length === 0) {
       console.warn('No posts found in WordPress.');
       return [];
     }
 
-    // Fetch category data to map IDs to slugs
-    const categoriesResponse = await fetchWithRetry(
-      `${WORDPRESS_BASE}/wp-json/wp/v2/categories?per_page=100&_fields=id,slug`,
-      {
-        headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
-      }
-    );
-    const categories = await categoriesResponse.json();
-    const categoryMap = Object.fromEntries(categories.map(c => [c.id, c.slug]));
+    // Transform all posts into template-ready shape
+    const allPosts = allRawPosts.map(transformPost);
 
-    // Create paths using category slug + post slug to match existing URLs
+    // Build one static path per post with all data pre-computed as props
     return allPosts.map((post) => {
-      const categoryId = post.categories[0];
-      const categorySlug = categoryMap[categoryId] || 'uncategorized';
+      const catInfo = categoryMap[post.categoryId] || { slug: 'uncategorized', name: 'Uncategorized' };
+      const categorySlug = catInfo.slug.toLowerCase();
+
+      // Related posts: same category, exclude self, most recent 3
+      const relatedPosts = allPosts
+        .filter(p => p.id !== post.id && p.categoryId === post.categoryId)
+        .slice(0, 3)
+        .map(p => ({
+          slug: p.slug,
+          title: p.title,
+          excerpt: p.excerpt.replace(/<[^>]*>/g, '').substring(0, 120) + '...',
+          date: p.date,
+          featuredImage: p.featuredImage?.node?.sourceUrl || null,
+          category: categorySlug
+        }));
+
+      // Cross-category posts: different category, exclude self, most recent 4
+      const crossCategoryPosts = allPosts
+        .filter(p => p.id !== post.id && p.categoryId !== post.categoryId)
+        .slice(0, 4)
+        .map(p => {
+          const pCatInfo = categoryMap[p.categoryId] || { slug: 'blog', name: 'Blog' };
+          return {
+            slug: p.slug,
+            title: p.title,
+            excerpt: p.excerpt.replace(/<[^>]*>/g, '').substring(0, 100) + '...',
+            date: p.date,
+            featuredImage: p.featuredImage?.node?.sourceUrl || null,
+            category: pCatInfo.slug,
+            categoryName: pCatInfo.name
+          };
+        });
+
       return {
-        params: {
-          category: categorySlug.toLowerCase(),
-          slug: post.slug
-        },
+        params: { category: categorySlug, slug: post.slug },
+        props: { post, relatedPosts, crossCategoryPosts }
       };
     });
   } catch (error) {
-    console.error('Error fetching WordPress posts:', error);
+    console.error('Error in getStaticPaths:', error);
     return [];
   }
 }
 
-// 2. Get the specific data for the current page
+// 2. Read pre-fetched data from props — zero API calls at page render time
+const { post, relatedPosts, crossCategoryPosts } = Astro.props;
 const { category, slug } = Astro.params;
-const WORDPRESS_BASE = "https://admin.startupyeti.com";
-
-// Retry helper for individual post fetching
-async function fetchWithRetry(url, options = {}, retries = 3) {
-  for (let i = 0; i < retries; i++) {
-    try {
-      const controller = new AbortController();
-      const timeout = setTimeout(() => controller.abort(), 30000);
-      const response = await fetch(url, { ...options, signal: controller.signal });
-      clearTimeout(timeout);
-      if (response.ok) return response;
-      if (i < retries - 1) await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-    } catch (error) {
-      if (i < retries - 1) await new Promise(resolve => setTimeout(resolve, 1000 * (i + 1)));
-      else throw error;
-    }
-  }
-  throw new Error(`Failed after ${retries} attempts`);
-}
-
-const response = await fetchWithRetry(
-  `${WORDPRESS_BASE}/wp-json/wp/v2/posts?slug=${slug}&_embed`,
-  {
-    headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
-  }
-);
-
-const posts = await response.json();
-const restPost = posts[0];
-
-if (!restPost) {
-  throw new Error(`Post not found: ${slug}`);
-}
-
-// Helper function to decode HTML entities
-function decodeHtmlEntities(text) {
-  const entities = {
-    '&#8217;': "'",
-    '&#8216;': "'",
-    '&#8220;': '"',
-    '&#8221;': '"',
-    '&#8211;': '–',
-    '&#8212;': '—',
-    '&#038;': '&',
-    '&amp;': '&',
-    '&lt;': '<',
-    '&gt;': '>',
-    '&quot;': '"',
-    '&apos;': "'",
-    '&#39;': "'"
-  };
-  return text.replace(/&#?\w+;/g, entity => entities[entity] || entity);
-}
-
-// Transform REST API response to match the GraphQL structure
-const post = {
-  title: decodeHtmlEntities(restPost.title.rendered),
-  content: restPost.content.rendered,
-  date: restPost.date,
-  excerpt: restPost.excerpt.rendered,
-  featuredImage: restPost._embedded?.['wp:featuredmedia']?.[0] ? {
-    node: {
-      sourceUrl: restPost._embedded['wp:featuredmedia'][0].source_url,
-      altText: restPost._embedded['wp:featuredmedia'][0].alt_text || restPost.title.rendered
-    }
-  } : null,
-  author: {
-    node: {
-      name: restPost._embedded?.author?.[0]?.name || 'Startup Yeti',
-      avatar: {
-        url: restPost._embedded?.author?.[0]?.avatar_urls?.['96'] || ''
-      }
-    }
-  },
-  categories: {
-    nodes: (restPost._embedded?.['wp:term']?.[0] || []).map(cat => ({
-      name: cat.name,
-      slug: cat.slug
-    }))
-  },
-  tags: {
-    nodes: (restPost._embedded?.['wp:term']?.[1] || []).map(tag => ({
-      name: tag.name
-    }))
-  }
-};
-
-// Fetch related posts from the same category for internal linking
-const currentCategoryId = restPost.categories[0];
-let relatedPosts = [];
-let crossCategoryPosts = [];
-
-try {
-  const relatedResponse = await fetchWithRetry(
-    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?categories=${currentCategoryId}&per_page=4&exclude=${restPost.id}&_embed&_fields=id,slug,title,excerpt,date,categories,_links,_embedded`,
-    {
-      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
-    }
-  );
-  const relatedData = await relatedResponse.json();
-
-  relatedPosts = relatedData.map(p => ({
-    slug: p.slug,
-    title: decodeHtmlEntities(p.title.rendered),
-    excerpt: p.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 120) + '...',
-    date: p.date,
-    featuredImage: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
-    category: category
-  })).slice(0, 3); // Limit to 3 related posts
-} catch (error) {
-  console.log('Could not fetch related posts:', error.message);
-}
-
-// Fetch cross-category posts for broader internal linking (SEO improvement)
-try {
-  // Fetch categories first to get their slugs
-  const categoriesResponse = await fetchWithRetry(
-    `${WORDPRESS_BASE}/wp-json/wp/v2/categories?per_page=100&_fields=id,slug,name`,
-    {
-      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
-    }
-  );
-  const allCategories = await categoriesResponse.json();
-  const categoryMap = Object.fromEntries(allCategories.map(c => [c.id, { slug: c.slug, name: c.name }]));
-
-  // Fetch recent posts from other categories
-  const crossCategoryResponse = await fetchWithRetry(
-    `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=6&exclude=${restPost.id}&categories_exclude=${currentCategoryId}&_embed&_fields=id,slug,title,excerpt,date,categories,_links,_embedded`,
-    {
-      headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
-    }
-  );
-  const crossCategoryData = await crossCategoryResponse.json();
-
-  crossCategoryPosts = crossCategoryData.map(p => {
-    const catId = p.categories[0];
-    const catInfo = categoryMap[catId] || { slug: 'blog', name: 'Blog' };
-    return {
-      slug: p.slug,
-      title: decodeHtmlEntities(p.title.rendered),
-      excerpt: p.excerpt.rendered.replace(/<[^>]*>/g, '').substring(0, 100) + '...',
-      date: p.date,
-      featuredImage: p._embedded?.['wp:featuredmedia']?.[0]?.source_url || null,
-      category: catInfo.slug,
-      categoryName: catInfo.name
-    };
-  }).slice(0, 4); // Limit to 4 cross-category posts
-} catch (error) {
-  console.log('Could not fetch cross-category posts:', error.message);
-}
 
 // Calculate reading time
 const wordCount = post.content.replace(/<[^>]*>/g, '').split(/\s+/).length;
