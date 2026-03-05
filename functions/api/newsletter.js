@@ -1,119 +1,107 @@
-// Cloudflare Pages Function for Newsletter Signup
-// This function handles newsletter subscriptions
-// You can integrate with: ConvertKit, Mailchimp, Beehiiv, Loops, or any email service
+// Cloudflare Pages Function — Newsletter Signup
+// Proxies email submissions to Mailchimp, keeping the API key server-side.
+//
+// Required environment variables (set in Cloudflare Pages → Settings → Environment variables):
+//   MAILCHIMP_API_KEY   — e.g. "abc123def456...–us21"  (include the server prefix at the end)
+//   MAILCHIMP_LIST_ID   — e.g. "a1b2c3d4e5"
 
 export async function onRequestPost(context) {
   try {
     const { request, env } = context;
-    const { email } = await request.json();
 
-    // Validate email
+    // ── Parse body ────────────────────────────────────────────────────────────
+    let body;
+    try {
+      body = await request.json();
+    } catch {
+      return jsonResponse({ success: false, error: 'Invalid request body' }, 400);
+    }
+
+    const email = (body.email || '').trim().toLowerCase();
+
     if (!email || !isValidEmail(email)) {
-      return new Response(JSON.stringify({
-        success: false,
-        error: 'Invalid email address'
-      }), {
-        status: 400,
-        headers: { 'Content-Type': 'application/json' }
-      });
+      return jsonResponse({ success: false, error: 'Please enter a valid email address.' }, 400);
     }
 
-    // Example: ConvertKit Integration
-    // Uncomment and configure when you have your ConvertKit API key
-    /*
-    const CONVERTKIT_API_KEY = env.CONVERTKIT_API_KEY;
-    const CONVERTKIT_FORM_ID = env.CONVERTKIT_FORM_ID;
+    // ── Mailchimp credentials ─────────────────────────────────────────────────
+    const apiKey = env.MAILCHIMP_API_KEY;
+    const listId = env.MAILCHIMP_LIST_ID;
 
-    const response = await fetch(`https://api.convertkit.com/v3/forms/${CONVERTKIT_FORM_ID}/subscribe`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        api_key: CONVERTKIT_API_KEY,
-        email: email
-      })
-    });
-
-    if (!response.ok) {
-      throw new Error('Failed to subscribe');
+    if (!apiKey || !listId) {
+      // Not configured — log for dev, return success so the UX isn't broken
+      console.warn('Mailchimp not configured. Set MAILCHIMP_API_KEY and MAILCHIMP_LIST_ID.');
+      return jsonResponse({ success: true, message: 'Subscribed! (dev mode)' });
     }
-    */
 
-    // Mailchimp Integration
-    const MAILCHIMP_API_KEY = env.MAILCHIMP_API_KEY;
-    const MAILCHIMP_SERVER_PREFIX = env.MAILCHIMP_SERVER_PREFIX; // e.g., 'us1'
-    const MAILCHIMP_LIST_ID = env.MAILCHIMP_LIST_ID;
+    // Extract data-centre prefix from the API key suffix (e.g. "abc123-us21" → "us21")
+    const serverPrefix = apiKey.split('-').pop();
 
-    // If Mailchimp is configured, use it
-    if (MAILCHIMP_API_KEY && MAILCHIMP_SERVER_PREFIX && MAILCHIMP_LIST_ID) {
-      const response = await fetch(
-        `https://${MAILCHIMP_SERVER_PREFIX}.api.mailchimp.com/3.0/lists/${MAILCHIMP_LIST_ID}/members`,
-        {
-          method: 'POST',
-          headers: {
-            'Authorization': `apikey ${MAILCHIMP_API_KEY}`,
-            'Content-Type': 'application/json'
-          },
-          body: JSON.stringify({
-            email_address: email,
-            status: 'subscribed'
-          })
-        }
-      );
+    // ── Call Mailchimp API ────────────────────────────────────────────────────
+    // Basic auth: username = any string, password = API key (Mailchimp standard)
+    const auth = btoa(`startupyeti:${apiKey}`);
 
-      if (!response.ok) {
-        const error = await response.json();
-        // Handle already subscribed case gracefully
-        if (error.title === 'Member Exists') {
-          return new Response(JSON.stringify({
-            success: true,
-            message: 'You are already subscribed!'
-          }), {
-            status: 200,
-            headers: { 'Content-Type': 'application/json' }
-          });
-        }
-        throw new Error(error.detail || 'Failed to subscribe');
+    const mcRes = await fetch(
+      `https://${serverPrefix}.api.mailchimp.com/3.0/lists/${listId}/members`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Basic ${auth}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email_address: email,
+          status: 'subscribed',   // 'pending' enables double opt-in (GDPR recommended)
+          tags: ['website-newsletter'],
+        }),
       }
-    } else {
-      // If not configured, just log (for development/testing)
-      console.log('Newsletter signup (Mailchimp not configured):', email);
+    );
+
+    const mcData = await mcRes.json();
+
+    // ── Handle response ───────────────────────────────────────────────────────
+    if (mcRes.ok) {
+      return jsonResponse({ success: true, message: 'Successfully subscribed!' });
     }
 
-    return new Response(JSON.stringify({
-      success: true,
-      message: 'Successfully subscribed!'
-    }), {
-      status: 200,
-      headers: { 'Content-Type': 'application/json' }
-    });
+    // Already subscribed — treat as success
+    if (mcData.title === 'Member Exists') {
+      return jsonResponse({ success: true, message: "You're already subscribed!" });
+    }
 
-  } catch (error) {
-    console.error('Newsletter signup error:', error);
+    // Compliance / GDPR — previously unsubscribed
+    if (mcData.title === 'Forgotten Email Not Subscribed') {
+      return jsonResponse({
+        success: false,
+        error: "We couldn't re-subscribe this email. Please contact us directly.",
+      }, 400);
+    }
 
-    return new Response(JSON.stringify({
+    // Any other Mailchimp error
+    console.error('Mailchimp error:', mcData);
+    return jsonResponse({
       success: false,
-      error: 'Failed to subscribe. Please try again.'
-    }), {
-      status: 500,
-      headers: { 'Content-Type': 'application/json' }
-    });
+      error: mcData.detail || mcData.title || 'Subscription failed. Please try again.',
+    }, 400);
+
+  } catch (err) {
+    console.error('Newsletter function error:', err);
+    return jsonResponse({ success: false, error: 'Something went wrong. Please try again.' }, 500);
   }
 }
 
-function isValidEmail(email) {
-  const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  return regex.test(email);
+// ── GET — quick health check ──────────────────────────────────────────────────
+export async function onRequestGet() {
+  return jsonResponse({ status: 'ok', endpoint: 'POST /api/newsletter' });
 }
 
-// Add GET handler for testing
-export async function onRequestGet() {
-  return new Response(JSON.stringify({
-    success: true,
-    message: 'Newsletter API is ready',
-    endpoint: '/api/newsletter',
-    method: 'POST'
-  }), {
-    status: 200,
-    headers: { 'Content-Type': 'application/json' }
+// ── Helpers ───────────────────────────────────────────────────────────────────
+function jsonResponse(data, status = 200) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: { 'Content-Type': 'application/json' },
   });
+}
+
+function isValidEmail(email) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
 }
