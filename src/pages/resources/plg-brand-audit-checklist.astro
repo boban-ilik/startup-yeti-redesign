@@ -146,35 +146,18 @@ const allItems = sections.flatMap(s => s.items);
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
 
     <style>
-      /* ── Print styles ─────────────────────────────────────────── */
-      @media print {
-        .no-print { display: none !important; }
-        .print-only { display: block !important; }
-
-        body { background: white !important; color: #1e293b !important; font-size: 11pt; }
-        nav, footer { display: none !important; }
-
-        .print-page { padding: 0 !important; }
-        .checklist-section { break-inside: avoid; page-break-inside: avoid; margin-bottom: 24pt; border: 1px solid #e2e8f0 !important; border-radius: 8pt !important; padding: 16pt !important; }
-        .checklist-item { break-inside: avoid; page-break-inside: avoid; }
-
-        .score-bar { display: none !important; }
-        .print-score { display: block !important; }
-
-        /* Force colors to print */
-        * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
-
-        h1 { font-size: 22pt !important; }
-        h2 { font-size: 14pt !important; }
-        .print-header { display: flex !important; justify-content: space-between; align-items: center; margin-bottom: 20pt; padding-bottom: 12pt; border-bottom: 2px solid #0284c7; }
-        .print-logo { height: 36pt !important; }
+      /* ── Page setup ───────────────────────────────────────────── */
+      @page {
+        size: A4;
+        margin: 1.5cm 1.8cm;
       }
 
+      /* ── Screen-only ──────────────────────────────────────────── */
       @media screen {
         .print-only { display: none; }
       }
 
-      /* ── Custom checkbox ──────────────────────────────────────── */
+      /* ── Custom checkbox (screen) ─────────────────────────────── */
       .audit-checkbox {
         appearance: none;
         -webkit-appearance: none;
@@ -215,13 +198,151 @@ const allItems = sections.flatMap(s => s.items);
         text-decoration: line-through;
         text-decoration-color: #94a3b8;
       }
-      .checklist-item.checked {
-        background: #f8fafc !important;
-      }
+      .checklist-item.checked { background: #f8fafc !important; }
 
-      /* Score ring animation */
-      .score-ring {
-        transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      /* ── Print styles ─────────────────────────────────────────── */
+      @media print {
+        /* Force all colours and backgrounds to render */
+        * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+        /* Hide screen-only UI */
+        .no-print, nav, footer { display: none !important; }
+        .print-only { display: block !important; }
+
+        html, body { background: white !important; }
+        body { font-size: 9.5pt; line-height: 1.45; color: #1e293b !important; margin: 0; padding: 0; }
+
+        main { padding-top: 0 !important; }
+
+        /* ── Print header (logo + meta) ── */
+        .print-header {
+          display: flex !important;
+          align-items: center;
+          justify-content: space-between;
+          padding-bottom: 9pt;
+          margin-bottom: 12pt;
+          border-bottom: 2.5pt solid #0284c7;
+        }
+
+        /* ── Hero — compact, left-aligned ── */
+        .hero-section {
+          background: white !important;
+          border: none !important;
+          padding: 0 0 12pt 0 !important;
+          text-align: left !important;
+        }
+        .hero-badge, .hero-source, .score-widget { display: none !important; }
+        .hero-section h1 {
+          font-size: 17pt !important;
+          color: #0c4a6e !important;
+          margin: 0 0 4pt 0 !important;
+          line-height: 1.2 !important;
+        }
+        .hero-desc {
+          font-size: 9pt !important;
+          color: #475569 !important;
+          margin: 0 !important;
+        }
+
+        /* ── Checklist sections ── */
+        .checklist-section {
+          break-inside: avoid;
+          page-break-inside: avoid;
+          margin-bottom: 10pt !important;
+          border: 1pt solid #cbd5e1 !important;
+          border-radius: 5pt !important;
+          overflow: visible !important;
+          box-shadow: none !important;
+        }
+
+        /* Section header — solid colours (reliable across all PDF viewers) */
+        .section-hdr { padding: 7pt 11pt !important; }
+        .section-hdr-plg  { background: #0284c7 !important; }
+        .section-hdr-brand { background: #0891b2 !important; }
+        .section-hdr-int  { background: #334155 !important; }
+        .section-emoji { display: none !important; }
+        .section-label { font-size: 7pt !important; letter-spacing: 0.05em; }
+        .section-hdr h2 { font-size: 11.5pt !important; margin: 2pt 0 1pt 0 !important; }
+        .section-subtitle { font-size: 8pt !important; }
+
+        /* Items — compact */
+        .checklist-item {
+          padding: 7pt 11pt !important;
+          cursor: default !important;
+          break-inside: avoid;
+          page-break-inside: avoid;
+        }
+        .checklist-item:hover { background: white !important; }
+
+        /* Native checkbox — guaranteed to render in any PDF viewer */
+        .audit-checkbox {
+          -webkit-appearance: checkbox !important;
+          appearance: checkbox !important;
+          width: 11pt !important;
+          height: 11pt !important;
+          border: none !important;
+          background: transparent !important;
+          flex-shrink: 0;
+          margin-top: 1pt;
+        }
+
+        .item-text { font-size: 9.5pt !important; font-weight: 600; }
+        .item-note { font-size: 8pt !important; margin-top: 2pt !important; color: #64748b !important; }
+
+        /* Question number badge */
+        .q-num {
+          display: inline-flex !important;
+          align-items: center;
+          justify-content: center;
+          width: 14pt;
+          height: 14pt;
+          border-radius: 50%;
+          background: #e0f2fe !important;
+          color: #0369a1 !important;
+          font-size: 7pt !important;
+          font-weight: 700;
+          flex-shrink: 0;
+          margin-top: 1pt;
+        }
+
+        /* ── Print score summary ── */
+        .print-score {
+          display: block !important;
+          break-inside: avoid;
+          margin-top: 10pt;
+          padding: 10pt 14pt;
+          border: 1.5pt solid #0284c7;
+          border-radius: 5pt;
+          background: #f0f9ff !important;
+        }
+        .print-score-title {
+          font-size: 11pt;
+          font-weight: 700;
+          color: #0c4a6e;
+          margin-bottom: 4pt;
+        }
+        .print-score-key {
+          font-size: 8.5pt;
+          color: #475569;
+          margin-bottom: 3pt;
+        }
+        .print-score-url {
+          font-size: 7.5pt;
+          color: #94a3b8;
+          margin-top: 4pt;
+        }
+
+        /* ── Print footer ── */
+        .print-footer {
+          display: block !important;
+          margin-top: 12pt;
+          padding-top: 7pt;
+          border-top: 0.75pt solid #e2e8f0;
+          font-size: 7.5pt;
+          color: #94a3b8;
+          display: flex !important;
+          justify-content: space-between;
+        }
       }
     </style>
   </head>
@@ -254,35 +375,36 @@ const allItems = sections.flatMap(s => s.items);
       </div>
     </nav>
 
-    <!-- Print-only header (hidden on screen) -->
-    <div class="print-header" style="display:none">
-      <img src="/logo.png" alt="Startup Yeti" class="print-logo" style="height:36pt" />
-      <div style="text-align:right; font-size:9pt; color:#64748b">
-        <div>startupyeti.com</div>
-        <div>PLG + Brand Audit Checklist</div>
+    <!-- Print-only header (hidden on screen, shown in PDF) -->
+    <div class="print-header print-only" style="display:none">
+      <img src="/logo.png" alt="Startup Yeti" style="height:30pt; object-fit:contain" />
+      <div style="text-align:right; font-size:8pt; color:#64748b; line-height:1.6">
+        <div style="font-weight:700; color:#0c4a6e">PLG + Brand Audit Checklist</div>
+        <div>startupyeti.com/resources/plg-brand-audit-checklist</div>
+        <div id="print-date"></div>
       </div>
     </div>
 
     <main class="pt-16 print-page">
 
       <!-- ── Hero ─────────────────────────────────────────────── -->
-      <section class="bg-gradient-to-b from-white to-slate-50 py-16 px-6 border-b border-slate-200">
+      <section class="hero-section bg-gradient-to-b from-white to-slate-50 py-16 px-6 border-b border-slate-200">
         <div class="max-w-3xl mx-auto text-center">
-          <span class="inline-flex items-center px-3 py-1 rounded-full bg-yeti-100 text-yeti-700 text-xs font-bold uppercase tracking-widest mb-6">
+          <span class="hero-badge inline-flex items-center px-3 py-1 rounded-full bg-yeti-100 text-yeti-700 text-xs font-bold uppercase tracking-widest mb-6">
             Free Resource · Startup Yeti
           </span>
           <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-5 leading-tight font-serif">
             PLG + Brand Audit
           </h1>
-          <p class="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto">
+          <p class="hero-desc text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto">
             10 questions that reveal exactly where your product-led growth is stalling — and whether brand-led growth is the missing layer.
           </p>
-          <p class="text-sm text-slate-500 mb-8">
+          <p class="hero-source text-sm text-slate-500 mb-8">
             Based on our deep-dive: <a href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it" class="text-yeti-600 font-semibold hover:underline">Why Your PLG Strategy Will Stall</a>
           </p>
 
-          <!-- Live score bar -->
-          <div class="no-print max-w-sm mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+          <!-- Live score bar (screen only) -->
+          <div class="score-widget no-print max-w-sm mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
             <div class="flex items-center justify-between mb-3">
               <span class="text-sm font-semibold text-slate-600">Your Score</span>
               <span id="score-label" class="text-sm font-bold text-slate-900">0 / 10</span>
@@ -299,52 +421,61 @@ const allItems = sections.flatMap(s => s.items);
       <section class="py-12 px-6">
         <div class="max-w-3xl mx-auto space-y-10">
 
-          {sections.map((section) => (
-            <div class="checklist-section bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+          {(() => {
+            let qNum = 0;
+            return sections.map((section) => (
+              <div class="checklist-section bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
 
-              <!-- Section header -->
-              <div class={`bg-gradient-to-r ${section.accent} px-6 py-5`}>
-                <div class="flex items-center justify-between">
-                  <div>
-                    <span class="text-xs font-bold text-white/70 uppercase tracking-widest">{section.label}</span>
-                    <h2 class="text-xl font-extrabold text-white mt-1 font-serif">{section.title}</h2>
-                    <p class="text-sm text-white/80 mt-0.5">{section.subtitle}</p>
-                  </div>
-                  <div class="text-3xl opacity-80">
-                    {section.id === 'plg' && '🔬'}
-                    {section.id === 'brand' && '🎯'}
-                    {section.id === 'integration' && '🔗'}
+                <!-- Section header — extra classes for print colour targeting -->
+                <div class={`section-hdr section-hdr-${section.id === 'integration' ? 'int' : section.id} bg-gradient-to-r ${section.accent} px-6 py-5`}>
+                  <div class="flex items-center justify-between">
+                    <div>
+                      <span class="section-label text-xs font-bold text-white/70 uppercase tracking-widest">{section.label}</span>
+                      <h2 class="text-xl font-extrabold text-white mt-1 font-serif">{section.title}</h2>
+                      <p class="section-subtitle text-sm text-white/80 mt-0.5">{section.subtitle}</p>
+                    </div>
+                    <div class="section-emoji text-3xl opacity-80">
+                      {section.id === 'plg' && '🔬'}
+                      {section.id === 'brand' && '🎯'}
+                      {section.id === 'integration' && '🔗'}
+                    </div>
                   </div>
                 </div>
-              </div>
 
-              <!-- Items -->
-              <div class="divide-y divide-slate-100">
-                {section.items.map((item) => (
-                  <label
-                    for={item.id}
-                    class={`checklist-item flex items-start gap-4 p-5 cursor-pointer hover:bg-slate-50 transition-colors group`}
-                    data-item-id={item.id}
-                  >
-                    <input
-                      type="checkbox"
-                      id={item.id}
-                      class="audit-checkbox mt-0.5"
-                      data-item={item.id}
-                    />
-                    <div class="flex-1 min-w-0">
-                      <p class="item-text font-semibold text-slate-800 leading-snug transition-all">
-                        {item.text}
-                      </p>
-                      <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">
-                        {item.note}
-                      </p>
-                    </div>
-                  </label>
-                ))}
+                <!-- Items -->
+                <div class="divide-y divide-slate-100">
+                  {section.items.map((item) => {
+                    qNum++;
+                    const currentQ = qNum;
+                    return (
+                      <label
+                        for={item.id}
+                        class="checklist-item flex items-start gap-4 p-5 cursor-pointer hover:bg-slate-50 transition-colors group"
+                        data-item-id={item.id}
+                      >
+                        <input
+                          type="checkbox"
+                          id={item.id}
+                          class="audit-checkbox mt-0.5"
+                          data-item={item.id}
+                        />
+                        <!-- Q-number: hidden on screen, shown in print -->
+                        <span class="q-num print-only" style="display:none">Q{currentQ}</span>
+                        <div class="flex-1 min-w-0">
+                          <p class="item-text font-semibold text-slate-800 leading-snug transition-all">
+                            {item.text}
+                          </p>
+                          <p class="item-note text-sm text-slate-500 mt-1.5 leading-relaxed">
+                            {item.note}
+                          </p>
+                        </div>
+                      </label>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          ))}
+            ));
+          })()}
 
         </div>
       </section>
@@ -374,16 +505,25 @@ const allItems = sections.flatMap(s => s.items);
       </section>
 
       <!-- Print-only score summary -->
-      <div class="print-score" style="display:none; max-width:600px; margin:24pt auto 0; padding:16pt; border:2px solid #0284c7; border-radius:8pt; text-align:center;">
-        <p style="font-size:11pt; font-weight:700; color:#0c4a6e; margin-bottom:6pt;">
-          Score: <span id="print-score">__</span> / 10
-        </p>
-        <p style="font-size:9pt; color:#475569;">
-          8–10 ✅ Strong foundation · 5–7 ⚠️ Warning signs · 0–4 🚨 Critical gaps
-        </p>
-        <p style="font-size:9pt; color:#475569; margin-top:6pt;">
-          Full breakdown: startupyeti.com/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it
-        </p>
+      <div class="print-score print-only" style="display:none">
+        <div class="print-score-title">
+          Your Score: <span id="print-score">—</span> / 10
+          <span id="print-score-badge" style="margin-left:8pt; font-size:9pt; font-weight:400"></span>
+        </div>
+        <div class="print-score-key">
+          ✅ 8–10 &nbsp;Strong foundation — ready to compound &nbsp;·&nbsp;
+          ⚠️ 5–7 &nbsp;Warning signs — tighten the integration &nbsp;·&nbsp;
+          🚨 0–4 &nbsp;Critical gaps — PLG ceiling is brand-related
+        </div>
+        <div class="print-score-url">
+          Full playbook: startupyeti.com/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it
+        </div>
+      </div>
+
+      <!-- Print footer -->
+      <div class="print-footer print-only" style="display:none">
+        <span>© {new Date().getFullYear()} Startup Yeti · startupyeti.com</span>
+        <span>Free resource — share freely</span>
       </div>
 
     </main>
@@ -405,15 +545,22 @@ const allItems = sections.flatMap(s => s.items);
         var STORAGE_KEY = 'plg-audit-checklist';
         var TOTAL = 10;
 
-        var scoreBar    = document.getElementById('score-bar');
-        var scoreLabel  = document.getElementById('score-label');
-        var scoreMsg    = document.getElementById('score-message');
-        var resultCard  = document.getElementById('result-card');
-        var resultEmoji = document.getElementById('result-emoji');
-        var resultTitle = document.getElementById('result-title');
-        var resultBody  = document.getElementById('result-body');
-        var resultCta   = document.getElementById('result-cta');
-        var printScore  = document.getElementById('print-score');
+        var scoreBar       = document.getElementById('score-bar');
+        var scoreLabel     = document.getElementById('score-label');
+        var scoreMsg       = document.getElementById('score-message');
+        var resultCard     = document.getElementById('result-card');
+        var resultEmoji    = document.getElementById('result-emoji');
+        var resultTitle    = document.getElementById('result-title');
+        var resultBody     = document.getElementById('result-body');
+        var resultCta      = document.getElementById('result-cta');
+        var printScore     = document.getElementById('print-score');
+        var printBadge     = document.getElementById('print-score-badge');
+        var printDate      = document.getElementById('print-date');
+
+        // Set generated date in print header
+        if (printDate) {
+          printDate.textContent = 'Generated ' + new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' });
+        }
 
         // Results config
         var results = [
@@ -478,8 +625,13 @@ const allItems = sections.flatMap(s => s.items);
             ? 'Check each statement that\'s true for your company →'
             : score + ' of 10 items checked';
 
-          // Print score
+          // Print score + badge
           if (printScore) printScore.textContent = score;
+          if (printBadge) {
+            printBadge.textContent = score >= 8 ? '✅ Strong foundation'
+              : score >= 5 ? '⚠️ Warning signs'
+              : '🚨 Critical gaps';
+          }
 
           // Result card
           if (score === 0) {
@@ -540,6 +692,9 @@ const allItems = sections.flatMap(s => s.items);
             saveState();
           });
         });
+
+        // Ensure score is always fresh when print dialog opens
+        window.addEventListener('beforeprint', function () { updateUI(); });
 
         // Init
         loadState();
