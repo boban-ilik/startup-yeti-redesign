@@ -1,0 +1,551 @@
+---
+// src/pages/resources/plg-brand-audit-checklist.astro
+const siteUrl = "https://www.startupyeti.com";
+const pageUrl = `${siteUrl}/resources/plg-brand-audit-checklist`;
+const title = "PLG + Brand Audit: 10 Questions to Diagnose Your Growth Ceiling | Startup Yeti";
+const description = "A free self-audit for SaaS founders to pinpoint exactly where their product-led growth is stalling — and whether brand-led growth is the fix.";
+
+const sections = [
+  {
+    id: "plg",
+    label: "Section 1 of 3",
+    title: "PLG Health Check",
+    subtitle: "Diagnose your product-led funnel",
+    accent: "from-yeti-500 to-yeti-600",
+    badge: "bg-yeti-100 text-yeti-700",
+    items: [
+      {
+        id: "q1",
+        text: "Our free-to-paid conversion rate is consistently above 3%",
+        note: "Industry benchmark is 3–5%. Below that signals activation or positioning gaps — not just a product problem.",
+      },
+      {
+        id: "q2",
+        text: "We have a clearly defined 'aha moment' and actively measure time-to-value",
+        note: "If you can't name the exact moment, your onboarding isn't engineered around it.",
+      },
+      {
+        id: "q3",
+        text: "Churn happens mostly before activation — not after users see value",
+        note: "Post-activation churn is usually a brand and trust problem, not a product problem.",
+      },
+      {
+        id: "q4",
+        text: "Our customer acquisition cost (CAC) has been stable or declining over the past 6 months",
+        note: "Rising CAC in a PLG model signals self-serve virality is saturating and you need brand pull.",
+      },
+    ],
+  },
+  {
+    id: "brand",
+    label: "Section 2 of 3",
+    title: "Brand Readiness",
+    subtitle: "Assess your positioning and differentiation",
+    accent: "from-cyan-500 to-cyan-600",
+    badge: "bg-cyan-100 text-cyan-700",
+    items: [
+      {
+        id: "q5",
+        text: "We can articulate our brand positioning in one sentence — without using the word 'easy'",
+        note: "If your positioning sounds like every competitor's, it isn't positioning.",
+      },
+      {
+        id: "q6",
+        text: "We know why prospects choose competitors — and the reason isn't just features",
+        note: "Feature parity means brand is the deciding factor. Without win/loss data, you're guessing.",
+      },
+      {
+        id: "q7",
+        text: "Our brand narrative appears inside the product: onboarding, tooltips, and empty states",
+        note: "Brand-led PLG embeds positioning into every product touchpoint — not just marketing pages.",
+      },
+      {
+        id: "q8",
+        text: "Our branded search volume is growing month-over-month",
+        note: "Brand awareness shows up in branded search volume before it shows up in revenue.",
+      },
+    ],
+  },
+  {
+    id: "integration",
+    label: "Section 3 of 3",
+    title: "Integration Readiness",
+    subtitle: "Check if PLG and brand are working together",
+    accent: "from-slate-600 to-slate-700",
+    badge: "bg-slate-100 text-slate-700",
+    items: [
+      {
+        id: "q9",
+        text: "Product and marketing share KPIs and align on strategy at least monthly",
+        note: "Siloed teams are the #1 reason PLG and brand never compound into durable growth.",
+      },
+      {
+        id: "q10",
+        text: "Product usage data informs our brand messaging on a regular cadence",
+        note: "Your best customers' behavior patterns are your best brand stories. Are you mining them?",
+      },
+    ],
+  },
+];
+
+const allItems = sections.flatMap(s => s.items);
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+
+    <!-- Primary Meta Tags -->
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <meta name="robots" content="index, follow" />
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={`${siteUrl}/logo.png`} />
+    <meta property="og:site_name" content="Startup Yeti" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={pageUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={`${siteUrl}/logo.png`} />
+
+    <!-- JSON-LD -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      "name": "PLG + Brand Audit: 10 Questions to Diagnose Your Growth Ceiling",
+      "description": description,
+      "url": pageUrl,
+      "publisher": {
+        "@type": "Organization",
+        "name": "Startup Yeti",
+        "url": siteUrl
+      },
+      "step": allItems.map((item, i) => ({
+        "@type": "HowToStep",
+        "position": i + 1,
+        "name": item.text,
+        "text": item.note
+      }))
+    })} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet" />
+
+    <style>
+      /* ── Print styles ─────────────────────────────────────────── */
+      @media print {
+        .no-print { display: none !important; }
+        .print-only { display: block !important; }
+
+        body { background: white !important; color: #1e293b !important; font-size: 11pt; }
+        nav, footer { display: none !important; }
+
+        .print-page { padding: 0 !important; }
+        .checklist-section { break-inside: avoid; page-break-inside: avoid; margin-bottom: 24pt; border: 1px solid #e2e8f0 !important; border-radius: 8pt !important; padding: 16pt !important; }
+        .checklist-item { break-inside: avoid; page-break-inside: avoid; }
+
+        .score-bar { display: none !important; }
+        .print-score { display: block !important; }
+
+        /* Force colors to print */
+        * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        h1 { font-size: 22pt !important; }
+        h2 { font-size: 14pt !important; }
+        .print-header { display: flex !important; justify-content: space-between; align-items: center; margin-bottom: 20pt; padding-bottom: 12pt; border-bottom: 2px solid #0284c7; }
+        .print-logo { height: 36pt !important; }
+      }
+
+      @media screen {
+        .print-only { display: none; }
+      }
+
+      /* ── Custom checkbox ──────────────────────────────────────── */
+      .audit-checkbox {
+        appearance: none;
+        -webkit-appearance: none;
+        width: 1.375rem;
+        height: 1.375rem;
+        border: 2px solid #cbd5e1;
+        border-radius: 0.375rem;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex-shrink: 0;
+        position: relative;
+        background: white;
+      }
+      .audit-checkbox:checked {
+        background: #0284c7;
+        border-color: #0284c7;
+      }
+      .audit-checkbox:checked::after {
+        content: '';
+        position: absolute;
+        left: 4px;
+        top: 1px;
+        width: 10px;
+        height: 6px;
+        border: 2.5px solid white;
+        border-top: none;
+        border-right: none;
+        transform: rotate(-45deg);
+      }
+      .audit-checkbox:hover:not(:checked) {
+        border-color: #0284c7;
+        background: #f0f9ff;
+      }
+
+      /* Item checked state */
+      .checklist-item.checked .item-text {
+        color: #475569;
+        text-decoration: line-through;
+        text-decoration-color: #94a3b8;
+      }
+      .checklist-item.checked {
+        background: #f8fafc !important;
+      }
+
+      /* Score ring animation */
+      .score-ring {
+        transition: stroke-dashoffset 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-800 font-sans antialiased">
+
+    <!-- ── Navigation ───────────────────────────────────────────── -->
+    <nav class="no-print fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
+      <div class="max-w-5xl mx-auto px-6 h-16 flex items-center justify-between">
+        <a href="/" class="flex items-center hover:opacity-80 transition-opacity">
+          <img src="/logo.png" alt="Startup Yeti" class="h-10 w-auto object-contain" />
+        </a>
+        <div class="flex items-center gap-3">
+          <a
+            href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it"
+            class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors"
+          >
+            ← Back to article
+          </a>
+          <button
+            onclick="window.print()"
+            class="no-print flex items-center gap-2 px-4 py-2 rounded-lg bg-yeti-600 text-white text-sm font-semibold hover:bg-yeti-700 transition-colors shadow-sm"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+            </svg>
+            Save as PDF
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Print-only header (hidden on screen) -->
+    <div class="print-header" style="display:none">
+      <img src="/logo.png" alt="Startup Yeti" class="print-logo" style="height:36pt" />
+      <div style="text-align:right; font-size:9pt; color:#64748b">
+        <div>startupyeti.com</div>
+        <div>PLG + Brand Audit Checklist</div>
+      </div>
+    </div>
+
+    <main class="pt-16 print-page">
+
+      <!-- ── Hero ─────────────────────────────────────────────── -->
+      <section class="bg-gradient-to-b from-white to-slate-50 py-16 px-6 border-b border-slate-200">
+        <div class="max-w-3xl mx-auto text-center">
+          <span class="inline-flex items-center px-3 py-1 rounded-full bg-yeti-100 text-yeti-700 text-xs font-bold uppercase tracking-widest mb-6">
+            Free Resource · Startup Yeti
+          </span>
+          <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 mb-5 leading-tight font-serif">
+            PLG + Brand Audit
+          </h1>
+          <p class="text-xl text-slate-600 mb-4 leading-relaxed max-w-2xl mx-auto">
+            10 questions that reveal exactly where your product-led growth is stalling — and whether brand-led growth is the missing layer.
+          </p>
+          <p class="text-sm text-slate-500 mb-8">
+            Based on our deep-dive: <a href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it" class="text-yeti-600 font-semibold hover:underline">Why Your PLG Strategy Will Stall</a>
+          </p>
+
+          <!-- Live score bar -->
+          <div class="no-print max-w-sm mx-auto bg-white rounded-2xl border border-slate-200 shadow-sm p-5">
+            <div class="flex items-center justify-between mb-3">
+              <span class="text-sm font-semibold text-slate-600">Your Score</span>
+              <span id="score-label" class="text-sm font-bold text-slate-900">0 / 10</span>
+            </div>
+            <div class="h-3 bg-slate-100 rounded-full overflow-hidden">
+              <div id="score-bar" class="h-full bg-gradient-to-r from-yeti-500 to-yeti-600 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <p id="score-message" class="text-xs text-slate-500 mt-3 text-left">Check each statement that's true for your company →</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ── Checklist sections ────────────────────────────────── -->
+      <section class="py-12 px-6">
+        <div class="max-w-3xl mx-auto space-y-10">
+
+          {sections.map((section) => (
+            <div class="checklist-section bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden">
+
+              <!-- Section header -->
+              <div class={`bg-gradient-to-r ${section.accent} px-6 py-5`}>
+                <div class="flex items-center justify-between">
+                  <div>
+                    <span class="text-xs font-bold text-white/70 uppercase tracking-widest">{section.label}</span>
+                    <h2 class="text-xl font-extrabold text-white mt-1 font-serif">{section.title}</h2>
+                    <p class="text-sm text-white/80 mt-0.5">{section.subtitle}</p>
+                  </div>
+                  <div class="text-3xl opacity-80">
+                    {section.id === 'plg' && '🔬'}
+                    {section.id === 'brand' && '🎯'}
+                    {section.id === 'integration' && '🔗'}
+                  </div>
+                </div>
+              </div>
+
+              <!-- Items -->
+              <div class="divide-y divide-slate-100">
+                {section.items.map((item) => (
+                  <label
+                    for={item.id}
+                    class={`checklist-item flex items-start gap-4 p-5 cursor-pointer hover:bg-slate-50 transition-colors group`}
+                    data-item-id={item.id}
+                  >
+                    <input
+                      type="checkbox"
+                      id={item.id}
+                      class="audit-checkbox mt-0.5"
+                      data-item={item.id}
+                    />
+                    <div class="flex-1 min-w-0">
+                      <p class="item-text font-semibold text-slate-800 leading-snug transition-all">
+                        {item.text}
+                      </p>
+                      <p class="text-sm text-slate-500 mt-1.5 leading-relaxed">
+                        {item.note}
+                      </p>
+                    </div>
+                  </label>
+                ))}
+              </div>
+            </div>
+          ))}
+
+        </div>
+      </section>
+
+      <!-- ── Result card ────────────────────────────────────────── -->
+      <section class="py-8 px-6 pb-20 no-print">
+        <div class="max-w-3xl mx-auto">
+          <div id="result-card" class="rounded-2xl border-2 border-slate-200 bg-white p-8 text-center transition-all duration-500">
+            <div id="result-emoji" class="text-5xl mb-4">📋</div>
+            <h3 id="result-title" class="text-2xl font-bold text-slate-900 mb-3 font-serif">Complete the audit above</h3>
+            <p id="result-body" class="text-slate-600 max-w-lg mx-auto leading-relaxed">
+              Check each statement that's true for your company. Your results and recommended next steps will appear here.
+            </p>
+            <div id="result-cta" class="mt-6 hidden">
+              <a
+                href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it"
+                class="inline-flex items-center px-6 py-3 rounded-xl bg-yeti-600 text-white font-bold hover:bg-yeti-700 transition-colors shadow-sm"
+              >
+                Read the full PLG + Brand playbook
+                <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Print-only score summary -->
+      <div class="print-score" style="display:none; max-width:600px; margin:24pt auto 0; padding:16pt; border:2px solid #0284c7; border-radius:8pt; text-align:center;">
+        <p style="font-size:11pt; font-weight:700; color:#0c4a6e; margin-bottom:6pt;">
+          Score: <span id="print-score">__</span> / 10
+        </p>
+        <p style="font-size:9pt; color:#475569;">
+          8–10 ✅ Strong foundation · 5–7 ⚠️ Warning signs · 0–4 🚨 Critical gaps
+        </p>
+        <p style="font-size:9pt; color:#475569; margin-top:6pt;">
+          Full breakdown: startupyeti.com/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it
+        </p>
+      </div>
+
+    </main>
+
+    <!-- ── Footer ────────────────────────────────────────────────── -->
+    <footer class="no-print bg-slate-900 text-white py-10">
+      <div class="max-w-5xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <img src="/footer logo.png" class="h-10 w-auto" alt="Startup Yeti" />
+        <p class="text-slate-400 text-sm text-center">
+          More free resources and playbooks at
+          <a href="/" class="text-yeti-400 hover:text-yeti-300 font-semibold transition-colors">startupyeti.com</a>
+        </p>
+        <p class="text-slate-500 text-sm">&copy; {new Date().getFullYear()} Startup Yeti</p>
+      </div>
+    </footer>
+
+    <script is:inline>
+      (function () {
+        var STORAGE_KEY = 'plg-audit-checklist';
+        var TOTAL = 10;
+
+        var scoreBar    = document.getElementById('score-bar');
+        var scoreLabel  = document.getElementById('score-label');
+        var scoreMsg    = document.getElementById('score-message');
+        var resultCard  = document.getElementById('result-card');
+        var resultEmoji = document.getElementById('result-emoji');
+        var resultTitle = document.getElementById('result-title');
+        var resultBody  = document.getElementById('result-body');
+        var resultCta   = document.getElementById('result-cta');
+        var printScore  = document.getElementById('print-score');
+
+        // Results config
+        var results = [
+          {
+            min: 8,
+            emoji: '🚀',
+            title: 'Strong Foundation — Ready to Compound',
+            body: 'Your PLG health and brand readiness are solid. The opportunity now is compounding: use brand to lower CAC while product virality drives activation. Focus on shared KPIs and shortening your feedback loop.',
+            cardClass: 'border-yeti-300 bg-yeti-50',
+            barColor: 'from-yeti-500 to-yeti-600',
+            showCta: true,
+          },
+          {
+            min: 5,
+            emoji: '⚠️',
+            title: 'Warning Signs — Time to Tighten the Integration',
+            body: 'You have real strengths but identifiable gaps. Look at the unchecked items — they\'re likely where you\'re leaving growth on the table. Brand-PLG integration is probably missing in 1–2 specific areas.',
+            cardClass: 'border-amber-300 bg-amber-50',
+            barColor: 'from-amber-400 to-amber-500',
+            showCta: true,
+          },
+          {
+            min: 0,
+            emoji: '🚨',
+            title: 'Critical Gaps — Your PLG Ceiling Is Likely Brand-Related',
+            body: 'Multiple foundational issues are present. The good news: these are solvable, and fixing them compounds. Start with one unchecked item per section — don\'t try to fix everything at once.',
+            cardClass: 'border-red-300 bg-red-50',
+            barColor: 'from-red-400 to-red-500',
+            showCta: true,
+          },
+        ];
+
+        function getScore() {
+          return document.querySelectorAll('.audit-checkbox:checked').length;
+        }
+
+        function updateUI() {
+          var score = getScore();
+          var pct = (score / TOTAL) * 100;
+
+          // Score bar
+          scoreBar.style.width = pct + '%';
+          scoreLabel.textContent = score + ' / ' + TOTAL;
+
+          // Update bar colour dynamically
+          if (score >= 8) {
+            scoreBar.className = scoreBar.className.replace(/from-\S+ to-\S+/, 'from-yeti-500 to-yeti-600');
+          } else if (score >= 5) {
+            scoreBar.className = scoreBar.className.replace(/from-\S+ to-\S+/, 'from-amber-400 to-amber-500');
+          } else {
+            scoreBar.className = scoreBar.className.replace(/from-\S+ to-\S+/, 'from-red-400 to-red-500');
+          }
+
+          // Score bar gradient (re-apply properly)
+          scoreBar.style.background = score >= 8
+            ? 'linear-gradient(to right, #0ea5e9, #0284c7)'
+            : score >= 5
+              ? 'linear-gradient(to right, #fbbf24, #f59e0b)'
+              : 'linear-gradient(to right, #f87171, #ef4444)';
+
+          scoreMsg.textContent = score === 0
+            ? 'Check each statement that\'s true for your company →'
+            : score + ' of 10 items checked';
+
+          // Print score
+          if (printScore) printScore.textContent = score;
+
+          // Result card
+          if (score === 0) {
+            resultCard.className = 'rounded-2xl border-2 border-slate-200 bg-white p-8 text-center transition-all duration-500';
+            resultEmoji.textContent = '📋';
+            resultTitle.textContent = 'Complete the audit above';
+            resultBody.textContent = 'Check each statement that\'s true for your company. Your results and recommended next steps will appear here.';
+            resultCta.classList.add('hidden');
+            return;
+          }
+
+          var r = results.find(function (x) { return score >= x.min; });
+          resultCard.className = 'rounded-2xl border-2 ' + r.cardClass + ' p-8 text-center transition-all duration-500';
+          resultEmoji.textContent = r.emoji;
+          resultTitle.textContent = r.title;
+          resultBody.textContent = r.body;
+          if (r.showCta) resultCta.classList.remove('hidden');
+        }
+
+        function updateItemStyle(checkbox) {
+          var label = document.querySelector('[for="' + checkbox.id + '"]') ||
+                      checkbox.closest('label');
+          if (!label) return;
+          if (checkbox.checked) {
+            label.classList.add('checked');
+          } else {
+            label.classList.remove('checked');
+          }
+        }
+
+        function saveState() {
+          var state = {};
+          document.querySelectorAll('.audit-checkbox').forEach(function (cb) {
+            state[cb.id] = cb.checked;
+          });
+          try { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); } catch (e) {}
+        }
+
+        function loadState() {
+          try {
+            var raw = localStorage.getItem(STORAGE_KEY);
+            if (!raw) return;
+            var state = JSON.parse(raw);
+            document.querySelectorAll('.audit-checkbox').forEach(function (cb) {
+              if (state[cb.id]) {
+                cb.checked = true;
+                updateItemStyle(cb);
+              }
+            });
+          } catch (e) {}
+        }
+
+        // Event listeners
+        document.querySelectorAll('.audit-checkbox').forEach(function (cb) {
+          cb.addEventListener('change', function () {
+            updateItemStyle(cb);
+            updateUI();
+            saveState();
+          });
+        });
+
+        // Init
+        loadState();
+        updateUI();
+      })();
+    </script>
+
+  </body>
+</html>
