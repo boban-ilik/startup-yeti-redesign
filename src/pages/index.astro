@@ -85,6 +85,10 @@ function getCategoryColors(categorySlug: string) {
     <meta http-equiv="Expires" content="0" />
     <meta name="google-site-verification" content="fQzWw2KrEV8ca80-tLNylb8Pb7Bq9ksrGHRXpv0qjwM" />
 
+    <!-- Crawl + Discover directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+
     <!-- Primary Meta Tags -->
     <title>Startup Yeti | The Founder's Guide to Remote Teams</title>
     <meta name="title" content="Startup Yeti | The Founder's Guide to Remote Teams" />
@@ -113,8 +117,15 @@ function getCategoryColors(categorySlug: string) {
       "@type": "Organization",
       "name": "Startup Yeti",
       "url": "https://www.startupyeti.com",
-      "logo": "https://www.startupyeti.com/logo.png",
-      "description": "StartupYeti helps early-stage founders build, manage, and scale remote teams using proven frameworks like EOS.",
+      "logo": {
+        "@type": "ImageObject",
+        "url": "https://www.startupyeti.com/logo.png",
+        "width": 200,
+        "height": 60
+      },
+      "description": "Startup Yeti helps early-stage founders build, manage, and scale remote teams. Tactical advice on startups, productivity, remote work, and leadership.",
+      "foundingDate": "2023",
+      "knowsAbout": ["startups", "remote work", "productivity", "team management", "founder wellbeing", "marketing", "business strategy"],
       "sameAs": [
         "https://www.linkedin.com/company/startup-yeti/"
       ]
@@ -129,9 +140,19 @@ function getCategoryColors(categorySlug: string) {
       "name": "Startup Yeti",
       "url": "https://www.startupyeti.com",
       "description": "The Founder's Guide to Remote Teams",
+      "inLanguage": "en-US",
       "publisher": {
         "@type": "Organization",
-        "name": "Startup Yeti"
+        "name": "Startup Yeti",
+        "url": "https://www.startupyeti.com"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.startupyeti.com/blog?s={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
       }
     }
     </script>

@@ -47,6 +47,7 @@ export async function getStaticPaths() {
       title: decodeHtmlEntities(rawPost.title.rendered),
       content: rawPost.content.rendered,
       date: rawPost.date,
+      modified: rawPost.modified || rawPost.date,
       excerpt: rawPost.excerpt.rendered,
       categoryId: rawPost.categories[0],
       featuredImage: rawPost._embedded?.['wp:featuredmedia']?.[0] ? {
@@ -97,7 +98,7 @@ export async function getStaticPaths() {
     console.log(`Fetching all posts with embedded data from: ${WORDPRESS_BASE}`);
 
     while (hasMore) {
-      const url = `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=100&page=${page}&status=publish&_embed&_fields=id,slug,title,content,excerpt,date,categories,_links,_embedded`;
+      const url = `${WORDPRESS_BASE}/wp-json/wp/v2/posts?per_page=100&page=${page}&status=publish&_embed&_fields=id,slug,title,content,excerpt,date,modified,categories,_links,_embedded`;
       try {
         const response = await fetchWithRetry(url, {
           headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" }
@@ -185,6 +186,7 @@ const metaDescription = post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160);
 const metaTitle = `${post.title} | Startup Yeti`;
 const ogImage = post.featuredImage?.node?.sourceUrl || `${siteUrl}/logo.png`;
 const publishedDate = new Date(post.date).toISOString();
+const modifiedDate = new Date(post.modified || post.date).toISOString();
 const categoryName = post.categories.nodes[0]?.name || 'Article';
 ---
 
@@ -197,6 +199,10 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
     <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
     <link rel="apple-touch-icon" href="/favicon-192x192.png" />
     <meta name="google-site-verification" content="fQzWw2KrEV8ca80-tLNylb8Pb7Bq9ksrGHRXpv0qjwM" />
+
+    <!-- Crawl + Discover directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
 
     <!-- Primary Meta Tags -->
     <title>{metaTitle}</title>
@@ -232,20 +238,35 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
       "@type": "Article",
       "headline": post.title,
       "description": metaDescription,
-      "image": ogImage,
+      "image": {
+        "@type": "ImageObject",
+        "url": ogImage,
+        "width": 1200,
+        "height": 630
+      },
       "datePublished": publishedDate,
-      "dateModified": publishedDate,
+      "dateModified": modifiedDate,
       "author": {
         "@type": "Person",
-        "name": post.author.node.name
+        "name": post.author.node.name,
+        "url": `${siteUrl}/about`,
+        "sameAs": [
+          "https://www.linkedin.com/company/startup-yeti/"
+        ]
       },
       "publisher": {
         "@type": "Organization",
         "name": "Startup Yeti",
+        "url": siteUrl,
         "logo": {
           "@type": "ImageObject",
-          "url": `${siteUrl}/logo.png`
-        }
+          "url": `${siteUrl}/logo.png`,
+          "width": 200,
+          "height": 60
+        },
+        "sameAs": [
+          "https://www.linkedin.com/company/startup-yeti/"
+        ]
       },
       "mainEntityOfPage": {
         "@type": "WebPage",
@@ -254,7 +275,8 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
       "articleSection": categoryName,
       "keywords": post.tags.nodes.map(tag => tag.name).join(', '),
       "wordCount": wordCount,
-      "timeRequired": `PT${readingTime}M`
+      "timeRequired": `PT${readingTime}M`,
+      "inLanguage": "en-US"
     })} />
 
     <!-- Breadcrumb Schema -->
