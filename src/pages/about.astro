@@ -1,0 +1,318 @@
+---
+// src/pages/about.astro
+// About / Team page — author identity for E-E-A-T and Google Knowledge Panel
+import Footer from "../components/Footer.astro";
+
+const siteUrl = "https://www.startupyeti.com";
+const pageUrl = `${siteUrl}/about`;
+const pageTitle = "About Boban Ilik | Startup Yeti";
+const pageDescription = "Meet Boban Ilik, AI Growth Marketer, Outreach Manager, and founder of Startup Yeti — a resource helping founders build and scale remote teams.";
+
+const author = {
+  name: "Boban Ilik",
+  title: "AI Growth Marketer & Outreach Manager",
+  photo: "https://www.flow-agency.com/wp-content/uploads/2024/01/IMG_4990.jpg",
+  linkedin: "https://www.linkedin.com/in/bobanilik/",
+  bio: [
+    "Boban Ilik is an AI Growth Marketer and Outreach Manager with deep expertise in link-building, multilingual outreach strategy, and AI-driven growth. He founded Startup Yeti to give founders a no-fluff resource for navigating remote work, team management, and startup scaling — the things he works on every day.",
+    "His professional work spans executing high-impact link-building campaigns, building strategic partnerships, and applying AI tooling to growth workflows. He follows the work of leading SEO minds including Lily Ray, Koray Tuğberk Gübür, and Gael Breton, and recommends The Authority Hacker podcast to anyone serious about building an online presence.",
+    "Outside of work, Boban recharges with hiking, mountain biking, and snowboarding — and spends as much time as possible with his family."
+  ],
+  expertise: [
+    "AI-Driven Growth Marketing",
+    "Outreach & Link Building",
+    "Remote Team Strategy",
+    "Startup Scaling",
+    "SEO & Content Strategy",
+    "Founder Productivity",
+  ],
+  influences: ["Lily Ray", "Koray Tuğberk Gübür", "Gael Breton"],
+};
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
+
+    <!-- Crawl + Discover directives -->
+    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+
+    <!-- Primary Meta Tags -->
+    <title>{pageTitle}</title>
+    <meta name="title" content={pageTitle} />
+    <meta name="description" content={pageDescription} />
+    <link rel="canonical" href={pageUrl} />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="profile" />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:image" content={author.photo} />
+    <meta property="og:site_name" content="Startup Yeti" />
+    <meta property="profile:first_name" content="Boban" />
+    <meta property="profile:last_name" content="Ilik" />
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={pageUrl} />
+    <meta name="twitter:title" content={pageTitle} />
+    <meta name="twitter:description" content={pageDescription} />
+    <meta name="twitter:image" content={author.photo} />
+
+    <!-- Person Schema — core E-E-A-T signal for Google Knowledge Panel -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Person",
+      "name": author.name,
+      "jobTitle": author.title,
+      "url": pageUrl,
+      "image": {
+        "@type": "ImageObject",
+        "url": author.photo,
+        "width": 400,
+        "height": 400
+      },
+      "description": author.bio[0],
+      "sameAs": [
+        author.linkedin,
+      ],
+      "knowsAbout": [
+        "AI marketing", "growth marketing", "outreach strategy", "link building",
+        "remote work", "team management", "startup scaling", "SEO", "founder productivity"
+      ],
+      "worksFor": {
+        "@type": "Organization",
+        "name": "Startup Yeti",
+        "url": siteUrl
+      },
+      "founder": {
+        "@type": "Organization",
+        "name": "Startup Yeti",
+        "url": siteUrl
+      }
+    })} />
+
+    <!-- Organization Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "Startup Yeti",
+      "url": siteUrl,
+      "logo": {
+        "@type": "ImageObject",
+        "url": `${siteUrl}/logo.png`,
+        "width": 200,
+        "height": 60
+      },
+      "description": "Startup Yeti helps founders build and scale remote teams with tactical, no-fluff advice on startups, productivity, and leadership.",
+      "founder": {
+        "@type": "Person",
+        "name": author.name,
+        "url": pageUrl
+      },
+      "knowsAbout": ["startups", "remote work", "productivity", "team management", "founder wellbeing", "marketing"],
+      "sameAs": [
+        "https://www.linkedin.com/company/startup-yeti/"
+      ]
+    })} />
+
+    <!-- Breadcrumb Schema -->
+    <script type="application/ld+json" set:html={JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Home", "item": siteUrl },
+        { "@type": "ListItem", "position": 2, "name": "About", "item": pageUrl }
+      ]
+    })} />
+
+    <!-- Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5Y6SRMMDYG"></script>
+    <script is:inline src="/js/analytics.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+
+    <style>
+      img[src="/logo.png"] { background: transparent !important; mix-blend-mode: normal; }
+    </style>
+  </head>
+
+  <body class="bg-slate-50 text-slate-700 font-sans antialiased">
+
+    <!-- Nav -->
+    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm">
+      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+        <a href="/" class="flex items-center hover:opacity-80 transition-all duration-300">
+          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto object-contain" />
+        </a>
+        <a href="/blog" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
+          ← All Articles
+        </a>
+      </div>
+    </nav>
+
+    <main class="pt-20">
+
+      <!-- Hero -->
+      <section class="py-20 px-6 bg-gradient-to-b from-white to-slate-50">
+        <div class="max-w-4xl mx-auto">
+
+          <!-- Breadcrumb -->
+          <nav class="flex items-center gap-2 text-sm text-slate-400 mb-12" aria-label="Breadcrumb">
+            <a href="/" class="hover:text-yeti-600 transition-colors">Home</a>
+            <span>/</span>
+            <span class="text-slate-600 font-medium">About</span>
+          </nav>
+
+          <!-- Profile card -->
+          <div class="flex flex-col md:flex-row items-start gap-10">
+
+            <!-- Photo -->
+            <div class="flex-shrink-0">
+              <div class="relative">
+                <img
+                  src={author.photo}
+                  alt={`${author.name} — ${author.title}`}
+                  width="200"
+                  height="200"
+                  loading="eager"
+                  fetchpriority="high"
+                  class="w-40 h-40 md:w-48 md:h-48 rounded-2xl object-cover shadow-xl ring-4 ring-white"
+                />
+                <div class="absolute -bottom-3 -right-3 w-10 h-10 bg-yeti-600 rounded-xl flex items-center justify-center shadow-lg">
+                  <span class="text-white text-lg">✦</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Name + title + links -->
+            <div class="flex-1 pt-2">
+              <p class="text-yeti-600 text-xs font-bold uppercase tracking-widest mb-2">Founder & Author</p>
+              <h1 class="text-4xl md:text-5xl font-extrabold text-slate-900 font-serif mb-3 leading-tight">
+                {author.name}
+              </h1>
+              <p class="text-lg text-slate-500 font-medium mb-6">{author.title}</p>
+
+              <div class="flex flex-wrap gap-3">
+                <a
+                  href={author.linkedin}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-[#0A66C2] text-white text-sm font-bold hover:bg-[#0958a8] transition-colors shadow"
+                >
+                  <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+                  </svg>
+                  LinkedIn
+                </a>
+                <a
+                  href="/blog"
+                  class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-slate-200 text-slate-700 text-sm font-bold hover:border-yeti-500 hover:text-yeti-600 transition-colors"
+                >
+                  Read Articles →
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bio -->
+      <section class="py-16 px-6">
+        <div class="max-w-4xl mx-auto">
+          <div class="grid md:grid-cols-3 gap-12">
+
+            <!-- Long bio -->
+            <div class="md:col-span-2 space-y-5">
+              <h2 class="text-2xl font-bold text-slate-900 font-serif mb-6">About Boban</h2>
+              {author.bio.map((para) => (
+                <p class="text-slate-600 leading-relaxed text-lg">{para}</p>
+              ))}
+            </div>
+
+            <!-- Sidebar -->
+            <div class="space-y-8">
+
+              <!-- Expertise -->
+              <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Expertise</h3>
+                <ul class="space-y-2">
+                  {author.expertise.map((skill) => (
+                    <li class="flex items-center gap-2 text-sm text-slate-700 font-medium">
+                      <span class="w-1.5 h-1.5 rounded-full bg-yeti-500 flex-shrink-0"></span>
+                      {skill}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+
+              <!-- Influences -->
+              <div>
+                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-4">Follows & Recommends</h3>
+                <ul class="space-y-2">
+                  {author.influences.map((name) => (
+                    <li class="text-sm text-slate-700 font-medium">{name}</li>
+                  ))}
+                  <li class="text-sm text-slate-700 font-medium">The Authority Hacker podcast</li>
+                </ul>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- About Startup Yeti -->
+      <section class="py-16 px-6 bg-white border-t border-slate-100">
+        <div class="max-w-4xl mx-auto">
+          <div class="flex flex-col md:flex-row items-start gap-10">
+            <div class="flex-shrink-0">
+              <img src="/logo.png" alt="Startup Yeti" class="h-16 w-auto" />
+            </div>
+            <div>
+              <h2 class="text-2xl font-bold text-slate-900 font-serif mb-4">About Startup Yeti</h2>
+              <p class="text-slate-600 leading-relaxed text-lg mb-4">
+                Startup Yeti is a business blog for founders who are serious about building and scaling. Every article is written from hands-on experience — no recycled advice, no padding. Topics span startups, remote work, productivity, team management, marketing, and founder wellbeing.
+              </p>
+              <p class="text-slate-600 leading-relaxed text-lg">
+                The goal is simple: give founders the tactical clarity they need to make better decisions, faster.
+              </p>
+              <div class="mt-6 flex flex-wrap gap-3">
+                <a href="/blog" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-yeti-600 text-white text-sm font-bold hover:bg-yeti-700 transition-colors shadow">
+                  Browse All Articles
+                </a>
+                <a href="https://www.linkedin.com/company/startup-yeti/" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl border-2 border-slate-200 text-slate-700 text-sm font-bold hover:border-yeti-500 hover:text-yeti-600 transition-colors">
+                  Follow on LinkedIn
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+    <Footer />
+
+    <style>
+      :root {
+        --color-yeti-50: #f0f9ff;
+        --color-yeti-100: #e0f2fe;
+        --color-yeti-200: #bae6fd;
+        --color-yeti-500: #0ea5e9;
+        --color-yeti-600: #0284c7;
+        --color-yeti-700: #0369a1;
+        --color-yeti-900: #0c4a6e;
+      }
+    </style>
+  </body>
+</html>
