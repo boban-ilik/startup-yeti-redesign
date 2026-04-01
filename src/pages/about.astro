@@ -6,7 +6,7 @@ import Footer from "../components/Footer.astro";
 const siteUrl = "https://www.startupyeti.com";
 const pageUrl = `${siteUrl}/about`;
 const pageTitle = "About Boban Ilik | Startup Yeti";
-const pageDescription = "Meet Boban Ilik, AI Growth Marketer, Outreach Manager, and founder of Startup Yeti — a resource helping founders build and scale remote teams.";
+const pageDescription = "Meet Boban Ilik, AI Growth Marketer and Outreach Manager, founder of Startup Yeti — tactical no-fluff advice helping founders build and scale remote teams worldwide.";
 
 const author = {
   name: "Boban Ilik",
@@ -55,6 +55,9 @@ const author = {
     <meta property="og:title" content={pageTitle} />
     <meta property="og:description" content={pageDescription} />
     <meta property="og:image" content={author.photo} />
+    <meta property="og:image:width" content="400" />
+    <meta property="og:image:height" content="400" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Startup Yeti" />
     <meta property="profile:first_name" content="Boban" />
     <meta property="profile:last_name" content="Ilik" />
@@ -66,36 +69,40 @@ const author = {
     <meta name="twitter:description" content={pageDescription} />
     <meta name="twitter:image" content={author.photo} />
 
-    <!-- Person Schema — core E-E-A-T signal for Google Knowledge Panel -->
+    <!-- ProfilePage Schema — strongest E-E-A-T signal for Google Knowledge Panel -->
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
-      "@type": "Person",
-      "name": author.name,
-      "jobTitle": author.title,
+      "@type": "ProfilePage",
+      "@id": `${pageUrl}#profilepage`,
       "url": pageUrl,
-      "image": {
-        "@type": "ImageObject",
-        "url": author.photo,
-        "width": 400,
-        "height": 400
-      },
-      "description": author.bio[0],
-      "sameAs": [
-        author.linkedin,
-      ],
-      "knowsAbout": [
-        "AI marketing", "growth marketing", "outreach strategy", "link building",
-        "remote work", "team management", "startup scaling", "SEO", "founder productivity"
-      ],
-      "worksFor": {
-        "@type": "Organization",
-        "name": "Startup Yeti",
-        "url": siteUrl
-      },
-      "founder": {
-        "@type": "Organization",
-        "name": "Startup Yeti",
-        "url": siteUrl
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": `${siteUrl}/#website` },
+      "mainEntity": {
+        "@type": "Person",
+        "@id": `${siteUrl}/about#person`,
+        "name": author.name,
+        "jobTitle": author.title,
+        "url": pageUrl,
+        "image": {
+          "@type": "ImageObject",
+          "url": author.photo,
+          "width": 400,
+          "height": 400
+        },
+        "description": author.bio[0],
+        "sameAs": [
+          author.linkedin,
+        ],
+        "knowsAbout": [
+          "AI marketing", "growth marketing", "outreach strategy", "link building",
+          "remote work", "team management", "startup scaling", "SEO", "founder productivity"
+        ],
+        "worksFor": {
+          "@id": `${siteUrl}/#organization`
+        },
+        "founder": {
+          "@id": `${siteUrl}/#organization`
+        }
       }
     })} />
 
@@ -103,6 +110,7 @@ const author = {
     <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "Organization",
+      "@id": `${siteUrl}/#organization`,
       "name": "Startup Yeti",
       "url": siteUrl,
       "logo": {
@@ -112,11 +120,7 @@ const author = {
         "height": 60
       },
       "description": "Startup Yeti helps founders build and scale remote teams with tactical, no-fluff advice on startups, productivity, and leadership.",
-      "founder": {
-        "@type": "Person",
-        "name": author.name,
-        "url": pageUrl
-      },
+      "founder": { "@id": `${siteUrl}/about#person` },
       "knowsAbout": ["startups", "remote work", "productivity", "team management", "founder wellbeing", "marketing"],
       "sameAs": [
         "https://www.linkedin.com/company/startup-yeti/"

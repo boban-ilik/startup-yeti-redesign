@@ -83,7 +83,10 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta property="og:url" content="https://www.startupyeti.com/remote-work" />
     <meta property="og:title" content="Remote Work Best Practices | Startup Yeti" />
     <meta property="og:description" content="Build and manage distributed teams effectively. Tools, processes, and culture-building for remote-first organizations." />
-    <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+    <meta property="og:image" content="https://www.startupyeti.com/og-default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Startup Yeti" />
 
     <!-- Twitter -->
@@ -91,23 +94,28 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta name="twitter:url" content="https://www.startupyeti.com/remote-work" />
     <meta name="twitter:title" content="Remote Work Best Practices | Startup Yeti" />
     <meta name="twitter:description" content="Build and manage distributed teams effectively. Tools, processes, and culture-building for remote-first organizations." />
-    <meta name="twitter:image" content="https://www.startupyeti.com/logo.png" />
+    <meta name="twitter:image" content="https://www.startupyeti.com/og-default.png" />
 
     <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
+    <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "CollectionPage",
+      "@id": "https://www.startupyeti.com/remote-work#webpage",
       "name": "Remote Work",
       "description": "Build and manage distributed teams effectively. Tools, processes, and culture-building for remote-first organizations.",
       "url": "https://www.startupyeti.com/remote-work",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "Startup Yeti",
-        "url": "https://www.startupyeti.com"
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://www.startupyeti.com/#website" },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": posts.slice(0, 10).map((post, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "url": `https://www.startupyeti.com/remote-work/${post.slug}`,
+          "name": post.title
+        }))
       }
-    }
-    </script>
+    })} />
 
     <!-- Breadcrumb Schema -->
     <script type="application/ld+json">

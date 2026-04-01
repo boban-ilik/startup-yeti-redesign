@@ -83,7 +83,10 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta property="og:url" content="https://www.startupyeti.com/innovation/" />
     <meta property="og:title" content="Innovation Insights & Trends | Startup Yeti" />
     <meta property="og:description" content="Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship." />
-    <meta property="og:image" content="https://www.startupyeti.com/logo.png" />
+    <meta property="og:image" content="https://www.startupyeti.com/og-default.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="en_US" />
     <meta property="og:site_name" content="Startup Yeti" />
 
     <!-- Twitter -->
@@ -91,23 +94,28 @@ if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SIT
     <meta name="twitter:url" content="https://www.startupyeti.com/innovation/" />
     <meta name="twitter:title" content="Innovation Insights & Trends | Startup Yeti" />
     <meta name="twitter:description" content="Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship." />
-    <meta name="twitter:image" content="https://www.startupyeti.com/logo.png" />
+    <meta name="twitter:image" content="https://www.startupyeti.com/og-default.png" />
 
     <!-- JSON-LD Schema -->
-    <script type="application/ld+json">
-    {
+    <script type="application/ld+json" set:html={JSON.stringify({
       "@context": "https://schema.org",
       "@type": "CollectionPage",
+      "@id": "https://www.startupyeti.com/innovation#webpage",
       "name": "Innovation",
       "description": "Explore cutting-edge innovation strategies, emerging technologies, and disruptive business models. Stay ahead with insights on the future of entrepreneurship.",
-      "url": "https://www.startupyeti.com/innovation/",
-      "isPartOf": {
-        "@type": "WebSite",
-        "name": "Startup Yeti",
-        "url": "https://www.startupyeti.com"
+      "url": "https://www.startupyeti.com/innovation",
+      "inLanguage": "en-US",
+      "isPartOf": { "@id": "https://www.startupyeti.com/#website" },
+      "mainEntity": {
+        "@type": "ItemList",
+        "itemListElement": posts.slice(0, 10).map((post, i) => ({
+          "@type": "ListItem",
+          "position": i + 1,
+          "url": `https://www.startupyeti.com/innovation/${post.slug}`,
+          "name": post.title
+        }))
       }
-    }
-    </script>
+    })} />
 
     <!-- Breadcrumb Schema -->
     <script type="application/ld+json">
