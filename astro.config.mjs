@@ -14,7 +14,14 @@ export default defineConfig({
     sitemap({
       filter: (page) =>
         !page.includes('/debug') &&
-        !page.includes('/admin'),
+        !page.includes('/admin') &&
+        !page.includes('/sales/') &&
+        !page.includes('/trends/') &&
+        !page.includes('/content-marketing/') &&
+        !page.includes('/customer-experience/') &&
+        !page.includes('/employment/') &&
+        !page.includes('/leadership/') &&
+        !page.includes('/wellbeing/'),
       changefreq: 'weekly',
       priority: 0.7,
     })

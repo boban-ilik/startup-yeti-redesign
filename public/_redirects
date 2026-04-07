@@ -47,6 +47,10 @@
 /category/content-marketing  /marketing 301
 /category/leadership         /team-management 301
 
+# ── Pitchbook duplicate post consolidation ───────────────────────────────────
+/startup/decoding-pitchbook-pricing   /startup/the-cost-of-pitchbook 301
+/startup/decoding-pitchbook-pricing/  /startup/the-cost-of-pitchbook 301
+
 # ── Specific broken links (404s from previous SEO audit) ────────────────────
 /startup/why-are-remote-workers-ideal-for-a-startup   /remote-work 301
 /startup/why-are-remote-workers-ideal-for-a-startup/  /remote-work 301
