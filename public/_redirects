@@ -1,13 +1,15 @@
 # ── Deprecated categories: redirect posts AND category pages to canonical homes ──
 # These 301s must come FIRST so Cloudflare matches them before any static files.
-# Fixes "Alternate page with proper canonical tag" GSC issue (95 pages).
+# IMPORTANT: destination is the category HOMEPAGE (not :splat) because the slug
+# no longer exists at the destination — :splat caused a 301→404 chain in GSC.
 
-/sales/*              /business/:splat 301
-/trends/*             /startup/:splat 301
-/content-marketing/*  /marketing/:splat 301
-/customer-experience/* /business/:splat 301
-/employment/*         /startup/:splat 301
-/leadership/*         /team-management/:splat 301
+/sales/*              /business 301
+/trends/*             /startup 301
+/content-marketing/*  /marketing 301
+/customer-experience/* /business 301
+/employment/*         /startup 301
+/leadership/*         /team-management 301
+/wellbeing/*          /founder-wellbeing 301
 
 /sales                /business 301
 /trends               /startup 301
@@ -15,8 +17,10 @@
 /customer-experience  /business 301
 /employment           /startup 301
 /leadership           /team-management 301
+/wellbeing            /founder-wellbeing 301
 
 # ── Old WordPress /category/ prefix → new clean URLs ────────────────────────
+# Active categories: keep :splat (destination pages exist)
 /category/startup/*          /startup/:splat 301
 /category/business/*         /business/:splat 301
 /category/marketing/*        /marketing/:splat 301
@@ -25,12 +29,15 @@
 /category/innovation/*       /innovation/:splat 301
 /category/team-management/*  /team-management/:splat 301
 /category/founder-wellbeing/* /founder-wellbeing/:splat 301
-/category/sales/*            /business/:splat 301
-/category/trends/*           /startup/:splat 301
-/category/customer-experience/* /business/:splat 301
-/category/employment/*       /startup/:splat 301
-/category/content-marketing/* /marketing/:splat 301
-/category/leadership/*       /team-management/:splat 301
+
+# Deprecated categories: redirect to category homepage (slugs don't exist at destination)
+/category/sales/*            /business 301
+/category/trends/*           /startup 301
+/category/customer-experience/* /business 301
+/category/employment/*       /startup 301
+/category/content-marketing/* /marketing 301
+/category/leadership/*       /team-management 301
+/category/wellbeing/*        /founder-wellbeing 301
 
 /category/startup            /startup 301
 /category/business           /business 301
@@ -46,10 +53,15 @@
 /category/employment         /startup 301
 /category/content-marketing  /marketing 301
 /category/leadership         /team-management 301
+/category/wellbeing          /founder-wellbeing 301
 
 # ── Pitchbook duplicate post consolidation ───────────────────────────────────
 /startup/decoding-pitchbook-pricing   /startup/the-cost-of-pitchbook 301
 /startup/decoding-pitchbook-pricing/  /startup/the-cost-of-pitchbook 301
+
+# ── Miscellaneous missing pages ──────────────────────────────────────────────
+/contact-us   /about 301
+/contact-us/  /about 301
 
 # ── Specific broken links (404s from previous SEO audit) ────────────────────
 /startup/why-are-remote-workers-ideal-for-a-startup   /remote-work 301
