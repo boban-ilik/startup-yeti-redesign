@@ -1,0 +1,16 @@
+{
+  "version": 1,
+  "updated": "2026-04-28T09:02:40Z",
+  "pages": [
+    {
+      "slug": "startup-the-cost-of-pitchbook",
+      "url": "/startup/the-cost-of-pitchbook",
+      "log": "seo-notes/urls/startup-the-cost-of-pitchbook.md",
+      "target_keyword": "pitchbook pricing",
+      "cycles": 1,
+      "last_cycle": "2026-04-28",
+      "last_position": 45,
+      "cms": "wordpress-headless"
+    }
+  ]
+}
