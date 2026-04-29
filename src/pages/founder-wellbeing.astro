@@ -158,7 +158,7 @@ const posts = await fetchPosts(categoryName);
             {posts.map((post) => {
               const category = post.categories.nodes[0];
               const categorySlug = category?.slug || 'founder-wellbeing';
-              const readingTime = calculateReadingTime(post.excerpt);
+              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
               const postDate = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
               return (
