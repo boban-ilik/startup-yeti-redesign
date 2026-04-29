@@ -38,6 +38,7 @@ async function restGet<T = any>(url: string): Promise<T> {
       const response = await fetch(url, {
         headers: {
           "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)",
+          Accept: "application/json",
         },
       });
 
@@ -85,17 +86,29 @@ async function restGet<T = any>(url: string): Promise<T> {
 let postsCache: Promise<any[]> | null = null;
 let categoriesCache: Promise<any[]> | null = null;
 
-/** Fetch all published posts once, paginated. Cached for the build. */
+/** Fetch all published posts once, paginated. Cached for the build.
+ *
+ * Uses `_fields` to limit the response to ONLY what category/blog/index
+ * pages actually render. Critically excludes `content` (the largest field
+ * by far). Without this, the response can exceed limits that some WAFs
+ * and CDN edges configure for `_embed`-bearing requests, returning HTTP
+ * 415 — which is what was happening intermittently.
+ *
+ * Field list mirrors the [category]/[slug].astro page's working pattern.
+ */
 function getAllRawPosts(): Promise<any[]> {
   if (postsCache) return postsCache;
   postsCache = (async () => {
     const allPosts: any[] = [];
     let page = 1;
+    const fields =
+      "id,slug,title,excerpt,date,categories,_links,_embedded";
     while (true) {
       const url =
         `${WORDPRESS_BASE}/wp-json/wp/v2/posts` +
         `?per_page=100&page=${page}` +
-        `&status=publish&orderby=date&order=desc&_embed`;
+        `&status=publish&orderby=date&order=desc&_embed` +
+        `&_fields=${fields}`;
       let batch: any[];
       try {
         batch = await restGet<any[]>(url);
