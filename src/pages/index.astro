@@ -1,58 +1,12 @@
 ---
 // filepath: /Users/bobanilikj/startup-yeti-redesign/src/pages/index.astro
+import { fetchPosts } from "../lib/wordpress";
+
 const year = new Date().getFullYear();
 
-// Fetch recent blog posts from WordPress
-const WORDPRESS_URL = import.meta.env.WORDPRESS_URL || "https://YOUR-WORDPRESS-SITE.com/graphql";
-
-let posts = [];
-
-// Only fetch if WordPress is configured
-if (import.meta.env.WORDPRESS_URL && !WORDPRESS_URL.includes('YOUR-WORDPRESS-SITE')) {
-  try {
-    const response = await fetch(WORDPRESS_URL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)"
-      },
-      body: JSON.stringify({
-        query: `
-          query GetRecentPosts {
-            posts(first: 3, where: {orderby: {field: DATE, order: DESC}}) {
-              nodes {
-                slug
-                title
-                excerpt
-                date
-                featuredImage {
-                  node {
-                    sourceUrl
-                    altText
-                  }
-                }
-                categories {
-                  nodes {
-                    name
-                    slug
-                  }
-                }
-              }
-            }
-          }
-        `,
-      }),
-    });
-
-    const { data } = await response.json();
-    posts = data?.posts?.nodes || [];
-  } catch (error) {
-    console.error("Error fetching WordPress posts:", error);
-    // posts will remain empty array if fetch fails
-  }
-} else {
-  console.warn('WordPress URL not configured. Homepage will show no blog posts.');
-}
+// fetchPosts retries 3× before throwing — a throw here fails the build
+// so Cloudflare keeps the previous good deployment live.
+const posts = (await fetchPosts(undefined, 3)).slice(0, 3);
 
 // Helper function to calculate reading time
 function calculateReadingTime(excerpt: string) {
