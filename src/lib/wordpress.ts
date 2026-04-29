@@ -4,6 +4,11 @@
  * Uses the WordPress REST API (/wp-json/wp/v2/posts) instead of GraphQL,
  * because the WPGraphQL plugin is not active on admin.startupyeti.com.
  *
+ * Base URL is hardcoded (matching the [category]/[slug].astro page that
+ * already works on Cloudflare's build servers). The WORDPRESS_URL env var
+ * was unreliable — different values across local and Cloudflare environments
+ * caused 415 errors when the env var pointed at a non-WordPress endpoint.
+ *
  * Retries up to 3 times (with exponential backoff) on network or 5xx errors.
  * Does NOT retry on 4xx client errors (they won't resolve with retries).
  * If all retries fail, throws an error — this intentionally fails the
@@ -11,23 +16,12 @@
  * rather than deploying a broken site with no posts.
  */
 
-const WORDPRESS_URL = import.meta.env.WORDPRESS_URL;
+const WORDPRESS_BASE = "https://admin.startupyeti.com";
 const MAX_RETRIES = 3;
 const BASE_DELAY_MS = 2000;
 
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
-function getBaseUrl(): string {
-  if (!WORDPRESS_URL || WORDPRESS_URL.includes("YOUR-WORDPRESS-SITE")) {
-    throw new Error(
-      "WORDPRESS_URL is not configured. Set it in your .env file or Cloudflare Pages environment variables."
-    );
-  }
-  // Support both base URL ("https://admin.startupyeti.com") and
-  // graphql URL ("https://admin.startupyeti.com/graphql") in the env var.
-  return WORDPRESS_URL.replace(/\/graphql$/, "").replace(/\/$/, "");
 }
 
 async function restGet<T = any>(url: string): Promise<T> {
@@ -116,7 +110,7 @@ function transformPost(raw: any) {
 
 /** Fetch posts (optionally filtered by category name), up to `limit`. */
 export async function fetchPosts(categoryName?: string, limit = 100) {
-  const base = getBaseUrl();
+  const base = WORDPRESS_BASE;
 
   // Resolve category name → REST API ID (required for filtering)
   let categoryParam = "";
@@ -165,7 +159,7 @@ export async function fetchPosts(categoryName?: string, limit = 100) {
 
 /** Fetch a single post by slug. */
 export async function fetchPost(slug: string) {
-  const base = getBaseUrl();
+  const base = WORDPRESS_BASE;
   const posts = await restGet<any[]>(
     `${base}/wp-json/wp/v2/posts?slug=${encodeURIComponent(slug)}&status=publish&_embed`
   );

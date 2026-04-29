@@ -4,6 +4,11 @@ import { fetchPosts } from "../lib/wordpress";
 
 const year = new Date().getFullYear();
 
+// Exposed to the client-side search script via define:vars below.
+// The GraphQL endpoint is unavailable, so this stays empty — the search
+// script gracefully no-ops when wpUrl is empty.
+const WORDPRESS_URL = "";
+
 // fetchPosts retries 3× before throwing — a throw here fails the build
 // so Cloudflare keeps the previous good deployment live.
 const posts = (await fetchPosts(undefined, 3)).slice(0, 3);
