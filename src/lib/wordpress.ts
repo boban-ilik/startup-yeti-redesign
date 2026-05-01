@@ -109,16 +109,31 @@ function getAllRawPosts(): Promise<any[]> {
         `?per_page=100&page=${page}` +
         `&status=publish&orderby=date&order=desc&_embed` +
         `&_fields=${fields}`;
-      let batch: any[];
+      let batch: unknown;
       try {
-        batch = await restGet<any[]>(url);
+        batch = await restGet<unknown>(url);
       } catch (err) {
         const msg = err instanceof Error ? err.message : String(err);
         // WordPress returns 400 once we've passed the last page
         if (/HTTP 400/.test(msg) && page > 1 && allPosts.length > 0) break;
         throw err;
       }
-      if (!batch || batch.length === 0) break;
+
+      // Defensive: WordPress should return an array, but if a WAF/CDN
+      // returns a JSON challenge object or some plugin wraps the response,
+      // we'd crash with a confusing "spread requires iterable" error.
+      // Surface the actual payload so we can diagnose.
+      if (!Array.isArray(batch)) {
+        const preview =
+          typeof batch === "object" && batch !== null
+            ? JSON.stringify(batch).slice(0, 400)
+            : String(batch).slice(0, 400);
+        throw new Error(
+          `[wordpress] Expected array from ${url}, got ${typeof batch}. Body preview: ${preview}`
+        );
+      }
+
+      if (batch.length === 0) break;
       allPosts.push(...batch);
       if (batch.length < 100) break;
       page++;
