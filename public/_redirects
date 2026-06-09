@@ -93,3 +93,35 @@
 /blog/            /blog 301
 /calculator/      /calculator 301
 /privacy-policy/  /privacy-policy 301
+
+# ── Trailing slash normalisation: ALL article & deep pages (301, not auto-307) ──
+# ⚠️  STAGED 2026-06-09 — VERIFY ON A PREVIEW DEPLOY BEFORE TRUSTING IN PRODUCTION.
+#
+# WHY THIS EXISTS:
+#   Astro runs trailingSlash:'never'. Cloudflare auto-redirects /page/ → /page, but
+#   with a 307 (TEMPORARY). A 307 tells Google the move isn't permanent, so old
+#   WordPress trailing-slash URLs never drop out of "Crawled - currently not indexed"
+#   and ranking signal never consolidates onto the canonical no-slash URL. That is the
+#   root cause of the growing not-indexed count (35→190, Mar→Jun 2026).
+#
+#   The depth-1 rules ABOVE (e.g. /business/ → /business) already prove that explicit
+#   _redirects rules override Cloudflare's auto-307 on this site (verified live: 301).
+#   These placeholder rules extend the SAME proven fix to article-level URLs
+#   (/category/slug/) which can't be enumerated by hand.
+#
+# ORDER MATTERS: these are catch-alls and MUST stay at the very bottom of the file.
+#   Cloudflare matches top-to-bottom, first match wins — so every specific redirect
+#   above (deprecated cats, /category/ prefix, broken links) fires FIRST. Each :name
+#   placeholder matches exactly one path segment, so these only fire on URLs that still
+#   carry a trailing slash after the specific rules have had their chance.
+#
+# HOW TO VERIFY after the preview deploy is live (replace <preview-host>):
+#   curl -sI https://<preview-host>/business/customer-relationship-management-crm/ \
+#     | grep -iE '^HTTP|^location'
+#   EXPECT:  HTTP/2 301   +   location: /business/customer-relationship-management-crm
+#   (If you see 307, the placeholder rules did not take precedence — revert this block
+#    and fall back to enumerating the ~100 article URLs explicitly.)
+
+/:a/           /:a           301
+/:a/:b/        /:a/:b        301
+/:a/:b/:c/     /:a/:b/:c     301
