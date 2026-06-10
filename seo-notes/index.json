@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-04-28T09:02:40Z",
+  "updated": "2026-06-10T00:00:00Z",
   "pages": [
     {
       "slug": "startup-the-cost-of-pitchbook",
@@ -10,6 +10,17 @@
       "cycles": 1,
       "last_cycle": "2026-04-28",
       "last_position": 45,
+      "cms": "wordpress-headless"
+    },
+    {
+      "slug": "business-how-to-captivate-conscious-customers",
+      "url": "/business/how-to-captivate-conscious-customers",
+      "log": "seo-notes/urls/business-how-to-captivate-conscious-customers.md",
+      "target_keyword": "conscious consumerism",
+      "cycles": 1,
+      "last_cycle": "2026-06-10",
+      "last_position": null,
+      "last_verdict": "first-run",
       "cms": "wordpress-headless"
     }
   ]
