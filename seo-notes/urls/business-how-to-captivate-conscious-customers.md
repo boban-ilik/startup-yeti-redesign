@@ -21,7 +21,7 @@ Target keyword: **conscious consumerism** (400/mo, US, KD 14, CPC $0.30, traffic
 
 ## Cycle 1 — 2026-06-10
 
-**Status:** recommendations delivered (paste-ready doc: `~/Downloads/conscious-consumerism-rewrite.md`) — pending WordPress publish
+**Status:** applied — published in WordPress and verified live 2026-06-10 12:47 (rendered checks: H1 ×1, 7 new H2s, meta ✓, 1,697 words, keyword ×16, 4 internal links). Note: first rebuild baked stale WP REST cache (saved 12:31, build cloned 12:32) — second rebuild picked up the new content; allow 2-3 min between WP save and rebuild trigger in future.
 
 ### Context
 
