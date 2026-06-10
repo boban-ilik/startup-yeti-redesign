@@ -26,6 +26,33 @@ const WORDPRESS_BASE = "https://admin.startupyeti.com";
 const MAX_RETRIES = 3;
 const BASE_DELAY_MS = 2000;
 
+/**
+ * Deprecated WordPress categories → active site categories.
+ *
+ * ~33 posts in WordPress are still assigned to retired categories. Without
+ * this remap they generate at URLs like /sales/{slug}, which _redirects
+ * immediately 301s to the category homepage — so the article itself is
+ * unreachable on the live site (orphaned content, found in the June 2026
+ * GSC coverage audit). Remapping at build time makes every post render at
+ * a live, indexable URL (e.g. /business/{slug}) everywhere a category slug
+ * or name is derived: routes, listing links, breadcrumbs, schema.
+ *
+ * Must stay in sync with the redirect map in public/_redirects and the
+ * deprecated-category tables in .claude/CLAUDE.md.
+ */
+export const DEPRECATED_CATEGORY_REMAP: Record<
+  string,
+  { slug: string; name: string }
+> = {
+  sales: { slug: "business", name: "Business" },
+  trends: { slug: "startup", name: "Startup" },
+  "content-marketing": { slug: "marketing", name: "Marketing" },
+  "customer-experience": { slug: "business", name: "Business" },
+  employment: { slug: "startup", name: "Startup" },
+  leadership: { slug: "team-management", name: "Team Management" },
+  wellbeing: { slug: "founder-wellbeing", name: "Founder Wellbeing" },
+};
+
 function sleep(ms: number): Promise<void> {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
@@ -181,10 +208,12 @@ function transformPost(raw: any) {
     categories: {
       nodes: (
         (raw._embedded?.["wp:term"]?.[0] ?? []) as any[]
-      ).map((c) => ({
-        name: c.name as string,
-        slug: c.slug as string,
-      })),
+      ).map((c) => {
+        const remap = DEPRECATED_CATEGORY_REMAP[(c.slug as string).toLowerCase()];
+        return remap
+          ? { name: remap.name, slug: remap.slug }
+          : { name: c.name as string, slug: c.slug as string };
+      }),
     },
   };
 }
@@ -196,18 +225,25 @@ export async function fetchPosts(categoryName?: string, limit = 100) {
   let filtered = allPosts;
   if (categoryName) {
     const cats = await getAllCategories();
-    const match = cats.find(
-      (c) =>
-        c.name.toLowerCase() === categoryName.toLowerCase() ||
-        c.slug.toLowerCase() === categoryName.toLowerCase()
-    );
-    if (match) {
-      filtered = allPosts.filter((p) =>
-        Array.isArray(p.categories) ? p.categories.includes(match.id) : false
-      );
-    } else {
-      filtered = [];
-    }
+    const wanted = categoryName.toLowerCase();
+    // Match the requested category itself PLUS any deprecated category that
+    // remaps into it — so e.g. fetchPosts("Business") also returns posts
+    // still assigned to "sales" / "customer-experience" in WordPress.
+    const matchingIds = cats
+      .filter((c) => {
+        const remap = DEPRECATED_CATEGORY_REMAP[c.slug.toLowerCase()];
+        const effSlug = (remap ? remap.slug : c.slug).toLowerCase();
+        const effName = (remap ? remap.name : c.name).toLowerCase();
+        return effSlug === wanted || effName === wanted;
+      })
+      .map((c) => c.id);
+    filtered = matchingIds.length
+      ? allPosts.filter((p) =>
+          Array.isArray(p.categories)
+            ? p.categories.some((id: number) => matchingIds.includes(id))
+            : false
+        )
+      : [];
   }
 
   return filtered.slice(0, limit).map(transformPost);

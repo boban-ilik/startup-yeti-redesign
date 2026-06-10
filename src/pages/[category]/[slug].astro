@@ -1,6 +1,7 @@
 ---
 // src/pages/[category]/[slug].astro
 // Dynamic blog post page matching existing URL structure: /category/slug/
+import { DEPRECATED_CATEGORY_REMAP } from "../../lib/wordpress";
 
 // 1. Get all paths with ALL data pre-fetched — eliminates per-post API calls
 export async function getStaticPaths() {
@@ -65,10 +66,12 @@ export async function getStaticPaths() {
         }
       },
       categories: {
-        nodes: (rawPost._embedded?.['wp:term']?.[0] || []).map(cat => ({
-          name: cat.name,
-          slug: cat.slug
-        }))
+        nodes: (rawPost._embedded?.['wp:term']?.[0] || []).map(cat => {
+          const remap = DEPRECATED_CATEGORY_REMAP[(cat.slug || '').toLowerCase()];
+          return remap
+            ? { name: remap.name, slug: remap.slug }
+            : { name: cat.name, slug: cat.slug };
+        })
       },
       tags: {
         nodes: (rawPost._embedded?.['wp:term']?.[1] || []).map(tag => ({
@@ -87,7 +90,13 @@ export async function getStaticPaths() {
       { headers: { "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)" } }
     );
     const categories = await categoriesResponse.json();
-    const categoryMap = Object.fromEntries(categories.map(c => [c.id, { slug: c.slug, name: c.name }]));
+    // Remap deprecated WP categories to active ones so their posts generate
+    // at live URLs (e.g. /business/{slug}) instead of redirect-shadowed paths
+    // like /sales/{slug}. See DEPRECATED_CATEGORY_REMAP in lib/wordpress.ts.
+    const categoryMap = Object.fromEntries(categories.map(c => {
+      const remap = DEPRECATED_CATEGORY_REMAP[c.slug.toLowerCase()];
+      return [c.id, remap ? { slug: remap.slug, name: remap.name } : { slug: c.slug, name: c.name }];
+    }));
 
     // Fetch ALL posts with full data + embedded media/author/terms in one paginated pass.
     // This replaces ~N individual per-post API calls with ceil(N/100) requests total.

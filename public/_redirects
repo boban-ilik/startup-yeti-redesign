@@ -1,7 +1,96 @@
+# ── Un-orphaned posts: deprecated-category URLs → their new live URLs ────────
+# These 33 posts are still assigned to deprecated categories in WordPress.
+# DEPRECATED_CATEGORY_REMAP (src/lib/wordpress.ts) now generates them at live
+# URLs under their remapped category, so the old URLs must redirect to the
+# ARTICLE (not the category home). These specific rules MUST stay above the
+# /category/* wildcards below — Cloudflare matches top-down, first match wins.
+# Both slash forms are listed: the wildcards would otherwise swallow either.
+
+/sales/7-sales-tips-to-create-more-conversions    /business/7-sales-tips-to-create-more-conversions 301
+/sales/7-sales-tips-to-create-more-conversions/   /business/7-sales-tips-to-create-more-conversions 301
+/sales/ai-in-customer-service                     /business/ai-in-customer-service 301
+/sales/ai-in-customer-service/                    /business/ai-in-customer-service 301
+/sales/ecommerce-sales-strategies                 /business/ecommerce-sales-strategies 301
+/sales/ecommerce-sales-strategies/                /business/ecommerce-sales-strategies 301
+/sales/how-to-captivate-conscious-customers       /business/how-to-captivate-conscious-customers 301
+/sales/how-to-captivate-conscious-customers/      /business/how-to-captivate-conscious-customers 301
+/sales/why-customer-feedback-is-crucial           /business/why-customer-feedback-is-crucial 301
+/sales/why-customer-feedback-is-crucial/          /business/why-customer-feedback-is-crucial 301
+/sales/5-ways-to-build-your-brand-reputation      /business/5-ways-to-build-your-brand-reputation 301
+/sales/5-ways-to-build-your-brand-reputation/     /business/5-ways-to-build-your-brand-reputation 301
+
+/trends/10-actionable-pr-tips-to-create-name-recognition    /startup/10-actionable-pr-tips-to-create-name-recognition 301
+/trends/10-actionable-pr-tips-to-create-name-recognition/   /startup/10-actionable-pr-tips-to-create-name-recognition 301
+/trends/4-ways-to-use-linkedin-for-networking                /startup/4-ways-to-use-linkedin-for-networking 301
+/trends/4-ways-to-use-linkedin-for-networking/               /startup/4-ways-to-use-linkedin-for-networking 301
+/trends/5-productive-personality-traits-of-an-entrepreneur   /startup/5-productive-personality-traits-of-an-entrepreneur 301
+/trends/5-productive-personality-traits-of-an-entrepreneur/  /startup/5-productive-personality-traits-of-an-entrepreneur 301
+/trends/6-ways-to-successfully-onboard-new-employees         /startup/6-ways-to-successfully-onboard-new-employees 301
+/trends/6-ways-to-successfully-onboard-new-employees/        /startup/6-ways-to-successfully-onboard-new-employees 301
+/trends/corporate-gifts-for-clients-building-lasting-relationships   /startup/corporate-gifts-for-clients-building-lasting-relationships 301
+/trends/corporate-gifts-for-clients-building-lasting-relationships/  /startup/corporate-gifts-for-clients-building-lasting-relationships 301
+/trends/digital-meetings                                     /startup/digital-meetings 301
+/trends/digital-meetings/                                    /startup/digital-meetings 301
+/trends/how-can-your-company-attract-top-talents             /startup/how-can-your-company-attract-top-talents 301
+/trends/how-can-your-company-attract-top-talents/            /startup/how-can-your-company-attract-top-talents 301
+/trends/how-creative-brainstorming-can-actually-build-your-brand   /startup/how-creative-brainstorming-can-actually-build-your-brand 301
+/trends/how-creative-brainstorming-can-actually-build-your-brand/  /startup/how-creative-brainstorming-can-actually-build-your-brand 301
+/trends/how-do-you-define-your-target-audience               /startup/how-do-you-define-your-target-audience 301
+/trends/how-do-you-define-your-target-audience/              /startup/how-do-you-define-your-target-audience 301
+/trends/how-to-best-use-slack-to-your-advantage              /startup/how-to-best-use-slack-to-your-advantage 301
+/trends/how-to-best-use-slack-to-your-advantage/             /startup/how-to-best-use-slack-to-your-advantage 301
+/trends/how-to-set-up-a-stellar-onboarding-process           /startup/how-to-set-up-a-stellar-onboarding-process 301
+/trends/how-to-set-up-a-stellar-onboarding-process/          /startup/how-to-set-up-a-stellar-onboarding-process 301
+/trends/startup-myth-busters-debunking-entrepreneurship-misconceptions   /startup/startup-myth-busters-debunking-entrepreneurship-misconceptions 301
+/trends/startup-myth-busters-debunking-entrepreneurship-misconceptions/  /startup/startup-myth-busters-debunking-entrepreneurship-misconceptions 301
+/trends/the-secret-power-of-small-talk                       /startup/the-secret-power-of-small-talk 301
+/trends/the-secret-power-of-small-talk/                      /startup/the-secret-power-of-small-talk 301
+/trends/why-your-degree-might-not-matter                     /startup/why-your-degree-might-not-matter 301
+/trends/why-your-degree-might-not-matter/                    /startup/why-your-degree-might-not-matter 301
+/trends/women-entrepreneurs                                  /startup/women-entrepreneurs 301
+/trends/women-entrepreneurs/                                 /startup/women-entrepreneurs 301
+/trends/hybrid-learning                                      /startup/hybrid-learning 301
+/trends/hybrid-learning/                                     /startup/hybrid-learning 301
+
+/wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey   /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
+/wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey/  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
+
+/content-marketing/how-to-align-your-content-with-your-target-audience   /marketing/how-to-align-your-content-with-your-target-audience 301
+/content-marketing/how-to-align-your-content-with-your-target-audience/  /marketing/how-to-align-your-content-with-your-target-audience 301
+/content-marketing/how-to-find-engaging-content-ideas                    /marketing/how-to-find-engaging-content-ideas 301
+/content-marketing/how-to-find-engaging-content-ideas/                   /marketing/how-to-find-engaging-content-ideas 301
+/content-marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin   /marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin 301
+/content-marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin/  /marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin 301
+/content-marketing/social-listening                                       /marketing/social-listening 301
+/content-marketing/social-listening/                                      /marketing/social-listening 301
+/content-marketing/user-generated-content                                 /marketing/user-generated-content 301
+/content-marketing/user-generated-content/                                /marketing/user-generated-content 301
+/content-marketing/visuals-and-multimedia                                 /marketing/visuals-and-multimedia 301
+/content-marketing/visuals-and-multimedia/                                /marketing/visuals-and-multimedia 301
+
+/employment/exceptional-hr-managers                          /startup/exceptional-hr-managers 301
+/employment/exceptional-hr-managers/                         /startup/exceptional-hr-managers 301
+/employment/gig-workers                                      /startup/gig-workers 301
+/employment/gig-workers/                                     /startup/gig-workers 301
+/employment/high-school-graduates                            /startup/high-school-graduates 301
+/employment/high-school-graduates/                           /startup/high-school-graduates 301
+/employment/maximizing-the-value-of-offboarding              /startup/maximizing-the-value-of-offboarding 301
+/employment/maximizing-the-value-of-offboarding/             /startup/maximizing-the-value-of-offboarding 301
+/employment/the-gig-economy-impact-on-traditional-employment   /startup/the-gig-economy-impact-on-traditional-employment 301
+/employment/the-gig-economy-impact-on-traditional-employment/  /startup/the-gig-economy-impact-on-traditional-employment 301
+
+/leadership/costs-of-helicopter-management                   /team-management/costs-of-helicopter-management 301
+/leadership/costs-of-helicopter-management/                  /team-management/costs-of-helicopter-management 301
+
+/customer-experience/ai-technologies-redefining-customer-satisfaction    /business/ai-technologies-redefining-customer-satisfaction 301
+/customer-experience/ai-technologies-redefining-customer-satisfaction/   /business/ai-technologies-redefining-customer-satisfaction 301
+
 # ── Deprecated categories: redirect posts AND category pages to canonical homes ──
 # These 301s must come FIRST so Cloudflare matches them before any static files.
 # IMPORTANT: destination is the category HOMEPAGE (not :splat) because the slug
 # no longer exists at the destination — :splat caused a 301→404 chain in GSC.
+# (Specific un-orphaned post rules above intercept the 33 known posts first;
+# these wildcards remain as a safe fallback for any other legacy URL.)
 
 /sales/*              /business 301
 /trends/*             /startup 301
@@ -76,10 +165,13 @@
 /productivity/how-to-boost-your-companys-success-with-flexible-talent/  /productivity 301
 /team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management 301
 /team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management 301
-/trends/employee-wellness-programs   /founder-wellbeing 301
-/team-management/hybrid-learning     /team-management 301
-/marketing/5-ways-to-build-your-brand-reputation   /marketing 301
-/startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey  /founder-wellbeing 301
+# Targets below upgraded 2026-06-10: these articles are now live (un-orphaning),
+# so redirect to the article itself instead of a generic category home.
+/trends/employee-wellness-programs   /team-management/employee-wellness-programs 301
+/trends/employee-wellness-programs/  /team-management/employee-wellness-programs 301
+/team-management/hybrid-learning     /startup/hybrid-learning 301
+/marketing/5-ways-to-build-your-brand-reputation   /business/5-ways-to-build-your-brand-reputation 301
+/startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
 
 # ── Trailing slash normalisation (active categories only) ───────────────────
 /startup/         /startup 301
