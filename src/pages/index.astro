@@ -312,7 +312,7 @@ function getCategoryColors(categorySlug: string) {
       <div class="max-w-7xl mx-auto px-6 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
         <div class="text-center sm:text-left">
           <p class="font-bold text-slate-900 dark:text-slate-100 text-lg">Ready to scale your remote team?</p>
-          <p class="text-sm text-slate-600 dark:text-slate-400">Get our proven frameworks and tactics.</p>
+          <p class="hidden sm:block text-sm text-slate-600 dark:text-slate-400">Get our proven frameworks and tactics.</p>
         </div>
         <div class="flex gap-3">
           <button id="sticky-newsletter-btn" class="px-6 py-3 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all whitespace-nowrap">
@@ -961,7 +961,6 @@ function getCategoryColors(categorySlug: string) {
         const modalBackdrop = document.getElementById('modal-backdrop');
         const modalClose = document.getElementById('modal-close');
         const stickyNewsletterBtn = document.getElementById('sticky-newsletter-btn');
-        let modalShown = sessionStorage.getItem('newsletterModalShown') === 'true';
 
         function openModal() {
           modal.classList.remove('pointer-events-none', 'opacity-0');
@@ -980,27 +979,9 @@ function getCategoryColors(categorySlug: string) {
           document.body.style.overflow = '';
         }
 
-        // Show modal when user scrolls past the team section
-        if (!modalShown) {
-          const teamSection = Array.from(document.querySelectorAll('section')).find(section =>
-            section.textContent.includes('Meet the Team')
-          );
-
-          if (teamSection) {
-            const observer = new IntersectionObserver((entries) => {
-              entries.forEach(entry => {
-                if (entry.isIntersecting && entry.intersectionRatio > 0.5) {
-                  openModal();
-                  observer.disconnect();
-                }
-              });
-            }, {
-              threshold: 0.5
-            });
-
-            observer.observe(teamSection);
-          }
-        }
+        // Modal opens on explicit click only (sticky bar / nav buttons).
+        // Scroll-triggered auto-open was removed 2026-06-10: it locked body
+        // scroll mid-read and double-prompted alongside the sticky CTA bar.
 
         modalClose.addEventListener('click', closeModal);
         modalBackdrop.addEventListener('click', closeModal);
