@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-06-10T00:00:00Z",
+  "updated": "2026-06-15T00:00:00Z",
   "pages": [
     {
       "slug": "startup-the-cost-of-pitchbook",
@@ -19,6 +19,17 @@
       "target_keyword": "conscious consumerism",
       "cycles": 1,
       "last_cycle": "2026-06-10",
+      "last_position": null,
+      "last_verdict": "first-run",
+      "cms": "wordpress-headless"
+    },
+    {
+      "slug": "marketing-saas-growth-strategy",
+      "url": "/marketing/saas-growth-strategy",
+      "log": "seo-notes/urls/marketing-saas-growth-strategy.md",
+      "target_keyword": "saas growth strategy",
+      "cycles": 1,
+      "last_cycle": "2026-06-15",
       "last_position": null,
       "last_verdict": "first-run",
       "cms": "wordpress-headless"
