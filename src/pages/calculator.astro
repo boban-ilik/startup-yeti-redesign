@@ -388,6 +388,9 @@
             return;
           }
 
+          // GA4 key event — non-bot sessions only (syTrack undefined for bots).
+          if (window.syTrack) window.syTrack('calculator_use', {});
+
           // Calculate LTV
           // LTV = ARPA / Churn Rate (monthly)
           const ltv = arpa / (churn / 100);

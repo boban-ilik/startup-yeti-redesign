@@ -37,6 +37,12 @@
           submitButton.textContent = '✓ Subscribed!';
           submitButton.classList.add('bg-green-600');
 
+          // GA4 key event — fires only for non-bot sessions (window.syTrack is
+          // undefined when analytics.js short-circuits a bot).
+          if (window.syTrack) {
+            window.syTrack('newsletter_signup', { location: window.location.pathname });
+          }
+
           // Show success message
           showNotification('Success! Check your email to confirm.', 'success');
 
