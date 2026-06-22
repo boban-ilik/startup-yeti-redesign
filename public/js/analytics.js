@@ -23,9 +23,10 @@
     window.dataLayer = window.dataLayer || [];
     function gtag() { dataLayer.push(arguments); }
     gtag('js', new Date());
+    // GA4 anonymizes IPs automatically — the old UA-era `anonymize_ip` flag is
+    // ignored, so it's removed. `send_page_view` is GA4's default; kept explicit.
     gtag('config', 'G-5Y6SRMMDYG', {
-      send_page_view: true,
-      anonymize_ip: true
+      send_page_view: true
     });
   }
 })();
