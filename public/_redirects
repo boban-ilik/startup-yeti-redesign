@@ -1,120 +1,36 @@
 # ── WordPress media: front-domain image paths → the media host ──────────────
-# Some article bodies hardcode <img src="https://www.startupyeti.com/wp-content/...">,
-# but the static Astro site on www doesn't host /wp-content/ — those 404 (29 found
-# in the 2026-06 crawl). The real files live on admin.startupyeti.com. This 301
-# resolves every current and future www/wp-content image in one rule. Long-term,
-# WordPress should stop emitting www URLs in post image src.
+# Article bodies hardcode www.startupyeti.com/wp-content/ image URLs, but the
+# static Astro site on www doesn't serve /wp-content/ (404). The files live on
+# admin.startupyeti.com. One 301 resolves all current + future cases.
 /wp-content/*   https://admin.startupyeti.com/wp-content/:splat   301
 
-# ── Un-orphaned posts: deprecated-category URLs → their new live URLs ────────
-# These 33 posts are still assigned to deprecated categories in WordPress.
-# DEPRECATED_CATEGORY_REMAP (src/lib/wordpress.ts) now generates them at live
-# URLs under their remapped category, so the old URLs must redirect to the
-# ARTICLE (not the category home). These specific rules MUST stay above the
-# /category/* wildcards below — Cloudflare matches top-down, first match wins.
-# Both slash forms are listed: the wildcards would otherwise swallow either.
+# ── Deprecated-category EXCEPTIONS (must precede the wildcards below) ─────────
+# Posts whose live category is NOT the default remap of their old category.
+# First match wins, so these sit above the /trends/* wildcard.
+/trends/employee-wellness-programs    /team-management/employee-wellness-programs 301
+/trends/employee-wellness-programs/   /team-management/employee-wellness-programs 301
 
-/sales/7-sales-tips-to-create-more-conversions    /business/7-sales-tips-to-create-more-conversions 301
-/sales/7-sales-tips-to-create-more-conversions/   /business/7-sales-tips-to-create-more-conversions 301
-/sales/ai-in-customer-service                     /business/ai-in-customer-service 301
-/sales/ai-in-customer-service/                    /business/ai-in-customer-service 301
-/sales/ecommerce-sales-strategies                 /business/ecommerce-sales-strategies 301
-/sales/ecommerce-sales-strategies/                /business/ecommerce-sales-strategies 301
-/sales/how-to-captivate-conscious-customers       /business/how-to-captivate-conscious-customers 301
-/sales/how-to-captivate-conscious-customers/      /business/how-to-captivate-conscious-customers 301
-/sales/why-customer-feedback-is-crucial           /business/why-customer-feedback-is-crucial 301
-/sales/why-customer-feedback-is-crucial/          /business/why-customer-feedback-is-crucial 301
-/sales/5-ways-to-build-your-brand-reputation      /business/5-ways-to-build-your-brand-reputation 301
-/sales/5-ways-to-build-your-brand-reputation/     /business/5-ways-to-build-your-brand-reputation 301
+# ── Deprecated categories → live articles (slug preserved via :splat) ────────
+# The 36 un-orphaned posts now live at /{new-category}/{same-slug} (see
+# DEPRECATED_CATEGORY_REMAP in src/lib/wordpress.ts), so :splat maps each old
+# article URL straight to its live page. This replaces ~74 per-post rules —
+# Cloudflare Pages caps _redirects at 100 dynamic rules, which those exceeded.
+# Bare category pages (no slug) redirect to the category home.
+/sales/*               /business/:splat 301
+/trends/*              /startup/:splat 301
+/content-marketing/*   /marketing/:splat 301
+/customer-experience/* /business/:splat 301
+/employment/*          /startup/:splat 301
+/leadership/*          /team-management/:splat 301
+/wellbeing/*           /founder-wellbeing/:splat 301
 
-/trends/10-actionable-pr-tips-to-create-name-recognition    /startup/10-actionable-pr-tips-to-create-name-recognition 301
-/trends/10-actionable-pr-tips-to-create-name-recognition/   /startup/10-actionable-pr-tips-to-create-name-recognition 301
-/trends/4-ways-to-use-linkedin-for-networking                /startup/4-ways-to-use-linkedin-for-networking 301
-/trends/4-ways-to-use-linkedin-for-networking/               /startup/4-ways-to-use-linkedin-for-networking 301
-/trends/5-productive-personality-traits-of-an-entrepreneur   /startup/5-productive-personality-traits-of-an-entrepreneur 301
-/trends/5-productive-personality-traits-of-an-entrepreneur/  /startup/5-productive-personality-traits-of-an-entrepreneur 301
-/trends/6-ways-to-successfully-onboard-new-employees         /startup/6-ways-to-successfully-onboard-new-employees 301
-/trends/6-ways-to-successfully-onboard-new-employees/        /startup/6-ways-to-successfully-onboard-new-employees 301
-/trends/corporate-gifts-for-clients-building-lasting-relationships   /startup/corporate-gifts-for-clients-building-lasting-relationships 301
-/trends/corporate-gifts-for-clients-building-lasting-relationships/  /startup/corporate-gifts-for-clients-building-lasting-relationships 301
-/trends/digital-meetings                                     /startup/digital-meetings 301
-/trends/digital-meetings/                                    /startup/digital-meetings 301
-/trends/how-can-your-company-attract-top-talents             /startup/how-can-your-company-attract-top-talents 301
-/trends/how-can-your-company-attract-top-talents/            /startup/how-can-your-company-attract-top-talents 301
-/trends/how-creative-brainstorming-can-actually-build-your-brand   /startup/how-creative-brainstorming-can-actually-build-your-brand 301
-/trends/how-creative-brainstorming-can-actually-build-your-brand/  /startup/how-creative-brainstorming-can-actually-build-your-brand 301
-/trends/how-do-you-define-your-target-audience               /startup/how-do-you-define-your-target-audience 301
-/trends/how-do-you-define-your-target-audience/              /startup/how-do-you-define-your-target-audience 301
-/trends/how-to-best-use-slack-to-your-advantage              /startup/how-to-best-use-slack-to-your-advantage 301
-/trends/how-to-best-use-slack-to-your-advantage/             /startup/how-to-best-use-slack-to-your-advantage 301
-/trends/how-to-set-up-a-stellar-onboarding-process           /startup/how-to-set-up-a-stellar-onboarding-process 301
-/trends/how-to-set-up-a-stellar-onboarding-process/          /startup/how-to-set-up-a-stellar-onboarding-process 301
-/trends/startup-myth-busters-debunking-entrepreneurship-misconceptions   /startup/startup-myth-busters-debunking-entrepreneurship-misconceptions 301
-/trends/startup-myth-busters-debunking-entrepreneurship-misconceptions/  /startup/startup-myth-busters-debunking-entrepreneurship-misconceptions 301
-/trends/the-secret-power-of-small-talk                       /startup/the-secret-power-of-small-talk 301
-/trends/the-secret-power-of-small-talk/                      /startup/the-secret-power-of-small-talk 301
-/trends/why-your-degree-might-not-matter                     /startup/why-your-degree-might-not-matter 301
-/trends/why-your-degree-might-not-matter/                    /startup/why-your-degree-might-not-matter 301
-/trends/women-entrepreneurs                                  /startup/women-entrepreneurs 301
-/trends/women-entrepreneurs/                                 /startup/women-entrepreneurs 301
-/trends/hybrid-learning                                      /startup/hybrid-learning 301
-/trends/hybrid-learning/                                     /startup/hybrid-learning 301
-
-/wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey   /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
-/wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey/  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
-
-/content-marketing/how-to-align-your-content-with-your-target-audience   /marketing/how-to-align-your-content-with-your-target-audience 301
-/content-marketing/how-to-align-your-content-with-your-target-audience/  /marketing/how-to-align-your-content-with-your-target-audience 301
-/content-marketing/how-to-find-engaging-content-ideas                    /marketing/how-to-find-engaging-content-ideas 301
-/content-marketing/how-to-find-engaging-content-ideas/                   /marketing/how-to-find-engaging-content-ideas 301
-/content-marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin   /marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin 301
-/content-marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin/  /marketing/maximizing-your-reach-how-to-effectively-share-blog-posts-on-linkedin 301
-/content-marketing/social-listening                                       /marketing/social-listening 301
-/content-marketing/social-listening/                                      /marketing/social-listening 301
-/content-marketing/user-generated-content                                 /marketing/user-generated-content 301
-/content-marketing/user-generated-content/                                /marketing/user-generated-content 301
-/content-marketing/visuals-and-multimedia                                 /marketing/visuals-and-multimedia 301
-/content-marketing/visuals-and-multimedia/                                /marketing/visuals-and-multimedia 301
-
-/employment/exceptional-hr-managers                          /startup/exceptional-hr-managers 301
-/employment/exceptional-hr-managers/                         /startup/exceptional-hr-managers 301
-/employment/gig-workers                                      /startup/gig-workers 301
-/employment/gig-workers/                                     /startup/gig-workers 301
-/employment/high-school-graduates                            /startup/high-school-graduates 301
-/employment/high-school-graduates/                           /startup/high-school-graduates 301
-/employment/maximizing-the-value-of-offboarding              /startup/maximizing-the-value-of-offboarding 301
-/employment/maximizing-the-value-of-offboarding/             /startup/maximizing-the-value-of-offboarding 301
-/employment/the-gig-economy-impact-on-traditional-employment   /startup/the-gig-economy-impact-on-traditional-employment 301
-/employment/the-gig-economy-impact-on-traditional-employment/  /startup/the-gig-economy-impact-on-traditional-employment 301
-
-/leadership/costs-of-helicopter-management                   /team-management/costs-of-helicopter-management 301
-/leadership/costs-of-helicopter-management/                  /team-management/costs-of-helicopter-management 301
-
-/customer-experience/ai-technologies-redefining-customer-satisfaction    /business/ai-technologies-redefining-customer-satisfaction 301
-/customer-experience/ai-technologies-redefining-customer-satisfaction/   /business/ai-technologies-redefining-customer-satisfaction 301
-
-# ── Deprecated categories: redirect posts AND category pages to canonical homes ──
-# These 301s must come FIRST so Cloudflare matches them before any static files.
-# IMPORTANT: destination is the category HOMEPAGE (not :splat) because the slug
-# no longer exists at the destination — :splat caused a 301→404 chain in GSC.
-# (Specific un-orphaned post rules above intercept the 33 known posts first;
-# these wildcards remain as a safe fallback for any other legacy URL.)
-
-/sales/*              /business 301
-/trends/*             /startup 301
-/content-marketing/*  /marketing 301
-/customer-experience/* /business 301
-/employment/*         /startup 301
-/leadership/*         /team-management 301
-/wellbeing/*          /founder-wellbeing 301
-
-/sales                /business 301
-/trends               /startup 301
-/content-marketing    /marketing 301
-/customer-experience  /business 301
-/employment           /startup 301
-/leadership           /team-management 301
-/wellbeing            /founder-wellbeing 301
+/sales                 /business 301
+/trends                /startup 301
+/content-marketing     /marketing 301
+/customer-experience   /business 301
+/employment            /startup 301
+/leadership            /team-management 301
+/wellbeing             /founder-wellbeing 301
 
 # ── Old WordPress /category/ prefix → new clean URLs ────────────────────────
 # Active categories: keep :splat (destination pages exist)
@@ -127,7 +43,7 @@
 /category/team-management/*  /team-management/:splat 301
 /category/founder-wellbeing/* /founder-wellbeing/:splat 301
 
-# Deprecated categories: redirect to category homepage (slugs don't exist at destination)
+# Deprecated /category/ prefix → category homepage (oldest URL form; home is safe)
 /category/sales/*            /business 301
 /category/trends/*           /startup 301
 /category/customer-experience/* /business 301
@@ -136,6 +52,7 @@
 /category/leadership/*       /team-management 301
 /category/wellbeing/*        /founder-wellbeing 301
 
+# Bare /category/ pages
 /category/startup            /startup 301
 /category/business           /business 301
 /category/marketing          /marketing 301
@@ -160,7 +77,7 @@
 /contact-us   /about 301
 /contact-us/  /about 301
 
-# ── Specific broken links (404s from previous SEO audit) ────────────────────
+# ── Specific broken links (non-deprecated sources; from earlier SEO audits) ──
 /startup/why-are-remote-workers-ideal-for-a-startup   /remote-work 301
 /startup/why-are-remote-workers-ideal-for-a-startup/  /remote-work 301
 /team-management/how-to-set-up-a-stellar-onboarding-process   /team-management 301
@@ -173,55 +90,14 @@
 /productivity/how-to-boost-your-companys-success-with-flexible-talent/  /productivity 301
 /team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management 301
 /team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management 301
-# Targets below upgraded 2026-06-10: these articles are now live (un-orphaning),
-# so redirect to the article itself instead of a generic category home.
-/trends/employee-wellness-programs   /team-management/employee-wellness-programs 301
-/trends/employee-wellness-programs/  /team-management/employee-wellness-programs 301
 /team-management/hybrid-learning     /startup/hybrid-learning 301
 /marketing/5-ways-to-build-your-brand-reputation   /business/5-ways-to-build-your-brand-reputation 301
 /startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
 
-# ── Trailing slash normalisation (active categories only) ───────────────────
-/startup/         /startup 301
-/business/        /business 301
-/marketing/       /marketing 301
-/remote-work/     /remote-work 301
-/productivity/    /productivity 301
-/innovation/      /innovation 301
-/team-management/ /team-management 301
-/founder-wellbeing/ /founder-wellbeing 301
-/blog/            /blog 301
-/calculator/      /calculator 301
-/privacy-policy/  /privacy-policy 301
-
-# ── Trailing slash normalisation: ALL article & deep pages (301, not auto-307) ──
-# ⚠️  STAGED 2026-06-09 — VERIFY ON A PREVIEW DEPLOY BEFORE TRUSTING IN PRODUCTION.
-#
-# WHY THIS EXISTS:
-#   Astro runs trailingSlash:'never'. Cloudflare auto-redirects /page/ → /page, but
-#   with a 307 (TEMPORARY). A 307 tells Google the move isn't permanent, so old
-#   WordPress trailing-slash URLs never drop out of "Crawled - currently not indexed"
-#   and ranking signal never consolidates onto the canonical no-slash URL. That is the
-#   root cause of the growing not-indexed count (35→190, Mar→Jun 2026).
-#
-#   The depth-1 rules ABOVE (e.g. /business/ → /business) already prove that explicit
-#   _redirects rules override Cloudflare's auto-307 on this site (verified live: 301).
-#   These placeholder rules extend the SAME proven fix to article-level URLs
-#   (/category/slug/) which can't be enumerated by hand.
-#
-# ORDER MATTERS: these are catch-alls and MUST stay at the very bottom of the file.
-#   Cloudflare matches top-to-bottom, first match wins — so every specific redirect
-#   above (deprecated cats, /category/ prefix, broken links) fires FIRST. Each :name
-#   placeholder matches exactly one path segment, so these only fire on URLs that still
-#   carry a trailing slash after the specific rules have had their chance.
-#
-# HOW TO VERIFY after the preview deploy is live (replace <preview-host>):
-#   curl -sI https://<preview-host>/business/customer-relationship-management-crm/ \
-#     | grep -iE '^HTTP|^location'
-#   EXPECT:  HTTP/2 301   +   location: /business/customer-relationship-management-crm
-#   (If you see 307, the placeholder rules did not take precedence — revert this block
-#    and fall back to enumerating the ~100 article URLs explicitly.)
-
+# ── Trailing slash normalisation (forces 301, not Cloudflare's auto-307) ─────
+# These placeholder catch-alls strip the trailing slash on ALL pages at any depth
+# (depth-1 like /startup/ included — so no per-page rules are needed). Must stay
+# at the very bottom: first match wins, so every specific rule above fires first.
 /:a/           /:a           301
 /:a/:b/        /:a/:b        301
 /:a/:b/:c/     /:a/:b/:c     301
