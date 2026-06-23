@@ -1,3 +1,11 @@
+# ── WordPress media: front-domain image paths → the media host ──────────────
+# Some article bodies hardcode <img src="https://www.startupyeti.com/wp-content/...">,
+# but the static Astro site on www doesn't host /wp-content/ — those 404 (29 found
+# in the 2026-06 crawl). The real files live on admin.startupyeti.com. This 301
+# resolves every current and future www/wp-content image in one rule. Long-term,
+# WordPress should stop emitting www URLs in post image src.
+/wp-content/*   https://admin.startupyeti.com/wp-content/:splat   301
+
 # ── Un-orphaned posts: deprecated-category URLs → their new live URLs ────────
 # These 33 posts are still assigned to deprecated categories in WordPress.
 # DEPRECATED_CATEGORY_REMAP (src/lib/wordpress.ts) now generates them at live
