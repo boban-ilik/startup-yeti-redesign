@@ -4,12 +4,6 @@
 # admin.startupyeti.com. One 301 resolves all current + future cases.
 /wp-content/*   https://admin.startupyeti.com/wp-content/:splat   301
 
-# ── Deprecated-category EXCEPTIONS (must precede the wildcards below) ─────────
-# Posts whose live category is NOT the default remap of their old category.
-# First match wins, so these sit above the /trends/* wildcard.
-/trends/employee-wellness-programs    /team-management/employee-wellness-programs 301
-/trends/employee-wellness-programs/   /team-management/employee-wellness-programs 301
-
 # ── Deprecated categories → live articles (slug preserved via :splat) ────────
 # The 36 un-orphaned posts now live at /{new-category}/{same-slug} (see
 # DEPRECATED_CATEGORY_REMAP in src/lib/wordpress.ts), so :splat maps each old
@@ -93,6 +87,12 @@
 /team-management/hybrid-learning     /startup/hybrid-learning 301
 /marketing/5-ways-to-build-your-brand-reputation   /business/5-ways-to-build-your-brand-reputation 301
 /startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
+# Deprecated-category exception caught at the destination: "employee-wellness-programs"
+# was under "trends" but lives under team-management, not the default trends→startup.
+# Cloudflare prod evaluates the /trends/* splat before an exact override, so we let the
+# splat send it to /startup/… then catch it here (/startup/* has no competing splat).
+/startup/employee-wellness-programs   /team-management/employee-wellness-programs 301
+/startup/employee-wellness-programs/  /team-management/employee-wellness-programs 301
 
 # ── Trailing slash normalisation (forces 301, not Cloudflare's auto-307) ─────
 # These placeholder catch-alls strip the trailing slash on ALL pages at any depth
