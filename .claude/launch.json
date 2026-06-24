@@ -2,6 +2,12 @@
   "version": "0.0.1",
   "configurations": [
     {
+      "name": "startup-yeti-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["run", "dev"],
+      "port": 4321
+    },
+    {
       "name": "startup-yeti",
       "runtimeExecutable": "npm",
       "runtimeArgs": ["run", "preview"],
