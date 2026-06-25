@@ -194,6 +194,12 @@ function transformPost(raw: any) {
             altText: (raw._embedded["wp:featuredmedia"][0].alt_text ||
               raw.title?.rendered ||
               "") as string,
+            mediaDetails: {
+              width: (raw._embedded["wp:featuredmedia"][0].media_details?.width ??
+                1200) as number,
+              height: (raw._embedded["wp:featuredmedia"][0].media_details?.height ??
+                630) as number,
+            },
           },
         }
       : null,

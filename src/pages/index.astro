@@ -713,6 +713,9 @@ function getCategoryColors(categorySlug: string) {
                         <img
                           src={post.featuredImage.node.sourceUrl}
                           alt={post.featuredImage.node.altText || post.title}
+                          width={post.featuredImage.node.mediaDetails?.width || 1200}
+                          height={post.featuredImage.node.mediaDetails?.height || 630}
+                          loading="lazy"
                           class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
                         />
                         <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
