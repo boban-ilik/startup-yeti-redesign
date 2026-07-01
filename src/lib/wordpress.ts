@@ -23,7 +23,7 @@
  */
 
 const WORDPRESS_BASE = "https://admin.startupyeti.com";
-const MAX_RETRIES = 3;
+const MAX_RETRIES = 5;
 const BASE_DELAY_MS = 2000;
 
 /**
@@ -64,8 +64,13 @@ async function restGet<T = any>(url: string): Promise<T> {
     try {
       const response = await fetch(url, {
         headers: {
-          "User-Agent": "StartupYeti/1.0 (Astro Static Site Generator)",
+          // Browser-like UA: Imunify360 bot-protection on the WP host blocks
+          // obvious automation user-agents. X-SY-Build still identifies our
+          // build traffic in server logs without tripping the bot filter.
+          "User-Agent":
+            "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36",
           Accept: "application/json",
+          "X-SY-Build": "astro-static-generator",
         },
       });
 
@@ -75,7 +80,26 @@ async function restGet<T = any>(url: string): Promise<T> {
         );
       }
 
-      return (await response.json()) as T;
+      const data = (await response.json()) as any;
+
+      // Imunify360 bot-protection returns HTTP 200 with a JSON block body
+      // (not an error status), which otherwise slips past this retry loop and
+      // aborts the whole build. Detect it and throw a retryable error — the
+      // block is intermittent, so a later attempt in the backoff window
+      // usually gets through.
+      if (
+        data &&
+        typeof data === "object" &&
+        !Array.isArray(data) &&
+        typeof data.message === "string" &&
+        /imunify360|bot[- ]?protection|access denied/i.test(data.message)
+      ) {
+        throw new Error(
+          `WordPress fetch blocked by bot-protection on attempt ${attempt}: ${data.message.slice(0, 80)}`
+        );
+      }
+
+      return data as T;
     } catch (err) {
       lastError = err instanceof Error ? err : new Error(String(err));
 
