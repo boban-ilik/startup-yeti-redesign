@@ -158,7 +158,7 @@ const posts = await fetchPosts(categoryName);
             {posts.map((post) => {
               const category = post.categories.nodes[0];
               const categorySlug = category?.slug || 'founder-wellbeing';
-              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+              const readingTime = 5; // fixed estimate: cards don't fetch full content
               const postDate = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
               return (

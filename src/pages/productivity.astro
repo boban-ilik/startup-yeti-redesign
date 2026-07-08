@@ -188,7 +188,7 @@ const posts = await fetchPosts(categoryName);
           <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10">
             {posts.map((post) => {
               const category = post.categories.nodes[0];
-              const readingTime = Math.ceil(post.excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length / 50);
+              const readingTime = 5; // fixed estimate: cards don't fetch full content
 
               return (
                 <article class="group bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 overflow-hidden hover:shadow-2xl hover:border-amber-200 dark:hover:border-amber-800 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col">

@@ -13,12 +13,6 @@ const WORDPRESS_URL = "";
 // so Cloudflare keeps the previous good deployment live.
 const posts = (await fetchPosts(undefined, 3)).slice(0, 3);
 
-// Helper function to calculate reading time
-function calculateReadingTime(excerpt: string) {
-  const words = excerpt.replace(/<[^>]*>/g, '').split(/\s+/).length;
-  return Math.max(1, Math.ceil(words / 200)); // Assume 200 words per minute
-}
-
 // Helper function to get category color scheme
 function getCategoryColors(categorySlug: string) {
   const colorMap = {
@@ -702,7 +696,7 @@ function getCategoryColors(categorySlug: string) {
               const categorySlug = category?.slug || 'default';
               const categoryName = category?.name || 'Article';
               const colors = getCategoryColors(categorySlug);
-              const readingTime = calculateReadingTime(post.excerpt);
+              const readingTime = 5; // fixed estimate: cards don't fetch full content
               const postDate = new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 
               return (
