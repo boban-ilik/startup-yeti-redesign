@@ -82,8 +82,10 @@
 /marketing/which-marketing-strategies-are-best-for-a-startup-budget/  /marketing 301
 /productivity/how-to-boost-your-companys-success-with-flexible-talent   /productivity 301
 /productivity/how-to-boost-your-companys-success-with-flexible-talent/  /productivity 301
-/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management 301
-/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management 301
+# Retargeted from the /team-management category page to the specific post it
+# consolidates into, as part of the 2026-07-21 content prune (see below).
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management/the-right-talent-for-your-team 301
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management/the-right-talent-for-your-team 301
 /team-management/hybrid-learning     /startup/hybrid-learning 301
 /marketing/5-ways-to-build-your-brand-reputation   /business/5-ways-to-build-your-brand-reputation 301
 /startup/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey  /founder-wellbeing/how-to-cope-with-stress-and-uncertainty-on-the-startup-journey 301
@@ -113,12 +115,11 @@
 /startup/7-reasons-why-collaboration-are-crucial-for-startups/  /team-management/people-management-tips-unlocking-the-potential-of-your-team 301
 /startup/how-to-celebrate-small-wins                    /team-management/benefits-for-teams-culture 301
 /startup/how-to-celebrate-small-wins/                   /team-management/benefits-for-teams-culture 301
-# Both the /business/ and legacy /team-management/ variants point at the same
-# final target so neither becomes a redirect chain.
+# The legacy /team-management/ variant of this slug already has a rule further
+# up (retargeted to the same destination), so only the /business/ variant is
+# added here — Cloudflare rejects the whole file on a duplicate path.
 /business/3-ways-business-leaders-can-practice-and-cultivate-empathy    /team-management/the-right-talent-for-your-team 301
 /business/3-ways-business-leaders-can-practice-and-cultivate-empathy/   /team-management/the-right-talent-for-your-team 301
-/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management/the-right-talent-for-your-team 301
-/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management/the-right-talent-for-your-team 301
 
 # ── Trailing slash normalisation (forces 301, not Cloudflare's auto-307) ─────
 # These placeholder catch-alls strip the trailing slash on ALL pages at any depth
