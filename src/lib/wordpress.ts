@@ -1,3 +1,5 @@
+import { REDIRECTED_SLUGS } from "../data/noindex.js";
+
 /**
  * WordPress REST API fetch utility with retry logic and module-level caching.
  *
@@ -250,7 +252,11 @@ function transformPost(raw: any) {
 
 /** Fetch posts (optionally filtered by category name), up to `limit`. */
 export async function fetchPosts(categoryName?: string, limit = 100) {
-  const allPosts = await getAllRawPosts();
+  // Pruned posts are 301'd away, so they must not appear in any listing —
+  // otherwise category/blog cards would link straight into a redirect.
+  const allPosts = (await getAllRawPosts()).filter(
+    (p: any) => !REDIRECTED_SLUGS.has(p.slug)
+  );
 
   let filtered = allPosts;
   if (categoryName) {

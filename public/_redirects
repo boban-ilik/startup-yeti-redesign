@@ -94,6 +94,32 @@
 /startup/employee-wellness-programs   /team-management/employee-wellness-programs 301
 /startup/employee-wellness-programs/  /team-management/employee-wellness-programs 301
 
+# ── Content prune: thin legacy posts WITH backlinks, 301'd to consolidate ────
+# From the GSC "Crawled - currently not indexed" audit (2026-07-21). Each of
+# these had 3+ referring domains, so they are redirected to the closest
+# relevant post rather than noindexed (which would strand that equity).
+# Thin posts with 0-2 referring domains are noindexed instead: src/data/noindex.js
+/marketing/the-meme-ification-of-marketing              /marketing/brand-recognition 301
+/marketing/the-meme-ification-of-marketing/             /marketing/brand-recognition 301
+/startup/gen-z-shaping-startups                         /startup/hiring-for-startups 301
+/startup/gen-z-shaping-startups/                        /startup/hiring-for-startups 301
+/business/multi-generational-leadership                 /team-management/the-right-talent-for-your-team 301
+/business/multi-generational-leadership/                /team-management/the-right-talent-for-your-team 301
+/productivity/flexibility-is-the-future-of-work         /remote-work/tips-for-remote-work 301
+/productivity/flexibility-is-the-future-of-work/        /remote-work/tips-for-remote-work 301
+/startup/intern-season-is-open                          /startup/6-ways-to-use-interns-in-your-startup 301
+/startup/intern-season-is-open/                         /startup/6-ways-to-use-interns-in-your-startup 301
+/startup/7-reasons-why-collaboration-are-crucial-for-startups   /team-management/people-management-tips-unlocking-the-potential-of-your-team 301
+/startup/7-reasons-why-collaboration-are-crucial-for-startups/  /team-management/people-management-tips-unlocking-the-potential-of-your-team 301
+/startup/how-to-celebrate-small-wins                    /team-management/benefits-for-teams-culture 301
+/startup/how-to-celebrate-small-wins/                   /team-management/benefits-for-teams-culture 301
+# Both the /business/ and legacy /team-management/ variants point at the same
+# final target so neither becomes a redirect chain.
+/business/3-ways-business-leaders-can-practice-and-cultivate-empathy    /team-management/the-right-talent-for-your-team 301
+/business/3-ways-business-leaders-can-practice-and-cultivate-empathy/   /team-management/the-right-talent-for-your-team 301
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy   /team-management/the-right-talent-for-your-team 301
+/team-management/3-ways-business-leaders-can-practice-and-cultivate-empathy/  /team-management/the-right-talent-for-your-team 301
+
 # ── Trailing slash normalisation (forces 301, not Cloudflare's auto-307) ─────
 # These placeholder catch-alls strip the trailing slash on ALL pages at any depth
 # (depth-1 like /startup/ included — so no per-page rules are needed). Must stay

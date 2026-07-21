@@ -2,6 +2,7 @@
 // src/pages/[category]/[slug].astro
 // Dynamic blog post page matching existing URL structure: /category/slug/
 import { DEPRECATED_CATEGORY_REMAP } from "../../lib/wordpress";
+import { isNoIndex, isRedirected } from "../../data/noindex.js";
 
 // 1. Get all paths with ALL data pre-fetched — eliminates per-post API calls
 export async function getStaticPaths() {
@@ -139,8 +140,13 @@ export async function getStaticPaths() {
       return [];
     }
 
-    // Transform all posts into template-ready shape
-    const allPosts = allRawPosts.map(transformPost);
+    // Transform all posts into template-ready shape.
+    // Pruned posts that are 301'd elsewhere are dropped here so no static asset
+    // is generated (an asset would take precedence over the _redirects rule).
+    const allPosts = allRawPosts.map(transformPost).filter((post) => {
+      const catInfo = categoryMap[post.categoryId] || { slug: 'uncategorized' };
+      return !isRedirected(catInfo.slug.toLowerCase(), post.slug);
+    });
 
     // Build one static path per post with all data pre-computed as props
     return allPosts.map((post) => {
@@ -202,6 +208,12 @@ const pageUrl = `${siteUrl}/${category}/${slug}`;
 const metaDescription = post.excerpt.replace(/<[^>]*>/g, '').substring(0, 160);
 const metaTitle = `${post.title} | Startup Yeti`;
 const ogImage = post.featuredImage?.node?.sourceUrl || `${siteUrl}/og-default.png`;
+
+// Thin legacy posts excluded from indexing (see src/data/noindex.js).
+// "follow" is deliberate: internal links still pass through these pages.
+const robotsDirective = isNoIndex(category, slug)
+  ? "noindex, follow, max-image-preview:large"
+  : "index, follow, max-image-preview:large";
 const publishedDate = new Date(post.date).toISOString();
 const modifiedDate = new Date(post.modified || post.date).toISOString();
 const categoryName = post.categories.nodes[0]?.name || 'Article';
@@ -218,8 +230,8 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
     <meta name="google-site-verification" content="fQzWw2KrEV8ca80-tLNylb8Pb7Bq9ksrGHRXpv0qjwM" />
 
     <!-- Crawl + Discover directives -->
-    <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={robotsDirective} />
+    <meta name="googlebot" content={robotsDirective} />
 
     <!-- Primary Meta Tags -->
     <title>{metaTitle}</title>
