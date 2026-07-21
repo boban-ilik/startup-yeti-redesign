@@ -334,7 +334,15 @@ function getCategoryColors(categorySlug: string) {
 
         <div class="max-w-5xl mx-auto relative z-10 pb-36 md:pb-44">
           <!-- Enhanced badge with glow effect -->
-          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-widest mb-10 hover:border-yeti-300 hover:shadow-glow transition-all cursor-default animate-slide-down">
+          <!--
+            Tracking is tightened on small screens on purpose. At 412px the
+            available width is ~364px: this badge measures ~359px on one line
+            in Inter but ~365px in the fallback font, so before the async
+            webfont arrived it wrapped to two lines and then snapped back to
+            one, shifting the whole hero up 16px (CLS ~0.13 on mobile).
+            tracking-wider keeps it on a single line in both fonts.
+          -->
+          <div class="inline-flex items-center gap-2 py-2 px-4 sm:px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-wider sm:tracking-widest mb-10 hover:border-yeti-300 hover:shadow-glow transition-all cursor-default animate-slide-down">
             <span class="w-2 h-2 rounded-full bg-yeti-500 animate-pulse shadow-glow"></span>
             Operational Excellence for Startups
           </div>
