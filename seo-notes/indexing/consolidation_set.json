@@ -1,0 +1,569 @@
+[
+ {
+  "slug": "gamification",
+  "path": "/business/gamification",
+  "w": 1027,
+  "links": 1,
+  "imp": 9,
+  "rd": 11,
+  "saved": false
+ },
+ {
+  "slug": "local-businesses-global-trends",
+  "path": "/business/local-businesses-global-trends",
+  "w": 1036,
+  "links": 2,
+  "imp": 9,
+  "rd": 8,
+  "saved": false
+ },
+ {
+  "slug": "hiring-for-startups",
+  "path": "/startup/hiring-for-startups",
+  "w": 1060,
+  "links": 4,
+  "imp": 1,
+  "rd": 8,
+  "saved": false
+ },
+ {
+  "slug": "effective-employee-feedback-real-world-examples",
+  "path": "/team-management/effective-employee-feedback-real-world-examples",
+  "w": 749,
+  "links": 5,
+  "imp": 0,
+  "rd": 8,
+  "saved": false
+ },
+ {
+  "slug": "the-path-to-seed-funding",
+  "path": "/startup/the-path-to-seed-funding",
+  "w": 1299,
+  "links": 2,
+  "imp": 0,
+  "rd": 8,
+  "saved": false
+ },
+ {
+  "slug": "seed-stage-startups",
+  "path": "/startup/seed-stage-startups",
+  "w": 1241,
+  "links": 5,
+  "imp": 52,
+  "rd": 7,
+  "saved": false
+ },
+ {
+  "slug": "startup-insurance-101",
+  "path": "/startup/startup-insurance-101",
+  "w": 1266,
+  "links": 1,
+  "imp": 12,
+  "rd": 7,
+  "saved": false
+ },
+ {
+  "slug": "crowdfunding-for-startups",
+  "path": "/startup/crowdfunding-for-startups",
+  "w": 1100,
+  "links": 1,
+  "imp": 257,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "benefits-for-teams-culture",
+  "path": "/team-management/benefits-for-teams-culture",
+  "w": 803,
+  "links": 3,
+  "imp": 5,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "financial-reporting-in-strategic-decision-making",
+  "path": "/business/financial-reporting-in-strategic-decision-making",
+  "w": 794,
+  "links": 3,
+  "imp": 2,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "employee-wellness-programs",
+  "path": "/team-management/employee-wellness-programs",
+  "w": 829,
+  "links": 3,
+  "imp": 2,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "work-retreat-experiences",
+  "path": "/team-management/work-retreat-experiences",
+  "w": 821,
+  "links": 3,
+  "imp": 1,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "6-fun-team-building-exercises-for-your-remote-team",
+  "path": "/remote-work/6-fun-team-building-exercises-for-your-remote-team",
+  "w": 783,
+  "links": 5,
+  "imp": 0,
+  "rd": 6,
+  "saved": false
+ },
+ {
+  "slug": "consulting-for-startups",
+  "path": "/startup/consulting-for-startups",
+  "w": 921,
+  "links": 1,
+  "imp": 59,
+  "rd": 5,
+  "saved": true
+ },
+ {
+  "slug": "choosing-the-right-crm-for-your-startup",
+  "path": "/startup/choosing-the-right-crm-for-your-startup",
+  "w": 851,
+  "links": 6,
+  "imp": 1,
+  "rd": 5,
+  "saved": false
+ },
+ {
+  "slug": "the-psychology-of-entrepreneurship-how-to-get-it-all-done",
+  "path": "/productivity/the-psychology-of-entrepreneurship-how-to-get-it-all-done",
+  "w": 739,
+  "links": 4,
+  "imp": 0,
+  "rd": 5,
+  "saved": false
+ },
+ {
+  "slug": "employee-training-and-development",
+  "path": "/productivity/employee-training-and-development",
+  "w": 788,
+  "links": 5,
+  "imp": 0,
+  "rd": 5,
+  "saved": false
+ },
+ {
+  "slug": "the-right-talent-for-your-team",
+  "path": "/team-management/the-right-talent-for-your-team",
+  "w": 821,
+  "links": 2,
+  "imp": 0,
+  "rd": 5,
+  "saved": false
+ },
+ {
+  "slug": "social-media-metrics",
+  "path": "/marketing/social-media-metrics",
+  "w": 930,
+  "links": 1,
+  "imp": 0,
+  "rd": 5,
+  "saved": true
+ },
+ {
+  "slug": "annual-in-person-retreats",
+  "path": "/remote-work/annual-in-person-retreats",
+  "w": 1129,
+  "links": 2,
+  "imp": 0,
+  "rd": 5,
+  "saved": false
+ },
+ {
+  "slug": "upgrade-your-checkout-game",
+  "path": "/business/upgrade-your-checkout-game",
+  "w": 1149,
+  "links": 0,
+  "imp": 26,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "essential-tools-for-startup-success",
+  "path": "/startup/essential-tools-for-startup-success",
+  "w": 1307,
+  "links": 5,
+  "imp": 16,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "a-b-testing-strategies",
+  "path": "/startup/a-b-testing-strategies",
+  "w": 810,
+  "links": 1,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "ecommerce-strategies",
+  "path": "/business/ecommerce-strategies",
+  "w": 822,
+  "links": 1,
+  "imp": 0,
+  "rd": 4,
+  "saved": true
+ },
+ {
+  "slug": "importance-of-high-quality-content",
+  "path": "/marketing/importance-of-high-quality-content",
+  "w": 827,
+  "links": 4,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "8-tips-for-running-a-productive-zoom-call",
+  "path": "/remote-work/8-tips-for-running-a-productive-zoom-call",
+  "w": 857,
+  "links": 2,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "brand-recognition",
+  "path": "/marketing/brand-recognition",
+  "w": 865,
+  "links": 1,
+  "imp": 0,
+  "rd": 4,
+  "saved": true
+ },
+ {
+  "slug": "minimize-risks-maximize-rewards",
+  "path": "/startup/minimize-risks-maximize-rewards",
+  "w": 918,
+  "links": 4,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "challenging-client-relationships",
+  "path": "/business/challenging-client-relationships",
+  "w": 959,
+  "links": 3,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "the-anatomy-of-startup-apps",
+  "path": "/startup/the-anatomy-of-startup-apps",
+  "w": 1093,
+  "links": 5,
+  "imp": 0,
+  "rd": 4,
+  "saved": false
+ },
+ {
+  "slug": "how-retirees-bring-value-to-startup-teams",
+  "path": "/startup/how-retirees-bring-value-to-startup-teams",
+  "w": 809,
+  "links": 1,
+  "imp": 1,
+  "rd": 3,
+  "saved": false
+ },
+ {
+  "slug": "cybersecurity-in-the-modern-business-landscape",
+  "path": "/business/cybersecurity-in-the-modern-business-landscape",
+  "w": 814,
+  "links": 1,
+  "imp": 0,
+  "rd": 3,
+  "saved": true
+ },
+ {
+  "slug": "strategies-for-remote-onboarding",
+  "path": "/remote-work/strategies-for-remote-onboarding",
+  "w": 856,
+  "links": 2,
+  "imp": 0,
+  "rd": 3,
+  "saved": false
+ },
+ {
+  "slug": "startup-founders-delegate-remote-teams",
+  "path": "/startup/startup-founders-delegate-remote-teams",
+  "w": 929,
+  "links": 1,
+  "imp": 0,
+  "rd": 3,
+  "saved": false
+ },
+ {
+  "slug": "5-ways-to-train-your-management-team-to-retain-employees",
+  "path": "/team-management/5-ways-to-train-your-management-team-to-retain-employees",
+  "w": 936,
+  "links": 8,
+  "imp": 0,
+  "rd": 3,
+  "saved": false
+ },
+ {
+  "slug": "video-shorts",
+  "path": "/marketing/video-shorts",
+  "w": 1171,
+  "links": 1,
+  "imp": 0,
+  "rd": 3,
+  "saved": true
+ },
+ {
+  "slug": "ai-for-startups",
+  "path": "/innovation/ai-for-startups",
+  "w": 1433,
+  "links": 3,
+  "imp": 0,
+  "rd": 3,
+  "saved": true
+ },
+ {
+  "slug": "organizational-behavior",
+  "path": "/productivity/organizational-behavior",
+  "w": 884,
+  "links": 2,
+  "imp": 122,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "startup-financing",
+  "path": "/startup/startup-financing",
+  "w": 992,
+  "links": 7,
+  "imp": 80,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "content-marketing-for-startups",
+  "path": "/startup/content-marketing-for-startups",
+  "w": 2703,
+  "links": 6,
+  "imp": 17,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "remote-work-revolution",
+  "path": "/remote-work/remote-work-revolution",
+  "w": 1440,
+  "links": 1,
+  "imp": 16,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "remote-team-culture-how-to-build-one-in-your-company",
+  "path": "/remote-work/remote-team-culture-how-to-build-one-in-your-company",
+  "w": 801,
+  "links": 16,
+  "imp": 5,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "which-marketing-strategies-are-best-for-a-startup-budget",
+  "path": "/startup/which-marketing-strategies-are-best-for-a-startup-budget",
+  "w": 937,
+  "links": 5,
+  "imp": 5,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "role-of-branding-agencies-in-startups",
+  "path": "/startup/role-of-branding-agencies-in-startups",
+  "w": 1012,
+  "links": 1,
+  "imp": 4,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "outsourcing",
+  "path": "/business/outsourcing",
+  "w": 948,
+  "links": 1,
+  "imp": 1,
+  "rd": 2,
+  "saved": true
+ },
+ {
+  "slug": "people-management-tips-unlocking-the-potential-of-your-team",
+  "path": "/team-management/people-management-tips-unlocking-the-potential-of-your-team",
+  "w": 792,
+  "links": 11,
+  "imp": 0,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "building-a-resilient-business",
+  "path": "/business/building-a-resilient-business",
+  "w": 821,
+  "links": 1,
+  "imp": 0,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "managing-cash-flow",
+  "path": "/business/managing-cash-flow",
+  "w": 997,
+  "links": 1,
+  "imp": 0,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "the-role-of-crm-in-startup-operations",
+  "path": "/startup/the-role-of-crm-in-startup-operations",
+  "w": 1352,
+  "links": 1,
+  "imp": 0,
+  "rd": 2,
+  "saved": false
+ },
+ {
+  "slug": "startup-accounting",
+  "path": "/startup/startup-accounting",
+  "w": 1174,
+  "links": 1,
+  "imp": 36,
+  "rd": 1,
+  "saved": true
+ },
+ {
+  "slug": "the-accelerator-advantage",
+  "path": "/startup/the-accelerator-advantage",
+  "w": 932,
+  "links": 1,
+  "imp": 19,
+  "rd": 1,
+  "saved": false
+ },
+ {
+  "slug": "how-to-turn-setbacks-into-success-stories",
+  "path": "/productivity/how-to-turn-setbacks-into-success-stories",
+  "w": 827,
+  "links": 0,
+  "imp": 10,
+  "rd": 1,
+  "saved": false
+ },
+ {
+  "slug": "mastering-the-pitch-deck",
+  "path": "/business/mastering-the-pitch-deck",
+  "w": 789,
+  "links": 2,
+  "imp": 0,
+  "rd": 1,
+  "saved": true
+ },
+ {
+  "slug": "how-can-startups-maintain-their-financial-health",
+  "path": "/startup/how-can-startups-maintain-their-financial-health",
+  "w": 864,
+  "links": 3,
+  "imp": 0,
+  "rd": 1,
+  "saved": true
+ },
+ {
+  "slug": "future-of-customer-service",
+  "path": "/innovation/future-of-customer-service",
+  "w": 890,
+  "links": 1,
+  "imp": 0,
+  "rd": 1,
+  "saved": false
+ },
+ {
+  "slug": "hyper-personalized-surveys",
+  "path": "/business/hyper-personalized-surveys",
+  "w": 1178,
+  "links": 1,
+  "imp": 0,
+  "rd": 1,
+  "saved": true
+ },
+ {
+  "slug": "why-are-remote-workers-ideal-for-a-startup",
+  "path": "/remote-work/why-are-remote-workers-ideal-for-a-startup",
+  "w": 998,
+  "links": 7,
+  "imp": 14,
+  "rd": 0,
+  "saved": false
+ },
+ {
+  "slug": "8-ways-technology-can-save-your-team-hours-every-week",
+  "path": "/innovation/8-ways-technology-can-save-your-team-hours-every-week",
+  "w": 791,
+  "links": 4,
+  "imp": 3,
+  "rd": 0,
+  "saved": false
+ },
+ {
+  "slug": "evolution-of-coworking-spaces",
+  "path": "/team-management/evolution-of-coworking-spaces",
+  "w": 821,
+  "links": 0,
+  "imp": 3,
+  "rd": 0,
+  "saved": false
+ },
+ {
+  "slug": "building-a-brand-that-puts-customers-first",
+  "path": "/business/building-a-brand-that-puts-customers-first",
+  "w": 829,
+  "links": 1,
+  "imp": 0,
+  "rd": 0,
+  "saved": true
+ },
+ {
+  "slug": "how-to-turn-your-side-hustle-into-a-startup",
+  "path": "/startup/how-to-turn-your-side-hustle-into-a-startup",
+  "w": 847,
+  "links": 2,
+  "imp": 0,
+  "rd": 0,
+  "saved": false
+ },
+ {
+  "slug": "6-ways-to-use-interns-in-your-startup",
+  "path": "/startup/6-ways-to-use-interns-in-your-startup",
+  "w": 857,
+  "links": 2,
+  "imp": 0,
+  "rd": 0,
+  "saved": false
+ },
+ {
+  "slug": "what-to-look-for-when-hiring-your-2",
+  "path": "/team-management/what-to-look-for-when-hiring-your-2",
+  "w": 1069,
+  "links": 2,
+  "imp": 0,
+  "rd": 0,
+  "saved": true
+ }
+]
