@@ -205,12 +205,25 @@ function getAllCategories(): Promise<any[]> {
   return categoriesCache;
 }
 
+// WP REST returns title/excerpt HTML-encoded (e.g. Founder&#8217;s). Astro's
+// {expression} output escapes the & again, so without decoding, listing cards
+// render the entity as literal text. Same map as [category]/[slug].astro.
+function decodeHtmlEntities(text: string): string {
+  const entities: Record<string, string> = {
+    "&#8217;": "'", "&#8216;": "'", "&#8220;": '"', "&#8221;": '"',
+    "&#8211;": "–", "&#8212;": "—", "&#038;": "&", "&amp;": "&",
+    "&lt;": "<", "&gt;": ">", "&quot;": '"', "&apos;": "'", "&#39;": "'",
+    "&#8230;": "…", "&nbsp;": " ",
+  };
+  return text.replace(/&#?\w+;/g, (entity) => entities[entity] || entity);
+}
+
 /** Transform a raw WordPress REST API post into the shape templates expect. */
 function transformPost(raw: any) {
   return {
     slug: raw.slug as string,
-    title: (raw.title?.rendered ?? "") as string,
-    excerpt: (raw.excerpt?.rendered ?? "") as string,
+    title: decodeHtmlEntities((raw.title?.rendered ?? "") as string),
+    excerpt: decodeHtmlEntities((raw.excerpt?.rendered ?? "") as string),
     date: (raw.date ?? "") as string,
     featuredImage: raw._embedded?.["wp:featuredmedia"]?.[0]
       ? {

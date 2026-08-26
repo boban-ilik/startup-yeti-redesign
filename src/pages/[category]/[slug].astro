@@ -57,7 +57,9 @@ export async function getStaticPaths() {
       content: rawPost.content.rendered,
       date: rawPost.date,
       modified: rawPost.modified || rawPost.date,
-      excerpt: rawPost.excerpt.rendered,
+      // Decoded like the title: excerpts feed related-post cards and the meta
+      // description, where a raw &#8217; renders as literal text once escaped.
+      excerpt: decodeHtmlEntities(rawPost.excerpt.rendered),
       categoryId: rawPost.categories[0],
       featuredImage: rawPost._embedded?.['wp:featuredmedia']?.[0] ? {
         node: {
