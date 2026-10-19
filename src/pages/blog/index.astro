@@ -13,39 +13,37 @@ const allCategories = [...new Set(posts.flatMap((post) => post.categories.nodes.
   description="Tactical advice for modern founders — marketing, pricing, operations, and remote teams. Proven frameworks, no fluff."
   path="/blog"
 >
-  <section class="wrap pb-10 pt-16 md:pb-12 md:pt-24">
-    <div class="max-w-3xl">
-      <h1 class="display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">The Startup Yeti Blog</h1>
-      <p class="lead mt-6 max-w-2xl">Tactical advice for modern founders on building and growing a startup.</p>
-      <p class="meta mt-5 tabular-nums"><span id="visible-count">{posts.length}</span> articles</p>
+  <section class="hero-tint border-b border-slate-200 dark:border-slate-800">
+    <div class="wrap pb-10 pt-16 text-center md:pb-12 md:pt-24">
+      <p class="chip tabular-nums"><span id="visible-count">{posts.length}</span>&nbsp;articles</p>
+      <h1 class="display mx-auto mt-5 max-w-4xl text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">The Startup Yeti Blog</h1>
+      <p class="lead mx-auto mt-6 max-w-2xl">Tactical advice for modern founders on building and growing a startup.</p>
+      <div class="mt-10 flex flex-wrap justify-center gap-2" role="group" aria-label="Filter articles by category">
+        <button type="button" class="filter-btn chip-neutral min-h-10 px-4 text-sm" data-filter="all" aria-pressed="true">All Articles</button>
+        {allCategories.map((category) => (
+          <button type="button" class="filter-btn chip-neutral min-h-10 px-4 text-sm" data-filter={category.toLowerCase()} aria-pressed="false">{category}</button>
+        ))}
+      </div>
     </div>
   </section>
 
-  <section class="wrap border-t border-slate-200 py-6 dark:border-slate-800" aria-label="Filter articles">
-    <div class="flex flex-wrap items-center gap-2">
-      <span class="meta mr-2">Filter by:</span>
-      <button type="button" class="filter-btn btn-secondary min-h-10 px-4 py-2" data-filter="all" aria-pressed="true">All Articles</button>
-      {allCategories.map((category) => (
-        <button type="button" class="filter-btn btn-secondary min-h-10 px-4 py-2" data-filter={category.toLowerCase()} aria-pressed="false">{category}</button>
-      ))}
-    </div>
-  </section>
-
-  <section class="wrap pb-16 pt-6 md:pb-24">
-    <ul class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3" id="articles-grid">
-      {posts.map((post, i) => {
-        const cat = post.categories.nodes[0];
-        const img = post.featuredImage?.node;
-        return (
-          <PostCard as="li" headingLevel="h2" href={`/${cat?.slug || "uncategorized"}/${post.slug}`} title={post.title} excerpt={post.excerpt} date={post.date}
-            categoryName={cat?.name || "Uncategorized"} categoryHref={cat ? `/${cat.slug}` : undefined} eager={i < 3}
-            image={img ? { src: img.sourceUrl, srcset: img.srcset, alt: img.altText, width: img.mediaDetails.width, height: img.mediaDetails.height } : null} />
-        );
-      })}
-    </ul>
-    <div id="no-results" class="hidden max-w-md py-12">
-      <h2 class="text-xl font-semibold text-slate-900 dark:text-white">No articles found</h2>
-      <p class="mt-2 text-slate-600 dark:text-slate-300">Try selecting a different category.</p>
+  <section class="band">
+    <div class="wrap py-12 md:py-16">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3" id="articles-grid">
+        {posts.map((post, i) => {
+          const cat = post.categories.nodes[0];
+          const img = post.featuredImage?.node;
+          return (
+            <PostCard as="li" headingLevel="h2" href={`/${cat?.slug || "uncategorized"}/${post.slug}`} title={post.title} excerpt={post.excerpt} date={post.date}
+              categoryName={cat?.name || "Uncategorized"} categoryHref={cat ? `/${cat.slug}` : undefined} eager={i < 3}
+              image={img ? { src: img.sourceUrl, srcset: img.srcset, alt: img.altText, width: img.mediaDetails.width, height: img.mediaDetails.height } : null} />
+          );
+        })}
+      </ul>
+      <div id="no-results" class="card hidden max-w-md p-6">
+        <h2 class="text-xl font-semibold text-slate-900 dark:text-white">No articles found</h2>
+        <p class="mt-2 text-slate-600 dark:text-slate-300">Try selecting a different category.</p>
+      </div>
     </div>
   </section>
 
@@ -59,14 +57,14 @@ const allCategories = [...new Set(posts.flatMap((post) => post.categories.nodes.
       const count = document.getElementById('visible-count');
       const activeClasses = ['bg-slate-900', 'text-white', 'border-slate-900', 'dark:bg-white', 'dark:text-slate-950', 'dark:border-white'];
       const setActive = (btn: HTMLButtonElement) => {
-        buttons.forEach((b) => { b.setAttribute('aria-pressed', String(b === btn)); b.classList.toggle('btn-secondary', b !== btn); activeClasses.forEach((c) => b.classList.toggle(c, b === btn)); });
+        buttons.forEach((b) => { b.setAttribute('aria-pressed', String(b === btn)); b.classList.toggle('chip-neutral', b !== btn); activeClasses.forEach((c) => b.classList.toggle(c, b === btn)); });
       };
       setActive(buttons[0]);
       buttons.forEach((btn) => btn.addEventListener('click', () => {
         const filter = btn.dataset.filter;
         let visible = 0;
         items.forEach((li) => {
-          const cat = li.querySelector('.label')?.textContent?.trim().toLowerCase();
+          const cat = li.dataset.category?.trim().toLowerCase();
           const show = filter === 'all' || cat === filter;
           li.classList.toggle('hidden', !show);
           if (show) visible++;

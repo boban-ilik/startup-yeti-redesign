@@ -17,8 +17,8 @@ interface Props {
 const { href, title, excerpt, date, categoryName, categoryHref, image, compact = false, eager = false, as: Tag = "article", headingLevel: Heading = "h3" } = Astro.props;
 const dateText = date ? new Date(date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" }) : null;
 ---
-<Tag class="group flex h-full flex-col">
-  <a href={href} class="block overflow-hidden rounded-lg bg-slate-100 dark:bg-slate-800" tabindex="-1" aria-hidden="true">
+<Tag class="card card-hover group flex h-full flex-col overflow-hidden" data-category={categoryName}>
+  <a href={href} class="block bg-slate-100 dark:bg-slate-800" tabindex="-1" aria-hidden="true">
     {image ? (
       <img
         src={image.src}
@@ -35,16 +35,21 @@ const dateText = date ? new Date(date).toLocaleDateString("en-US", { month: "sho
       <div class="aspect-[1200/630] w-full"></div>
     )}
   </a>
-  <div class={`flex flex-1 flex-col ${compact ? "pt-3" : "pt-4"}`}>
+  <div class={`flex flex-1 flex-col ${compact ? "p-4" : "p-5 md:p-6"}`}>
     {categoryName && (
       categoryHref
-        ? <a href={categoryHref} class="label hover:underline">{categoryName}</a>
-        : <span class="label">{categoryName}</span>
+        ? <a href={categoryHref} class="chip self-start">{categoryName}</a>
+        : <span class="chip self-start">{categoryName}</span>
     )}
-    <Heading class={`mt-1.5 font-semibold leading-snug text-slate-900 dark:text-white ${compact ? "text-base" : "text-lg md:text-xl"}`}>
-      <a href={href} class="group-hover:text-yeti-700 dark:group-hover:text-yeti-400">{title}</a>
+    <Heading class={`${categoryName ? "mt-3" : ""} font-bold leading-snug text-slate-900 dark:text-white ${compact ? "text-base" : "text-lg md:text-xl"}`}>
+      <a href={href} class="transition-colors duration-150 group-hover:text-yeti-800 dark:group-hover:text-yeti-300">{title}</a>
     </Heading>
-    {!compact && excerpt && <p class="mt-2 line-clamp-2 text-sm leading-relaxed text-slate-600 dark:text-slate-300" set:html={excerpt} />}
-    {dateText && <p class="meta mt-auto pt-3"><time datetime={date}>{dateText}</time></p>}
+    {!compact && excerpt && <p class="mb-5 mt-2 line-clamp-3 text-sm leading-relaxed text-slate-600 dark:text-slate-300" set:html={excerpt} />}
+    {dateText && (
+      <p class="meta mt-auto flex items-center justify-between border-t border-slate-100 pt-4 dark:border-slate-800">
+        <time datetime={date}>{dateText}</time>
+        <span aria-hidden="true" class="font-semibold text-yeti-700 transition-transform duration-150 group-hover:translate-x-0.5 dark:text-yeti-400">→</span>
+      </p>
+    )}
   </div>
 </Tag>

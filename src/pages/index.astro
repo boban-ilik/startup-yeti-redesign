@@ -18,9 +18,19 @@ const topics = [
   { href: "/founder-wellbeing", name: "Founder Wellbeing" },
   { href: "/innovation", name: "Innovation" },
 ];
-const counts = Object.fromEntries(
-  await Promise.all(topics.map(async (t) => [t.name, (await fetchPosts(t.name, 500)).length]))
-);
+
+const facts = [
+  { text: "100+ Tactical Guides", icon: "M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" },
+  { text: "Proven Frameworks", icon: "M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" },
+  { text: "Built by Founders", icon: "M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" },
+];
+
+const stats = [
+  { n: "8", label: "Core Topics", tile: "bg-yeti-50 dark:bg-yeti-950/60", num: "text-yeti-800 dark:text-yeti-300" },
+  { n: "100+", label: "Guides", tile: "bg-rose-50 dark:bg-rose-950/60", num: "text-rose-800 dark:text-rose-300" },
+  { n: "100%", label: "Remote", tile: "bg-emerald-50 dark:bg-emerald-950/60", num: "text-emerald-800 dark:text-emerald-300" },
+  { n: "SaaS", label: "Focused", tile: "bg-amber-50 dark:bg-amber-950/60", num: "text-amber-800 dark:text-amber-300" },
+];
 
 const team = [
   { name: "Boban", role: "Content & Outreach", photo: "/team/boban.webp", alt: "Boban - Content & Outreach Specialist", href: "/about",
@@ -30,6 +40,16 @@ const team = [
   { name: "Igor", role: "Design & Tech", photo: "/team/igor.webp", alt: "Igor - Design & Tech",
     bio: "Experienced Graphic & Web Designer. 8 years of experience mentoring and teaching the next generation of designers." },
 ];
+
+// Calculator preview: the form's own placeholder inputs run through the same
+// formulas as /calculator, so the panel shows a real worked example.
+const ex = { mrr: 50000, customers: 500, churn: 5, cac: 500 };
+const exArpa = ex.mrr / ex.customers;
+const exLtv = exArpa / (ex.churn / 100);
+const exRatio = exLtv / ex.cac;
+const exPayback = ex.cac / exArpa;
+const exTone = exRatio >= 3 ? "Excellent" : exRatio >= 2 ? "Good" : exRatio >= 1 ? "Fair" : "Needs Improvement";
+const fmt = (n: number) => `$${Math.round(n).toLocaleString("en-US")}`;
 
 const title = "Startup Yeti | The Founder's Guide to Startup Growth";
 const description = "StartupYeti gives early-stage founders tactical guides on marketing, pricing, operations, and remote teams. No fluff, just tactics.";
@@ -61,35 +81,37 @@ const description = "StartupYeti gives early-stage founders tactical guides on m
   </Fragment>
 
   <!-- Hero -->
-  <section class="wrap pb-14 pt-16 md:pb-20 md:pt-24">
-    <div class="max-w-3xl">
-      <h1 class="display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">
+  <section class="hero-tint border-b border-slate-200 dark:border-slate-800">
+    <div class="wrap pb-16 pt-16 text-center md:pb-24 md:pt-28">
+      <h1 class="display mx-auto max-w-4xl text-4xl leading-[1.08] sm:text-5xl md:text-6xl lg:text-7xl">
         The Founder's Guide to Startup Growth
       </h1>
-      <p class="lead mt-6 max-w-2xl">
+      <p class="lead mx-auto mt-6 max-w-2xl">
         StartupYeti gives early-stage founders tactical guides on marketing, pricing, operations, and remote teams. No fluff, just tactics.
       </p>
-      <div class="mt-8 flex flex-col gap-3 sm:flex-row">
+      <div class="mt-9 flex flex-col justify-center gap-3 sm:flex-row">
         <a href="/blog" data-sy-cta="hero-explore-guides" class="btn-primary btn-lg">Explore Our Guides</a>
         <a href="/resources" class="btn-secondary btn-lg">Start Building Better →</a>
       </div>
-      <ul class="meta mt-8 flex flex-wrap gap-x-5 gap-y-1.5">
-        <li>100+ Tactical Guides</li>
-        <li>Proven Frameworks</li>
-        <li>Built by Founders</li>
+      <ul class="mt-12 flex flex-wrap justify-center gap-x-8 gap-y-3 text-sm font-semibold text-slate-600 dark:text-slate-300">
+        {facts.map((f) => (
+          <li class="flex items-center gap-2">
+            <svg class="h-5 w-5 text-yeti-700 dark:text-yeti-400" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true"><path fill-rule="evenodd" d={f.icon} clip-rule="evenodd"/></svg>
+            {f.text}
+          </li>
+        ))}
       </ul>
     </div>
   </section>
 
   <!-- Topics -->
-  <section class="wrap border-t border-slate-200 py-10 dark:border-slate-800" aria-labelledby="topics-heading">
-    <h2 id="topics-heading" class="text-sm font-semibold text-slate-900 dark:text-white">Explore Topics</h2>
-    <ul class="mt-4 flex flex-wrap gap-x-7 gap-y-3">
+  <section class="wrap py-12 md:py-16" aria-labelledby="topics-heading">
+    <h2 id="topics-heading" class="display text-center text-2xl md:text-3xl">Explore Topics</h2>
+    <ul class="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-3 md:gap-4 lg:grid-cols-4">
       {topics.map((t) => (
         <li>
-          <a href={t.href} class="group inline-flex items-baseline gap-2 text-base font-medium text-slate-700 hover:text-yeti-700 dark:text-slate-200 dark:hover:text-yeti-400">
+          <a href={t.href} class="card card-hover flex min-h-14 items-center justify-center px-4 py-4 text-center text-sm font-bold text-slate-700 hover:text-yeti-800 dark:text-slate-200 dark:hover:text-yeti-300">
             {t.name}
-            <span class="text-sm tabular-nums text-slate-500 group-hover:text-yeti-700 dark:text-slate-400 dark:group-hover:text-yeti-400">{counts[t.name]}</span>
           </a>
         </li>
       ))}
@@ -97,84 +119,105 @@ const description = "StartupYeti gives early-stage founders tactical guides on m
   </section>
 
   <!-- Built by founders -->
-  <section class="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
-    <div class="wrap section grid gap-12 md:grid-cols-12 md:gap-16">
-      <div class="md:col-span-7">
+  <section class="band border-y border-slate-200 dark:border-slate-800">
+    <div class="wrap section grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <div class="card p-8 md:p-10">
+          <img src="/logo.webp" alt="Startup Yeti" width="400" height="128" loading="lazy" decoding="async" class="mx-auto h-14 w-auto md:h-16 dark:hidden" />
+          <img src="/logo-dark.webp" alt="Startup Yeti" width="400" height="128" loading="lazy" decoding="async" class="mx-auto hidden h-14 w-auto md:h-16 dark:block" />
+          <dl class="mt-8 grid grid-cols-2 gap-4">
+            {stats.map((s) => (
+              <div class={`flex flex-col-reverse rounded-xl p-5 ${s.tile}`}>
+                <dt class="mt-1 text-sm font-medium text-slate-600 dark:text-slate-300">{s.label}</dt>
+                <dd class={`display text-3xl md:text-4xl ${s.num}`}>{s.n}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+      </div>
+      <div class="lg:col-span-7">
         <h2 class="display text-3xl md:text-4xl lg:text-5xl">Built by Founders,<br />for Founders.</h2>
         <p class="lead mt-6">
           StartupYeti wasn't built by content marketers. It was created by a team that lives this daily. We run remote teams, build SaaS products, and use EOS to keep operations tight.
         </p>
-        <blockquote class="mt-8 border-t border-slate-300 pt-6 font-serif text-xl leading-relaxed text-slate-800 md:text-2xl dark:border-slate-700 dark:text-slate-100">
-          "Every article, framework, and resource on this site comes from real experience scaling startups — not recycled advice from business school textbooks."
-        </blockquote>
+        <figure class="mt-8 rounded-2xl border border-yeti-100 bg-yeti-50 p-6 md:p-8 dark:border-yeti-900/60 dark:bg-yeti-950/40">
+          <blockquote class="font-serif text-xl leading-relaxed text-slate-800 md:text-2xl dark:text-slate-100">
+            "Every article, framework, and resource on this site comes from real experience scaling startups — not recycled advice from business school textbooks."
+          </blockquote>
+        </figure>
       </div>
-      <dl class="grid grid-cols-2 gap-x-6 gap-y-8 self-start md:col-span-5 md:pt-2">
-        {[["8", "Core Topics"], ["100+", "Guides"], ["100%", "Remote"], ["SaaS", "Focused"]].map(([n, l]) => (
-          <div class="border-t border-slate-300 pt-4 dark:border-slate-700">
-            <dt class="text-sm text-slate-600 dark:text-slate-300">{l}</dt>
-            <dd class="display mt-1 text-3xl md:text-4xl">{n}</dd>
-          </div>
-        ))}
-      </dl>
     </div>
   </section>
 
   <!-- Team -->
   <section class="wrap section" aria-labelledby="team-heading">
-    <div class="max-w-2xl">
-      <h2 id="team-heading" class="display text-3xl md:text-4xl">Meet the Team</h2>
+    <div class="mx-auto max-w-2xl text-center">
+      <h2 id="team-heading" class="display text-3xl md:text-4xl lg:text-5xl">Meet the Team</h2>
       <p class="lead mt-4">Passionate writers and researchers dedicated to helping startups succeed.</p>
     </div>
-    <ul class="mt-10 grid gap-10 border-t border-slate-200 pt-10 sm:grid-cols-3 dark:border-slate-800">
+    <ul class="mt-12 grid gap-6 md:grid-cols-3">
       {team.map((m) => (
-        <li>
-          <img src={m.photo} alt={m.alt} width="240" height="240" loading="lazy" decoding="async" class="h-20 w-20 rounded-full object-cover" />
-          <h3 class="mt-5 text-lg font-semibold text-slate-900 dark:text-white">
-            {m.href ? <a href={m.href} class="hover:text-yeti-700 dark:hover:text-yeti-400">{m.name}</a> : m.name}
+        <li class="card card-hover p-8 text-center">
+          <img src={m.photo} alt={m.alt} width="240" height="240" loading="lazy" decoding="async" class="mx-auto h-28 w-28 rounded-full object-cover shadow-lg ring-4 ring-white dark:ring-slate-800" />
+          <h3 class="mt-6 text-xl font-bold text-slate-900 dark:text-white">
+            {m.href ? <a href={m.href} class="hover:text-yeti-800 dark:hover:text-yeti-300">{m.name}</a> : m.name}
           </h3>
-          <p class="label mt-0.5 normal-case tracking-normal">{m.role}</p>
-          <p class="mt-3 text-slate-600 dark:text-slate-300">{m.bio}</p>
+          <p class="label mt-1 text-xs">{m.role}</p>
+          <p class="mt-4 text-slate-600 dark:text-slate-300">{m.bio}</p>
         </li>
       ))}
     </ul>
   </section>
 
   <!-- SaaS calculator -->
-  <section class="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
-    <div class="wrap section grid gap-12 md:grid-cols-12 md:gap-16">
-      <div class="md:col-span-7">
-        <h2 class="display text-3xl md:text-4xl">Calculate Your SaaS Metrics in Seconds</h2>
-        <p class="lead mt-5">
-          Get instant insights into your Customer Lifetime Value, LTV:CAC ratio, growth rate, and payback period. Make data-driven decisions to scale your SaaS business.
-        </p>
-        <ul class="mt-8 space-y-4">
-          {[
-            ["Instant Calculations", "Get your metrics in real-time with smart insights"],
-            ["Actionable Insights", "Personalized recommendations to improve your metrics"],
-            ["No Signup Required", "100% free, forever. Start calculating immediately"],
-          ].map(([t, d]) => (
-            <li class="flex gap-3">
-              <svg class="mt-1 h-5 w-5 shrink-0 text-yeti-700 dark:text-yeti-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">{t}</p>
-                <p class="text-sm text-slate-600 dark:text-slate-300">{d}</p>
-              </div>
-            </li>
-          ))}
-        </ul>
-        <a href="/calculator" data-sy-cta="home-try-calculator" class="btn-primary btn-lg mt-8">Try Calculator Now</a>
-      </div>
-      <div class="md:col-span-5 md:pt-2">
-        <p class="text-sm font-semibold text-slate-900 dark:text-white">What it calculates</p>
-        <ol class="mt-4 divide-y divide-slate-200 border-y border-slate-200 dark:divide-slate-800 dark:border-slate-800">
-          {["Customer Lifetime Value", "LTV:CAC Ratio", "Net MRR Growth Rate", "CAC Payback Period"].map((m, i) => (
-            <li class="flex items-baseline gap-4 py-3.5">
-              <span class="w-6 text-sm tabular-nums text-slate-500 dark:text-slate-400">{i + 1}</span>
-              <span class="font-medium text-slate-800 dark:text-slate-100">{m}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
+  <section class="band border-y border-slate-200 dark:border-slate-800">
+    <div class="wrap section">
+        <div class="grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+          <div>
+            <h2 class="display text-3xl md:text-4xl">Calculate Your SaaS Metrics in Seconds</h2>
+            <p class="lead mt-5">
+              Get instant insights into your Customer Lifetime Value, LTV:CAC ratio, growth rate, and payback period. Make data-driven decisions to scale your SaaS business.
+            </p>
+            <ul class="mt-8 space-y-4">
+              {[
+                ["Instant Calculations", "Get your metrics in real-time with smart insights"],
+                ["Actionable Insights", "Personalized recommendations to improve your metrics"],
+                ["No Signup Required", "100% free, forever. Start calculating immediately"],
+              ].map(([t, d]) => (
+                <li class="flex gap-3">
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-emerald-100 text-emerald-700 dark:bg-emerald-900/50 dark:text-emerald-300">
+                    <svg class="h-3.5 w-3.5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true"><path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/></svg>
+                  </span>
+                  <div>
+                    <p class="font-semibold text-slate-900 dark:text-white">{t}</p>
+                    <p class="text-sm text-slate-600 dark:text-slate-300">{d}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <a href="/calculator" data-sy-cta="home-try-calculator" class="btn-primary btn-lg mt-8">Try Calculator Now →</a>
+          </div>
+          <div>
+            <div class="w-full">
+              <p class="meta">Example: {fmt(ex.mrr)} MRR · {ex.customers} customers · {ex.churn}% churn · {fmt(ex.cac)} CAC</p>
+              <dl class="mt-4 grid gap-4 sm:grid-cols-2">
+                <div class="card p-5">
+                  <dt class="text-sm font-semibold text-slate-600 dark:text-slate-300">Customer Lifetime Value</dt>
+                  <dd class="display mt-1 text-3xl tabular-nums">{fmt(exLtv)}</dd>
+                </div>
+                <div class="card p-5">
+                  <dt class="text-sm font-semibold text-slate-600 dark:text-slate-300">LTV:CAC Ratio</dt>
+                  <dd class="display mt-1 text-3xl tabular-nums">{exRatio.toFixed(1)}:1</dd>
+                  <dd class="mt-2"><span class="rounded-md bg-emerald-100 px-2 py-0.5 text-xs font-semibold text-emerald-800 dark:bg-emerald-900/50 dark:text-emerald-200">{exTone}</span></dd>
+                </div>
+                <div class="card p-5 sm:col-span-2">
+                  <dt class="text-sm font-semibold text-slate-600 dark:text-slate-300">CAC Payback Period</dt>
+                  <dd class="display mt-1 text-3xl tabular-nums">{Math.round(exPayback)} mo</dd>
+                </div>
+              </dl>
+            </div>
+          </div>
+        </div>
     </div>
   </section>
 
@@ -182,13 +225,13 @@ const description = "StartupYeti gives early-stage founders tactical guides on m
   <section class="wrap section" aria-labelledby="recent-heading">
     <div class="flex flex-wrap items-end justify-between gap-4">
       <div>
-        <h2 id="recent-heading" class="display text-3xl md:text-4xl">Recent Insights</h2>
-        <p class="lead mt-2">Tactical advice for the modern founder.</p>
+        <h2 id="recent-heading" class="display text-3xl md:text-4xl lg:text-5xl">Recent Insights</h2>
+        <p class="lead mt-3">Tactical advice for the modern founder.</p>
       </div>
       <a href="/blog" class="link">View all articles →</a>
     </div>
     {posts.length > 0 ? (
-      <div class="mt-10 grid gap-10 sm:grid-cols-2 lg:grid-cols-3">
+      <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
         {posts.map((post) => {
           const cat = post.categories.nodes[0];
           const img = post.featuredImage?.node;

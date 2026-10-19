@@ -1,10 +1,11 @@
 ---
 // Inline newsletter form; submission handled site-wide by /js/newsletter.js (data-newsletter-form).
-interface Props { compact?: boolean; id?: string }
-const { compact = false, id = `nl-${Math.random().toString(36).slice(2, 8)}` } = Astro.props;
+interface Props { compact?: boolean; id?: string; onDark?: boolean }
+const { compact = false, id = `nl-${Math.random().toString(36).slice(2, 8)}`, onDark = false } = Astro.props;
+const button = onDark ? "btn-accent" : "btn-primary";
 ---
 <form class={`flex ${compact ? "flex-col gap-2 sm:flex-row" : "flex-col gap-3 sm:flex-row"}`} data-newsletter-form>
   <label for={id} class="sr-only">Email address</label>
-  <input id={id} type="email" name="email" autocomplete="email" placeholder="you@company.com" required class={`input ${compact ? "py-2.5 text-sm" : ""}`} />
-  <button type="submit" class={`btn-primary shrink-0 ${compact ? "" : "btn-lg"}`}>Subscribe</button>
+  <input id={id} type="email" name="email" autocomplete="email" placeholder="you@company.com" required class={`input ${compact ? "py-2.5 text-sm" : ""} ${onDark ? "border-slate-700 bg-slate-800 text-white placeholder:text-slate-400 focus:border-yeti-400" : ""}`} />
+  <button type="submit" class={`${button} shrink-0 ${compact ? "" : "btn-lg"}`}>Subscribe</button>
 </form>

@@ -148,7 +148,7 @@ const allItems = sections.flatMap(s => s.items);
     </div>
   </div>
 
-  <section class="hero-section wrap-narrow border-b border-slate-200 pb-10 pt-12 md:pt-16 dark:border-slate-800">
+  <section class="hero-section hero-tint border-b border-slate-200 dark:border-slate-800"><div class="wrap-narrow pb-10 pt-12 md:pt-16">
     <h1 class="display text-4xl md:text-5xl">PLG + Brand Audit</h1>
     <p class="hero-desc lead mt-5">10 questions that reveal exactly where your product-led growth is stalling — and whether brand-led growth is the missing layer.</p>
     <p class="hero-source meta mt-3">Based on our deep-dive: <a href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it" class="link">Why Your PLG Strategy Will Stall</a></p>
@@ -157,7 +157,7 @@ const allItems = sections.flatMap(s => s.items);
       <a href="/startup/why-your-plg-strategy-will-stall-and-how-brand-led-growth-fixes-it" class="btn-secondary">← Back to article</a>
     </div>
 
-    <div class="score-widget no-print mt-8 max-w-sm rounded-lg border border-slate-200 p-5 dark:border-slate-800">
+    <div class="score-widget no-print card mt-8 max-w-sm p-5">
       <div class="flex items-center justify-between">
         <span class="text-sm font-semibold text-slate-700 dark:text-slate-200">Your Score</span>
         <span id="score-label" class="text-sm font-semibold tabular-nums text-slate-900 dark:text-white">0 / 10</span>
@@ -166,6 +166,7 @@ const allItems = sections.flatMap(s => s.items);
         <div id="score-bar" class="h-full rounded-full bg-yeti-700 dark:bg-yeti-400" style="width: 0%"></div>
       </div>
       <p id="score-message" class="meta mt-3">Check each statement that's true for your company →</p>
+    </div>
     </div>
   </section>
 
