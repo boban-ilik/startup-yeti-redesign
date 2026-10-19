@@ -1,269 +1,80 @@
 ---
-// src/pages/blog/index.astro
-// Blog listing page
-import Footer from "../../components/Footer.astro";
+// src/pages/blog/index.astro — all articles, with category filter
+import Base from "../../layouts/Base.astro";
+import PostCard from "../../components/PostCard.astro";
+import NewsletterCta from "../../components/NewsletterCta.astro";
 import { fetchPosts } from "../../lib/wordpress";
 
 const posts = await fetchPosts(undefined, 500);
-const allCategories = [...new Set(posts.flatMap(post => post.categories.nodes.map((cat: any) => cat.name)))];
+const allCategories = [...new Set(posts.flatMap((post) => post.categories.nodes.map((cat: any) => cat.name)))] as string[];
 ---
+<Base
+  title="Blog | Startup Yeti - The Founder's Guide to Startup Growth"
+  description="Tactical advice for modern founders — marketing, pricing, operations, and remote teams. Proven frameworks, no fluff."
+  path="/blog"
+>
+  <section class="wrap pb-10 pt-16 md:pb-12 md:pt-24">
+    <div class="max-w-3xl">
+      <h1 class="display text-4xl leading-[1.08] sm:text-5xl lg:text-6xl">The Startup Yeti Blog</h1>
+      <p class="lead mt-6 max-w-2xl">Tactical advice for modern founders on building and growing a startup.</p>
+      <p class="meta mt-5 tabular-nums"><span id="visible-count">{posts.length}</span> articles</p>
+    </div>
+  </section>
 
-<!doctype html>
-<html lang="en" class="scroll-smooth">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width,initial-scale=1" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
-    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
-    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
-    <meta name="google-site-verification" content="fQzWw2KrEV8ca80-tLNylb8Pb7Bq9ksrGHRXpv0qjwM" />
+  <section class="wrap border-t border-slate-200 py-6 dark:border-slate-800" aria-label="Filter articles">
+    <div class="flex flex-wrap items-center gap-2">
+      <span class="meta mr-2">Filter by:</span>
+      <button type="button" class="filter-btn btn-secondary min-h-10 px-4 py-2" data-filter="all" aria-pressed="true">All Articles</button>
+      {allCategories.map((category) => (
+        <button type="button" class="filter-btn btn-secondary min-h-10 px-4 py-2" data-filter={category.toLowerCase()} aria-pressed="false">{category}</button>
+      ))}
+    </div>
+  </section>
 
-    <!-- Crawl + Discover directives -->
-    <meta name="robots" content="index, follow, max-image-preview:large" />
-    <meta name="googlebot" content="index, follow, max-image-preview:large" />
+  <section class="wrap pb-16 pt-6 md:pb-24">
+    <ul class="grid gap-10 sm:grid-cols-2 lg:grid-cols-3" id="articles-grid">
+      {posts.map((post, i) => {
+        const cat = post.categories.nodes[0];
+        const img = post.featuredImage?.node;
+        return (
+          <PostCard as="li" headingLevel="h2" href={`/${cat?.slug || "uncategorized"}/${post.slug}`} title={post.title} excerpt={post.excerpt} date={post.date}
+            categoryName={cat?.name || "Uncategorized"} categoryHref={cat ? `/${cat.slug}` : undefined} eager={i < 3}
+            image={img ? { src: img.sourceUrl, srcset: img.srcset, alt: img.altText, width: img.mediaDetails.width, height: img.mediaDetails.height } : null} />
+        );
+      })}
+    </ul>
+    <div id="no-results" class="hidden max-w-md py-12">
+      <h2 class="text-xl font-semibold text-slate-900 dark:text-white">No articles found</h2>
+      <p class="mt-2 text-slate-600 dark:text-slate-300">Try selecting a different category.</p>
+    </div>
+  </section>
 
-    <!-- Primary Meta Tags -->
-    <title>Blog | Startup Yeti - The Founder's Guide to Startup Growth</title>
-    <meta name="description" content="Tactical advice for modern founders — marketing, pricing, operations, and remote teams. Proven frameworks, no fluff." />
-    <link rel="canonical" href="https://www.startupyeti.com/blog" />
+  <NewsletterCta heading="Join Fellow Founders" body="Get weekly tactical advice on building and growing your startup, delivered to your inbox." />
 
-    <!-- Google Analytics with Bot Detection -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5Y6SRMMDYG"></script>
-    <script is:inline src="/js/analytics.js"></script>
-
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Merriweather:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
-
-
-    <style>
-      img[src="/logo.png"] {
-        background: transparent !important;
-        mix-blend-mode: normal;
-      }
-    </style>
-  </head>
-
-  <body class="bg-slate-50 text-slate-700 font-sans antialiased selection:bg-yeti-100 selection:text-yeti-900">
-
-    <!-- Navigation -->
-    <nav class="fixed w-full top-0 z-50 bg-white/95 backdrop-blur-xl border-b border-slate-200/60 shadow-sm transition-all duration-500">
-      <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
-        <a href="/" class="flex items-center hover:opacity-80 transition-all duration-300 hover:scale-105">
-          <img src="/logo.png" alt="Startup Yeti" class="h-12 w-auto object-contain" />
-        </a>
-
-        <div class="flex items-center gap-6">
-          <a href="/" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Home
-          </a>
-          <a href="/startup" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Startup
-          </a>
-          <a href="/business" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Business
-          </a>
-          <a href="/marketing" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Marketing
-          </a>
-          <a href="/remote-work" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Remote Work
-          </a>
-          <a href="/productivity" class="text-sm font-semibold text-slate-600 hover:text-yeti-600 transition-colors">
-            Productivity
-          </a>
-          <a href="/blog" class="text-sm font-semibold text-yeti-600">
-            Blog
-          </a>
-          <a href="/#newsletter" class="px-6 py-2.5 rounded-full bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold text-sm hover:from-yeti-700 hover:to-yeti-800 shadow-lg transition-all">
-            Subscribe
-          </a>
-        </div>
-      </div>
-    </nav>
-
-    <main class="pt-20">
-
-      <!-- Hero Section -->
-      <section class="relative py-24 px-6 bg-gradient-to-b from-white via-slate-50 to-white text-center">
-        <div class="max-w-4xl mx-auto">
-          <div class="inline-flex items-center gap-2 py-2 px-5 rounded-full glass border-slate-200 shadow-lg text-slate-700 text-xs font-bold uppercase tracking-widest mb-8">
-            <span class="w-2 h-2 rounded-full bg-yeti-500 animate-pulse"></span>
-            {posts.length} Articles
-          </div>
-
-          <h1 class="text-5xl md:text-6xl lg:text-7xl font-extrabold text-slate-900 mb-6 leading-[1.1] tracking-tight font-serif">
-            The Startup Yeti <br class="hidden sm:block" />
-            <span class="text-gradient from-yeti-600 via-cyan-500 to-blue-600">Blog</span>
-          </h1>
-
-          <p class="text-xl md:text-2xl text-slate-600 max-w-2xl mx-auto leading-relaxed font-light">
-            Tactical advice for modern founders on building and growing a startup.
-          </p>
-        </div>
-      </section>
-
-      <!-- Filter Section -->
-      <section class="max-w-7xl mx-auto px-6 py-12">
-        <div class="flex flex-wrap gap-3 items-center justify-center">
-          <span class="text-sm font-semibold text-slate-600">Filter by:</span>
-          <button class="filter-btn active px-5 py-2.5 rounded-xl font-semibold text-sm transition-all bg-gradient-to-r from-yeti-600 to-yeti-700 text-white shadow-lg" data-filter="all">
-            All Articles
-          </button>
-          {allCategories.map((category) => (
-            <button class="filter-btn px-5 py-2.5 rounded-xl border-2 border-slate-200 bg-white font-semibold text-sm text-slate-700 hover:border-yeti-400 hover:text-yeti-700 transition-all" data-filter={category.toLowerCase()}>
-              {category}
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <!-- Articles Grid -->
-      <section class="max-w-7xl mx-auto px-6 py-12 pb-28">
-        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-10" id="articles-grid">
-          {posts.map((post) => {
-            const category = post.categories.nodes[0]?.name || 'Uncategorized';
-            const categorySlug = post.categories.nodes[0]?.slug || 'uncategorized';
-            const readingTime = 5; // fixed estimate: cards don't fetch full content
-
-            return (
-              <article class="article-item group bg-white rounded-3xl border border-slate-100 overflow-hidden hover:shadow-2xl hover:border-yeti-200 hover:-translate-y-2 transition-all duration-500 cursor-pointer h-full flex flex-col" data-category={category.toLowerCase()}>
-                <a href={`/${categorySlug}/${post.slug}`} class="block">
-                  {post.featuredImage ? (
-                    <div class="h-60 relative overflow-hidden">
-                      <img
-                        src={post.featuredImage.node.sourceUrl}
-                        alt={post.featuredImage.node.altText || post.title}
-                        class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
-                      />
-                      <div class="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-                      <div class="absolute top-5 left-5 glass border-yeti-300 px-4 py-1.5 rounded-full text-xs font-bold text-yeti-700">
-                        {category}
-                      </div>
-                    </div>
-                  ) : (
-                    <div class="h-60 bg-gradient-to-br from-yeti-100 via-blue-50 to-cyan-50 relative overflow-hidden">
-                      <div class="absolute inset-0 bg-gradient-to-tr from-yeti-500/20 to-transparent group-hover:scale-110 transition-transform duration-700"></div>
-                      <div class="absolute top-5 left-5 glass border-yeti-300 px-4 py-1.5 rounded-full text-xs font-bold text-yeti-700">
-                        {category}
-                      </div>
-                    </div>
-                  )}
-
-                  <div class="p-8 flex flex-col flex-grow">
-                    <h3 class="text-xl md:text-2xl font-bold text-slate-900 mb-4 group-hover:text-yeti-600 transition-colors leading-tight">
-                      {post.title}
-                    </h3>
-
-                    <p class="text-slate-600 text-base line-clamp-3 mb-6 flex-grow leading-relaxed" set:html={post.excerpt}></p>
-
-                    <div class="flex items-center justify-between text-sm text-slate-400 font-semibold border-t border-slate-100 pt-5 mt-auto">
-                      <div class="flex items-center gap-2">
-                        <span>{new Date(post.date).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}</span>
-                        <span>•</span>
-                        <span>{readingTime} min read</span>
-                      </div>
-                      <svg class="w-5 h-5 text-yeti-600 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"></path></svg>
-                    </div>
-                  </div>
-                </a>
-              </article>
-            );
-          })}
-        </div>
-
-        <!-- No Results Message -->
-        <div id="no-results" class="hidden text-center py-20">
-          <div class="text-6xl mb-6">🔍</div>
-          <h3 class="text-2xl font-bold text-slate-900 mb-3">No articles found</h3>
-          <p class="text-slate-600">Try selecting a different category.</p>
-        </div>
-      </section>
-
-      <!-- Newsletter CTA -->
-      <section class="py-20 px-6 bg-gradient-to-b from-slate-50 to-white">
-        <div class="max-w-4xl mx-auto text-center">
-          <div class="glass border-slate-300 rounded-3xl p-12 shadow-2xl">
-            <div class="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-yeti-100 to-cyan-100 flex items-center justify-center">
-              <svg class="w-8 h-8 text-yeti-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-            </div>
-            <h2 class="text-3xl md:text-4xl font-bold text-slate-900 mb-4 font-serif">
-              Join Fellow Founders
-            </h2>
-            <p class="text-lg text-slate-600 mb-8 max-w-2xl mx-auto">
-              Get weekly tactical advice on building and growing your startup, delivered to your inbox.
-            </p>
-            <form class="flex flex-col sm:flex-row gap-4 max-w-md mx-auto">
-              <input
-                type="email" autocomplete="email"
-                placeholder="Enter your email"
-                class="flex-1 px-6 py-4 rounded-xl border-2 border-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all"
-                required
-              />
-              <button
-                type="submit"
-                class="px-8 py-4 rounded-xl bg-gradient-to-r from-yeti-600 to-yeti-700 text-white font-bold hover:from-yeti-700 hover:to-yeti-800 shadow-lg hover:shadow-glow transition-all whitespace-nowrap"
-              >
-                Subscribe
-              </button>
-            </form>
-            <p class="text-xs text-slate-500 mt-6">No spam. Unsubscribe anytime.</p>
-          </div>
-        </div>
-      </section>
-
-    </main>
-
-    <!-- Footer -->
-    <Footer />
-
-    <script>
-      // Article filtering
-      (function() {
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const articles = document.querySelectorAll('.article-item');
-        const noResults = document.getElementById('no-results');
-
-        filterBtns.forEach(btn => {
-          btn.addEventListener('click', () => {
-            const filter = btn.dataset.filter;
-
-            // Update active state
-            filterBtns.forEach(b => {
-              b.classList.remove('active', 'bg-gradient-to-r', 'from-yeti-600', 'to-yeti-700', 'text-white', 'shadow-lg');
-              b.classList.add('border-2', 'border-slate-200', 'bg-white', 'text-slate-700');
-            });
-            btn.classList.add('active', 'bg-gradient-to-r', 'from-yeti-600', 'to-yeti-700', 'text-white', 'shadow-lg');
-            btn.classList.remove('border-2', 'border-slate-200', 'bg-white', 'text-slate-700');
-
-            // Filter articles
-            let visibleCount = 0;
-            articles.forEach(article => {
-              if (filter === 'all' || article.dataset.category === filter) {
-                article.style.display = 'flex';
-                visibleCount++;
-                setTimeout(() => {
-                  article.style.opacity = '1';
-                  article.style.transform = 'translateY(0)';
-                }, 10);
-              } else {
-                article.style.opacity = '0';
-                article.style.transform = 'translateY(20px)';
-                setTimeout(() => {
-                  article.style.display = 'none';
-                }, 300);
-              }
-            });
-
-            // Show/hide no results message
-            if (visibleCount === 0) {
-              noResults.classList.remove('hidden');
-            } else {
-              noResults.classList.add('hidden');
-            }
-          });
+  <script>
+    (() => {
+      const buttons = document.querySelectorAll<HTMLButtonElement>('.filter-btn');
+      const items = document.querySelectorAll<HTMLElement>('#articles-grid > li');
+      const empty = document.getElementById('no-results');
+      const count = document.getElementById('visible-count');
+      const activeClasses = ['bg-slate-900', 'text-white', 'border-slate-900', 'dark:bg-white', 'dark:text-slate-950', 'dark:border-white'];
+      const setActive = (btn: HTMLButtonElement) => {
+        buttons.forEach((b) => { b.setAttribute('aria-pressed', String(b === btn)); b.classList.toggle('btn-secondary', b !== btn); activeClasses.forEach((c) => b.classList.toggle(c, b === btn)); });
+      };
+      setActive(buttons[0]);
+      buttons.forEach((btn) => btn.addEventListener('click', () => {
+        const filter = btn.dataset.filter;
+        let visible = 0;
+        items.forEach((li) => {
+          const cat = li.querySelector('.label')?.textContent?.trim().toLowerCase();
+          const show = filter === 'all' || cat === filter;
+          li.classList.toggle('hidden', !show);
+          if (show) visible++;
         });
-      })();
-    </script>
-  </body>
-</html>
+        empty?.classList.toggle('hidden', visible > 0);
+        if (count) count.textContent = String(visible);
+        setActive(btn);
+      }));
+    })();
+  </script>
+</Base>

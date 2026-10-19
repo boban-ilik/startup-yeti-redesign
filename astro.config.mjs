@@ -11,7 +11,7 @@ export default defineConfig({
     format: 'file'
   },
   integrations: [
-    tailwind(),
+    tailwind({ applyBaseStyles: false }),
     sitemap({
       filter: (page) =>
         !page.includes('/debug') &&

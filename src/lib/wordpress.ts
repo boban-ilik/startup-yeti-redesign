@@ -1,4 +1,5 @@
 import { REDIRECTED_SLUGS } from "../data/noindex.js";
+import { buildSrcset } from "./images";
 
 /**
  * WordPress REST API fetch utility with retry logic and module-level caching.
@@ -226,21 +227,21 @@ function transformPost(raw: any) {
     excerpt: decodeHtmlEntities((raw.excerpt?.rendered ?? "") as string),
     date: (raw.date ?? "") as string,
     featuredImage: raw._embedded?.["wp:featuredmedia"]?.[0]
-      ? {
-          node: {
-            sourceUrl:
-              (raw._embedded["wp:featuredmedia"][0].source_url ?? "") as string,
-            altText: (raw._embedded["wp:featuredmedia"][0].alt_text ||
-              raw.title?.rendered ||
-              "") as string,
-            mediaDetails: {
-              width: (raw._embedded["wp:featuredmedia"][0].media_details?.width ??
-                1200) as number,
-              height: (raw._embedded["wp:featuredmedia"][0].media_details?.height ??
-                630) as number,
+      ? (() => {
+          const m = raw._embedded["wp:featuredmedia"][0];
+          const sourceUrl = (m.source_url ?? "") as string;
+          const width = (m.media_details?.width ?? 1200) as number;
+          const height = (m.media_details?.height ?? 630) as number;
+          return {
+            node: {
+              sourceUrl,
+              altText: (m.alt_text || raw.title?.rendered || "") as string,
+              mediaDetails: { width, height },
+              // Uncropped WordPress renditions for srcset (see lib/images.ts).
+              srcset: buildSrcset(m.media_details?.sizes, { url: sourceUrl, width, height }),
             },
-          },
-        }
+          };
+        })()
       : null,
     author: {
       node: {

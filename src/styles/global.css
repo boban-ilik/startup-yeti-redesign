@@ -4,47 +4,88 @@
 
 @layer base {
   html {
+    color-scheme: light;
     scroll-behavior: smooth;
-    overflow-x: hidden;
+    -webkit-text-size-adjust: 100%;
   }
-
+  html.dark {
+    color-scheme: dark;
+  }
   body {
-    @apply antialiased;
-    overflow-x: hidden;
-    width: 100%;
+    @apply bg-white text-slate-700 antialiased dark:bg-slate-950 dark:text-slate-300;
+  }
+  ::selection {
+    @apply bg-yeti-100 text-yeti-900 dark:bg-yeti-800 dark:text-yeti-50;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-yeti-500 ring-offset-2 ring-offset-white dark:ring-yeti-400 dark:ring-offset-slate-950;
+  }
+  /* Scrollbar and caret pick up the palette instead of browser defaults. */
+  * {
+    scrollbar-color: theme("colors.slate.300") transparent;
+    caret-color: theme("colors.yeti.600");
+  }
+  .dark * {
+    scrollbar-color: theme("colors.slate.700") transparent;
+    caret-color: theme("colors.yeti.400");
+  }
+  h1, h2, h3, h4 {
+    text-wrap: balance;
+  }
+  p, li, blockquote {
+    text-wrap: pretty;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
   }
 }
 
-@layer utilities {
-  .glass {
-    @apply bg-white/70 backdrop-blur-xl border border-white/20;
+@layer components {
+  .wrap {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-6;
   }
-
-  .glass-dark {
-    @apply bg-slate-900/70 backdrop-blur-xl border border-slate-700/20;
+  .wrap-narrow {
+    @apply mx-auto w-full max-w-3xl px-5 sm:px-6;
   }
-
-  /* Dark mode responsive glass effect */
-  .glass {
-    @apply dark:bg-slate-800/70 dark:border-slate-700/20;
+  .section {
+    @apply py-16 md:py-24;
   }
-
-  .text-gradient {
-    @apply bg-clip-text text-transparent bg-gradient-to-r;
+  .display {
+    @apply font-serif font-bold tracking-tight text-slate-900 dark:text-white;
   }
-
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-2 hover:shadow-2xl;
+  .lead {
+    @apply text-lg leading-relaxed text-slate-600 md:text-xl dark:text-slate-300;
   }
-
-  .animate-on-scroll {
-    opacity: 0;
-    transform: translateY(30px);
-    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+  .btn {
+    @apply inline-flex min-h-11 items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-semibold transition-colors duration-150;
   }
-
-  .animate-on-scroll.visible {
-    opacity: 1;
-    transform: translateY(0);
+  .btn-primary {
+    @apply btn bg-yeti-700 text-white hover:bg-yeti-800 dark:bg-yeti-400 dark:text-slate-950 dark:hover:bg-yeti-300;
+  }
+  .btn-secondary {
+    @apply btn border border-slate-300 bg-white text-slate-800 hover:border-slate-400 hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:hover:border-slate-500 dark:hover:bg-slate-800;
+  }
+  .btn-lg {
+    @apply min-h-12 px-6 py-3 text-base;
+  }
+  .link {
+    @apply font-semibold text-yeti-700 underline-offset-4 hover:underline dark:text-yeti-400;
+  }
+  .input {
+    @apply w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-base text-slate-900 placeholder:text-slate-500 focus:border-yeti-600 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-400 dark:focus:border-yeti-400;
+  }
+  .skip-link {
+    @apply sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-lg focus:bg-yeti-700 focus:px-4 focus:py-2 focus:text-white;
+  }
+  .label {
+    @apply text-sm font-semibold uppercase tracking-wide text-yeti-700 dark:text-yeti-400;
+  }
+  .meta {
+    @apply text-sm text-slate-500 dark:text-slate-400;
   }
 }

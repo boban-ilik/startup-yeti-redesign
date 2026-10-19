@@ -1,0 +1,14 @@
+---
+// Section-level newsletter call to action, reused on category, blog, article and tool pages.
+import NewsletterForm from "./NewsletterForm.astro";
+interface Props { heading: string; body: string; note?: string }
+const { heading, body, note = "No spam. Unsubscribe anytime." } = Astro.props;
+---
+<section class="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900">
+  <div class="wrap-narrow section text-center">
+    <h2 class="display text-3xl md:text-4xl">{heading}</h2>
+    <p class="lead mx-auto mt-4 max-w-xl">{body}</p>
+    <div class="mx-auto mt-8 max-w-md"><NewsletterForm /></div>
+    <p class="meta mt-4">{note}</p>
+  </div>
+</section>

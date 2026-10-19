@@ -5,7 +5,7 @@ export default {
 	theme: {
 		extend: {
 			fontFamily: {
-				sans: ['Inter', 'system-ui', 'sans-serif'],
+				sans: ['Inter', 'ui-sans-serif', 'system-ui', 'sans-serif'],
 				serif: ['Merriweather', 'Georgia', 'serif'],
 			},
 			colors: {
@@ -23,44 +23,49 @@ export default {
 					950: '#082f49',
 				}
 			},
-			backgroundImage: {
-				'grid-pattern': "url(\"data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%233b82f6' fill-opacity='0.05' fill-rule='evenodd'%3E%3Cpath d='M0 40L40 0H20L0 20M40 40V20L20 40'/%3E%3C/g%3E%3C/svg%3E\")",
-				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
+			minHeight: {
+				11: '2.75rem',
+				12: '3rem',
 			},
-			animation: {
-				'fade-in': 'fadeIn 0.6s ease-in-out',
-				'slide-up': 'slideUp 0.6s ease-out',
-				'slide-down': 'slideDown 0.6s ease-out',
-				'scale-in': 'scaleIn 0.5s ease-out',
-				'float': 'float 6s ease-in-out infinite',
+			maxWidth: {
+				measure: '56ch',
 			},
-			keyframes: {
-				fadeIn: {
-					'0%': { opacity: '0' },
-					'100%': { opacity: '1' },
+			typography: ({ theme }) => ({
+				DEFAULT: {
+					css: {
+						'--tw-prose-body': theme('colors.slate.700'),
+						'--tw-prose-headings': theme('colors.slate.900'),
+						'--tw-prose-links': theme('colors.yeti.700'),
+						'--tw-prose-bold': theme('colors.slate.900'),
+						'--tw-prose-quotes': theme('colors.slate.800'),
+						'--tw-prose-quote-borders': theme('colors.yeti.300'),
+						'--tw-prose-code': theme('colors.yeti.800'),
+						'--tw-prose-th-borders': theme('colors.slate.300'),
+						'--tw-prose-td-borders': theme('colors.slate.200'),
+						'--tw-prose-invert-body': theme('colors.slate.300'),
+						'--tw-prose-invert-headings': theme('colors.white'),
+						'--tw-prose-invert-links': theme('colors.yeti.400'),
+						'--tw-prose-invert-bold': theme('colors.white'),
+						'--tw-prose-invert-quotes': theme('colors.slate.200'),
+						'--tw-prose-invert-quote-borders': theme('colors.yeti.700'),
+						'--tw-prose-invert-code': theme('colors.yeti.300'),
+						'--tw-prose-invert-th-borders': theme('colors.slate.600'),
+						'--tw-prose-invert-td-borders': theme('colors.slate.800'),
+						maxWidth: '56ch',
+						a: { fontWeight: '600', textDecoration: 'none', textUnderlineOffset: '4px' },
+						'a:hover': { textDecoration: 'underline' },
+						'h2, h3, h4': { fontFamily: theme('fontFamily.serif').join(', '), letterSpacing: '-0.01em' },
+						h2: { marginTop: '2.5em', marginBottom: '0.75em' },
+						h3: { marginTop: '1.75em', marginBottom: '0.5em' },
+						img: { borderRadius: theme('borderRadius.lg') },
+						blockquote: { fontStyle: 'normal', fontWeight: '400' },
+						'blockquote p:first-of-type::before': { content: 'none' },
+						'blockquote p:last-of-type::after': { content: 'none' },
+						th: { textAlign: 'left' },
+						'thead th': { paddingBottom: '0.5em' },
+					},
 				},
-				slideUp: {
-					'0%': { transform: 'translateY(30px)', opacity: '0' },
-					'100%': { transform: 'translateY(0)', opacity: '1' },
-				},
-				slideDown: {
-					'0%': { transform: 'translateY(-30px)', opacity: '0' },
-					'100%': { transform: 'translateY(0)', opacity: '1' },
-				},
-				scaleIn: {
-					'0%': { transform: 'scale(0.9)', opacity: '0' },
-					'100%': { transform: 'scale(1)', opacity: '1' },
-				},
-				float: {
-					'0%, 100%': { transform: 'translateY(0px)' },
-					'50%': { transform: 'translateY(-20px)' },
-				},
-			},
-			boxShadow: {
-				'glow': '0 0 20px rgba(14, 165, 233, 0.3)',
-				'glow-lg': '0 0 30px rgba(14, 165, 233, 0.4)',
-			},
+			}),
 		},
 	},
 	plugins: [

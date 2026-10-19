@@ -1,0 +1,127 @@
+---
+// src/layouts/Base.astro — shared document shell: head, theme, nav, footer, scripts.
+import "../styles/global.css";
+import Nav from "../components/Nav.astro";
+import Footer from "../components/Footer.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Path without trailing slash, '' for the homepage. */
+  path: string;
+  ogType?: "website" | "article" | "profile";
+  ogImage?: string;
+  ogImageWidth?: number;
+  ogImageHeight?: number;
+  robots?: string;
+  /** Preload the LCP image on article pages. */
+  preloadImage?: string;
+  /** Reading-progress bar (article pages only). */
+  progress?: boolean;
+}
+
+const siteUrl = "https://www.startupyeti.com";
+const {
+  title,
+  description,
+  path,
+  ogType = "website",
+  ogImage = `${siteUrl}/og-default.png`,
+  ogImageWidth = 1200,
+  ogImageHeight = 630,
+  robots = "index, follow, max-image-preview:large",
+  preloadImage,
+  progress = false,
+} = Astro.props;
+const pageUrl = `${siteUrl}${path}`;
+const FONTS = "https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap";
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="#ffffff" media="(prefers-color-scheme: light)" />
+    <meta name="theme-color" content="#020617" media="(prefers-color-scheme: dark)" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192x192.png" />
+    <link rel="apple-touch-icon" href="/favicon-192x192.png" />
+    <meta name="google-site-verification" content="fQzWw2KrEV8ca80-tLNylb8Pb7Bq9ksrGHRXpv0qjwM" />
+
+    <!-- Theme before first paint: stored choice wins, then the OS preference.
+         'darkMode' is the key the previous toggle wrote; keep honouring it. -->
+    <script is:inline>
+      (function () {
+        try {
+          var s = localStorage.getItem('theme') || (localStorage.getItem('darkMode') === 'true' ? 'dark' : null);
+          var dark = s ? s === 'dark' : window.matchMedia('(prefers-color-scheme: dark)').matches;
+          if (dark) document.documentElement.classList.add('dark');
+        } catch (e) {}
+      })();
+    </script>
+
+    <meta name="robots" content={robots} />
+    <meta name="googlebot" content={robots} />
+
+    <title>{title}</title>
+    <meta name="title" content={title} />
+    <meta name="description" content={description} />
+    <link rel="canonical" href={pageUrl} />
+
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={pageUrl} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content={String(ogImageWidth)} />
+    <meta property="og:image:height" content={String(ogImageHeight)} />
+    <meta property="og:locale" content="en_US" />
+    <meta property="og:site_name" content="Startup Yeti" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content={pageUrl} />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <slot name="head" />
+
+    {preloadImage && <link rel="preload" as="image" href={preloadImage} fetchpriority="high" />}
+
+    <!-- Google Analytics with bot detection -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-5Y6SRMMDYG"></script>
+    <script is:inline src="/js/analytics.js"></script>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="preload" as="style" href={FONTS} />
+    <link rel="stylesheet" href={FONTS} media="print" onload="this.media='all'" />
+    <noscript><link rel="stylesheet" href={FONTS} /></noscript>
+  </head>
+
+  <body class="font-sans">
+    <a href="#main" class="skip-link">Skip to content</a>
+    <Nav />
+    {progress && <div id="reading-progress" class="fixed left-0 top-16 z-30 h-0.5 w-0 bg-yeti-600 dark:bg-yeti-400" aria-hidden="true"></div>}
+    <main id="main" class="pt-16">
+      <slot />
+    </main>
+    <Footer />
+
+    <script is:inline src="/js/newsletter.js"></script>
+    {progress && (
+      <script>
+        const bar = document.getElementById('reading-progress');
+        if (bar) {
+          const update = () => {
+            const max = document.documentElement.scrollHeight - window.innerHeight;
+            bar.style.width = (max > 0 ? Math.min(100, (window.scrollY / max) * 100) : 0) + '%';
+          };
+          window.addEventListener('scroll', update, { passive: true });
+          update();
+        }
+      </script>
+    )}
+  </body>
+</html>

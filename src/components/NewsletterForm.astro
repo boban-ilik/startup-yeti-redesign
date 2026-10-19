@@ -1,0 +1,10 @@
+---
+// Inline newsletter form; submission handled site-wide by /js/newsletter.js (data-newsletter-form).
+interface Props { compact?: boolean; id?: string }
+const { compact = false, id = `nl-${Math.random().toString(36).slice(2, 8)}` } = Astro.props;
+---
+<form class={`flex ${compact ? "flex-col gap-2 sm:flex-row" : "flex-col gap-3 sm:flex-row"}`} data-newsletter-form>
+  <label for={id} class="sr-only">Email address</label>
+  <input id={id} type="email" name="email" autocomplete="email" placeholder="you@company.com" required class={`input ${compact ? "py-2.5 text-sm" : ""}`} />
+  <button type="submit" class={`btn-primary shrink-0 ${compact ? "" : "btn-lg"}`}>Subscribe</button>
+</form>
