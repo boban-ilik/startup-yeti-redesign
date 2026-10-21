@@ -1,0 +1,14 @@
+[
+  {
+    "file": "positioning-statement-featured.png",
+    "prompt": "Editorial flat-vector illustration for a startup marketing blog. Left side: a paper form styled as a fill-in-the-blanks mad-lib with empty rectangular blanks, looking rigid and slightly absurd, muted grey tones. Right side: a confident hand-drawn decision map with five connected nodes leading to a single bright pinned card, in soft blues and teal (#0284c7 family). Off-white background, generous whitespace, clean modern startup-blog aesthetic. No readable body text baked into the image."
+  },
+  {
+    "file": "positioning-five-questions.png",
+    "prompt": "Clean infographic titled 'Position in This Order', showing five numbered steps in a left-to-right flow with arrows: 1 'Competitive alternatives' (icon: two diverging arrows), 2 'Differentiated capabilities' (icon: puzzle piece), 3 'Value' (icon: upward chart), 4 'Target segment' (icon: person in a circle target), 5 'Market category' (icon: labeled folder). The fifth step visually emphasized with a teal fill (#0284c7). Flat vector, off-white background, large legible sans-serif labels, ~1200px wide layout, blue/teal palette."
+  },
+  {
+    "file": "positioning-before-after.png",
+    "prompt": "Flat-vector comparison graphic with two stacked cards. Top card labeled 'BEFORE' in muted grey: a blurry generic statement represented by wavy placeholder lines and a red warning badge reading 'vague'. Bottom card labeled 'AFTER' in bright teal (#0284c7): a sharp statement represented by three crisp highlighted segments with small icons for a person (segment), a spreadsheet (alternative), and a dashboard (capability), plus a green check badge. Off-white background, clean modern startup-blog aesthetic, minimal readable text limited to 'BEFORE' and 'AFTER' labels."
+  }
+]
