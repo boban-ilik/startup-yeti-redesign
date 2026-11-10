@@ -192,6 +192,25 @@
                     </div>
                   </div>
 
+                  <!-- New + Expansion MRR Input (optional) -->
+                  <div>
+                    <label for="newmrr" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                      New + Expansion MRR
+                      <span class="text-slate-500 dark:text-slate-400 font-normal ml-2">added this month, optional</span>
+                    </label>
+                    <div class="relative">
+                      <span class="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 dark:text-slate-400 font-semibold">$</span>
+                      <input
+                        type="number"
+                        id="newmrr"
+                        placeholder="5000"
+                        class="w-full pl-9 pr-4 py-4 rounded-xl border-2 border-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 focus:border-yeti-500 focus:ring-2 focus:ring-yeti-500 transition-all text-lg font-semibold"
+                        min="0"
+                        step="100"
+                      />
+                    </div>
+                  </div>
+
                   <!-- ARPA Input (calculated but can be overridden) -->
                   <div>
                     <label for="arpa" class="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
@@ -268,7 +287,7 @@
                       <svg class="w-6 h-6 text-purple-600 dark:text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
                     </div>
                   </div>
-                  <p class="text-sm text-slate-600 dark:text-slate-400" id="growth-description">Based on current churn rate</p>
+                  <p class="text-sm text-slate-600 dark:text-slate-400" id="growth-description">New and expansion MRR minus churned MRR, as a share of MRR</p>
                 </div>
 
                 <!-- Payback Period Card -->
@@ -360,6 +379,7 @@
         const churnInput = document.getElementById('churn');
         const cacInput = document.getElementById('cac');
         const arpaInput = document.getElementById('arpa');
+        const newMrrInput = document.getElementById('newmrr');
         const calculateBtn = document.getElementById('calculate-btn');
         const resultsContainer = document.getElementById('results-container');
         const insightsBox = document.getElementById('insights-box');
@@ -398,8 +418,9 @@
           // Calculate LTV:CAC Ratio
           const ratio = ltv / cac;
 
-          // Calculate Net MRR Growth Rate (simplified)
-          const growthRate = (1 - (churn / 100)) * 100;
+          // Calculate Net MRR Growth Rate = (new + expansion MRR - churned MRR) / MRR
+          const newMrr = parseFloat(newMrrInput.value) || 0;
+          const growthRate = ((newMrr - mrr * (churn / 100)) / mrr) * 100;
 
           // Calculate Payback Period (months)
           const paybackPeriod = cac / arpa;
@@ -407,7 +428,7 @@
           // Update UI
           document.getElementById('ltv-value').textContent = `$${Math.round(ltv).toLocaleString()}`;
           document.getElementById('ratio-value').textContent = `${ratio.toFixed(1)}:1`;
-          document.getElementById('growth-value').textContent = `${growthRate.toFixed(1)}%`;
+          document.getElementById('growth-value').textContent = `${growthRate > 0 ? '+' : ''}${growthRate.toFixed(1)}%`;
           document.getElementById('payback-value').textContent = `${Math.round(paybackPeriod)} mo`;
 
           // Update ratio badge
