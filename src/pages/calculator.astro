@@ -7,7 +7,7 @@ const field = "input w-full py-3 text-lg font-semibold tabular-nums";
 const metrics = [
   { id: "ltv", title: "Customer Lifetime Value", initial: "$0", note: "Average revenue per customer over their lifetime" },
   { id: "ratio", title: "LTV:CAC Ratio", initial: "0:1", note: "Target: 3:1 or higher", badge: true },
-  { id: "growth", title: "Net MRR Growth Rate", initial: "0%", note: "Based on current churn rate" },
+  { id: "growth", title: "Net MRR Growth Rate", initial: "0%", note: "New and expansion MRR minus churned MRR, as a share of MRR" },
   { id: "payback", title: "CAC Payback Period", initial: "0 mo", note: "Time to recover acquisition cost" },
 ];
 ---
@@ -54,6 +54,13 @@ const metrics = [
           </div>
         </div>
         <div>
+          <label for="newmrr" class="block text-sm font-semibold text-slate-900 dark:text-white">New + Expansion MRR <span class="font-normal text-slate-500 dark:text-slate-400">added this month, optional</span></label>
+          <div class="relative mt-2">
+            <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500 dark:text-slate-400">$</span>
+            <input type="number" id="newmrr" inputmode="decimal" placeholder="5000" min="0" step="100" class={`${field} pl-9`} />
+          </div>
+        </div>
+        <div>
           <label for="arpa" class="block text-sm font-semibold text-slate-900 dark:text-white">Average Revenue Per Account (ARPA) <span class="font-normal text-slate-500 dark:text-slate-400">auto-calculated</span></label>
           <div class="relative mt-2">
             <span class="pointer-events-none absolute inset-y-0 left-4 flex items-center text-slate-500 dark:text-slate-400">$</span>
@@ -91,7 +98,7 @@ const metrics = [
   <script>
     (() => {
       const $ = (id: string) => document.getElementById(id) as HTMLInputElement;
-      const mrr = $('mrr'), customers = $('customers'), churn = $('churn'), cac = $('cac'), arpa = $('arpa');
+      const mrr = $('mrr'), customers = $('customers'), churn = $('churn'), cac = $('cac'), arpa = $('arpa'), newmrr = $('newmrr');
       const form = document.getElementById('calc-form') as HTMLFormElement;
       const error = document.getElementById('calc-error')!;
       const insightsBox = document.getElementById('insights-box')!;
@@ -116,12 +123,13 @@ const metrics = [
 
         const ltv = a / (ch / 100);          // LTV = ARPA / monthly churn
         const ratio = ltv / ca;               // LTV:CAC
-        const growthRate = (1 - ch / 100) * 100; // simplified net MRR growth
+        const n = parseFloat(newmrr.value) || 0;
+        const growthRate = ((n - m * (ch / 100)) / m) * 100; // net MRR growth = (new + expansion - churned) / MRR
         const payback = ca / a;               // months to recover CAC
 
         $('ltv-value').textContent = `$${Math.round(ltv).toLocaleString()}`;
         $('ratio-value').textContent = `${ratio.toFixed(1)}:1`;
-        $('growth-value').textContent = `${growthRate.toFixed(1)}%`;
+        $('growth-value').textContent = `${growthRate > 0 ? '+' : ''}${growthRate.toFixed(1)}%`;
         $('payback-value').textContent = `${Math.round(payback)} mo`;
 
         const badge = $('ratio-badge');
