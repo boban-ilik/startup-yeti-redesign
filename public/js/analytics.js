@@ -27,13 +27,36 @@
 
   window.dataLayer = window.dataLayer || [];
   window.gtag = function () { dataLayer.push(arguments); };
-  gtag('js', new Date());
-  // GA4 anonymizes IPs automatically; the UA-era anonymize_ip flag is omitted.
-  gtag('config', 'G-5Y6SRMMDYG', { send_page_view: true });
+
+  // Count a visit only after a human signal: scroll, tap, click, key press,
+  // mouse movement, or 10s on a visible tab. Load-and-leave bots that run JS
+  // with a normal UA (most of the old "Direct" sessions, avg 3.7s) never get
+  // here. gtag.js still loads, but sends nothing until config runs.
+  var started = false, timer = null;
+  var SIGNALS = ['scroll', 'pointerdown', 'keydown', 'touchstart', 'mousemove'];
+  function start() {
+    if (started) return;
+    started = true;
+    clearTimeout(timer);
+    SIGNALS.forEach(function (t) { window.removeEventListener(t, start, true); });
+    document.removeEventListener('visibilitychange', onVisibility);
+    gtag('js', new Date());
+    // GA4 anonymizes IPs automatically; the UA-era anonymize_ip flag is omitted.
+    gtag('config', 'G-5Y6SRMMDYG', { send_page_view: true });
+  }
+  function onVisibility() {
+    clearTimeout(timer);
+    if (document.visibilityState === 'visible') timer = setTimeout(start, 10000);
+  }
+  SIGNALS.forEach(function (t) { window.addEventListener(t, start, { capture: true, passive: true }); });
+  document.addEventListener('visibilitychange', onVisibility);
+  onVisibility();
 
   // Custom-event helper. Callers guard with `if (window.syTrack)` so bot
-  // sessions (where this is undefined) simply skip tracking.
+  // sessions (where this is undefined) simply skip tracking. Any event implies
+  // a human action, so it starts the session first if needed.
   window.syTrack = function (name, params) {
+    start();
     window.gtag('event', name, params || {});
   };
 
