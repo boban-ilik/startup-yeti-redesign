@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updated": "2026-10-02T00:00:00Z",
+  "updated": "2026-11-12T00:00:00Z",
   "pages": [
     {
       "slug": "startup-the-cost-of-pitchbook",
@@ -46,6 +46,18 @@
       "last_position": 31.3,
       "last_verdict": "first-run",
       "next_review": "2026-10-30",
+      "cms": "wordpress-headless"
+    },
+    {
+      "slug": "startup-carta-pricing",
+      "url": "/startup/carta-pricing",
+      "log": "seo-notes/urls/startup-carta-pricing.md",
+      "target_keyword": "carta pricing",
+      "cycles": 1,
+      "last_cycle": "2026-11-12",
+      "last_position": 20.0,
+      "last_verdict": "first-run",
+      "next_review": "2026-12-10",
       "cms": "wordpress-headless"
     }
   ]
