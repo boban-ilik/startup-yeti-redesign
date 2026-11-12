@@ -4,8 +4,8 @@ target_keyword: amplitude pricing
 site_url: https://www.startupyeti.com
 country: us
 first_optimized: 2026-10-02
-cycles: 1
-last_verdict: first-run
+cycles: 2
+last_verdict: loss-pivot
 ---
 
 # /startup/amplitude-pricing — Optimization Log
@@ -81,3 +81,40 @@ amplitude.com/pricing (Playwright raw, 2026-10-01): plan contents, limits table,
 **Target:** 2026-10-30. Look for: "amplitude pricing" < 15, impressions on the enterprise/session-replay queries, AI Overview citation, Ahrefs keyword count for the URL.
 
 ---
+
+---
+
+## Cycle 2 — 2026-11-12
+
+**Status:** applied (verdict `loss-pivot` on cycle 1; all 23 edits plus optional dash fixes N1 to N10 approved by Boban and applied 2026-11-12 via `scripts/apply-optimizer-proposal.mjs`; WP post 1858 was unmodified since 2026-10-02T10:14:29; pre-change backup kept outside the repo; scholarship graphic media 1884 removed from the post, media item left in the library). Full proposal: `seo-notes/proposals/startup-amplitude-pricing-2026-11-12.md`.
+
+**Cycle:** 2 — 2026-11-12 (review, `loss-pivot`)
+
+**Fresh metrics vs baseline (for the log table):**
+
+| Keyword | Cycle 1 (Jul 3 to Sep 30) | Cycle 2 (Oct 13 to Nov 10) | Δ |
+|---|---|---|---|
+| amplitude pricing | 31.3 (332 impr) | 29.5 (73 impr) | ▲ 1.8 |
+| amplitude cost | 23.5 (60) | 15.5 (17) | ▲ 8.0 |
+| amplitude enterprise prix | 22.6 (2,495) | 22.4 (1,010) | flat |
+| amplitude free plan | 18.1 (18) | 16.5 (4) | ▲ 1.6 |
+| amplitude discount | 27.2 (17) | 22.0 (2) | ▲ 5.2 |
+| amplitude session replay pricing | 33.7 (7) | 57.0 (2) | ▼ 23 |
+| amplitude pricing calculator | 15.0 (7) | 9.0 (1) | ▲ 6 |
+| amplitude price | n/a | 8.3 (4) | new |
+| how much does amplitude cost | n/a | 1.0 (2) | new |
+
+Page: 3,166 impr / 2 clicks / pos 22.9 (90 days) → 1,152 impr / 0 clicks / pos 22.3 (29 days). Ahrefs keywords for URL: 0 → 0. AI Overview: not cited → not cited (mitzu, Vendr cited).
+
+**SERP composition:** full top-10 churn; review/UGC pages out; now amplitude.com x3 (+AIO), userpilot #6, Vendr #7, mitzu #8, usercall #9, uxcam #10 (Ahrefs, updated 2026-11-08).
+
+**Drift check:** clean. WP post unmodified since 2026-10-02T10:14:29; no template changes on main since f57223a (only calculator commits 641ceef, 2dddf6d). Core-update recovery is the confound.
+
+**Hypothesis for cycle 2 (proposed):**
+
+> Depth did not move the head term; extractability and freshness might. Adding a dated at-a-glance table, the full 17-tier Plus calculator (annual and monthly) with the "about $70 per million events" rule, and a primary-sourced limits/overage/renewal section, plus correcting five factual errors (scholarship switching rule, scholarship graphic, venture-portfolio claim, Vendr caution, "volume discount"), earns a citation in the "amplitude pricing" and "amplitude cost" AI Overviews within 4 to 6 weeks, moves "amplitude cost" from 14 into the top 10, and lifts "amplitude pricing" from ~30 to 20 or better. If the head term is still worse than 25 at the next review with the AI Overview uncited, treat the pricing-format ceiling as site-level (consistent with the Sept 2026 core-update pattern across the pricing series) and stop on-page work on this URL.
+
+**Baseline to record for cycle 2:** page 1,152 impr / 0 clicks / pos 22.3 (Oct 13 to Nov 10); "amplitude pricing" 29.5; "amplitude cost" 15.5 (Nov 1 to 10: 13.9); Ahrefs keywords 0; AIO citation: no; words 3,535; content H2 10; FAQ 11; internal links out 5, in 4; HEAD at review 29ad6191f803c4139cfb5991c490cf94d73722b5 (branch design-pass; content lives in WordPress).
+
+**Next review:** 2026-12-17 to 2026-12-31 (4 to 6 weeks after apply). Check: AIO citation for "amplitude pricing" and "amplitude cost", "amplitude cost" < 10, "amplitude pricing" < 20, Vendr figures still current, calculator unchanged.
+

@@ -41,11 +41,11 @@
       "url": "/startup/amplitude-pricing",
       "log": "seo-notes/urls/startup-amplitude-pricing.md",
       "target_keyword": "amplitude pricing",
-      "cycles": 1,
-      "last_cycle": "2026-10-02",
-      "last_position": 31.3,
-      "last_verdict": "first-run",
-      "next_review": "2026-10-30",
+      "cycles": 2,
+      "last_cycle": "2026-11-12",
+      "last_position": 29.5,
+      "last_verdict": "loss-pivot",
+      "next_review": "2026-12-17",
       "cms": "wordpress-headless"
     },
     {

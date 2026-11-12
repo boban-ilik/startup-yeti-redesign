@@ -17,12 +17,16 @@ const section = md.split(/^## 3\./m)[1].split(/^## 4\./m)[0];
 // Two proposal layouts exist: "### Edit N" blocks with "New excerpt (...): `...`", and B-numbered body edits
 // plus "### T1" (title) / "### M1" (meta) blocks with "**Proposed (...):** `...`". Fences are paired in order.
 const title = section.match(/### T1[\s\S]*?\*\*Proposed[^`]*`([^`]+)`/)?.[1] ?? null;
-const meta = section.match(/New excerpt[^:]*:\s*`([^`]+)`/)?.[1] ?? section.match(/### M1[\s\S]*?\*\*Proposed[^`]*`([^`]+)`/)?.[1] ?? null;
+const meta = section.match(/New excerpt[^:]*:\s*`([^`]+)`/)?.[1] ?? section.match(/### M1[\s\S]*?Proposed[^`]*`([^`]+)`/)?.[1] ?? null;
 const fences = [...section.matchAll(/(Current HTML|Replacement HTML)[^\n]*\n\s*```html\n([\s\S]*?)\n```/g)];
 const edits = [];
-for (let k = 0; k < fences.length; k += 2) {
-  if (fences[k][1] !== "Current HTML" || fences[k + 1]?.[1] !== "Replacement HTML") throw new Error(`unpaired HTML blocks at pair ${k / 2 + 1}`);
-  edits.push({ n: k / 2 + 1, cur: fences[k][2], rep: fences[k + 1][2] });
+for (let k = 0; k < fences.length; ) {
+  if (fences[k][1] !== "Current HTML") throw new Error(`unexpected "${fences[k][1]}" block at edit ${edits.length + 1}`);
+  if (fences[k + 1]?.[1] === "Replacement HTML") { edits.push({ n: edits.length + 1, cur: fences[k][2], rep: fences[k + 1][2] }); k += 2; continue; }
+  // A deletion: "Replacement HTML" followed by an "(empty: delete ...)" note instead of a fence.
+  const between = section.slice(fences[k].index + fences[k][0].length, fences[k + 1]?.index ?? section.length);
+  if (!/Replacement HTML[\s\S]*?empty[^\n]*delete/i.test(between)) throw new Error(`unpaired HTML block at edit ${edits.length + 1}`);
+  edits.push({ n: edits.length + 1, cur: fences[k][2], rep: "" }); k += 1;
 }
 if (meta) edits.unshift({ n: "meta", excerpt: meta, cur: null, rep: null });
 if (title) console.log(`  title → ${title} (${title.length} chars)`);
