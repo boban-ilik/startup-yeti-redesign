@@ -59,6 +59,18 @@
       "last_verdict": "first-run",
       "next_review": "2026-12-10",
       "cms": "wordpress-headless"
+    },
+    {
+      "slug": "marketing-hubspot-alternatives",
+      "url": "/marketing/hubspot-alternatives",
+      "log": "seo-notes/urls/marketing-hubspot-alternatives.md",
+      "target_keyword": "hubspot alternatives",
+      "cycles": 1,
+      "last_cycle": "2026-11-12",
+      "last_position": 38.7,
+      "last_verdict": "first-run",
+      "next_review": "2026-12-10",
+      "cms": "wordpress-headless"
     }
   ]
 }
