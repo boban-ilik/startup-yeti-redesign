@@ -7,6 +7,7 @@ import Base from "../../layouts/Base.astro";
 import PostCard from "../../components/PostCard.astro";
 import NewsletterCta from "../../components/NewsletterCta.astro";
 import { buildSrcset, SIZES } from "../../lib/images";
+import { extractFaq } from "../../lib/faq";
 
 // 1. Get all paths with ALL data pre-fetched — eliminates per-post API calls
 export async function getStaticPaths() {
@@ -230,6 +231,11 @@ const robotsDirective = isNoIndex(category, slug)
 const publishedDate = new Date(post.date).toISOString();
 const modifiedDate = new Date(post.modified || post.date).toISOString();
 const categoryName = post.categories.nodes[0]?.name || 'Article';
+// Show "Updated" only when the post was edited on a later day than it was published.
+const showUpdated = modifiedDate.slice(0, 10) > publishedDate.slice(0, 10);
+// FAQPage JSON-LD mirrors the FAQ already visible in the post (needs at least two Q&A pairs).
+// A few older posts carry their own FAQPage script in the WP content; skip those to avoid a duplicate.
+const faq = /"@type"\s*:\s*"FAQPage"/.test(post.content) ? [] : extractFaq(post.content);
 ---
 
 <Base
@@ -281,6 +287,13 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
         { "@type": "ListItem", "position": 3, "name": post.title, "item": pageUrl }
       ]
     })} />
+    {faq.length >= 2 && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.map((q) => ({ "@type": "Question", "name": q.question, "acceptedAnswer": { "@type": "Answer", "text": q.answer } }))
+      })} />
+    )}
   </Fragment>
 
   <!-- Article header -->
@@ -302,6 +315,7 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
             <p class="font-semibold text-slate-900 dark:text-white">{post.author.node.name}</p>
             <p class="meta">
               <time datetime={post.date}>{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+              {showUpdated && (<><span aria-hidden="true"> · </span>Updated <time datetime={post.modified}>{new Date(post.modified).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></>)}
               <span aria-hidden="true"> · </span>{readingTime} min read
             </p>
           </div>
