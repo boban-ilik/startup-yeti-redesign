@@ -3,6 +3,7 @@
 // Dynamic blog post page matching existing URL structure: /category/slug/
 import { DEPRECATED_CATEGORY_REMAP } from "../../lib/wordpress";
 import { isNoIndex, isRedirected } from "../../data/noindex.js";
+import { extractFaq } from "../../lib/faq";
 
 // 1. Get all paths with ALL data pre-fetched — eliminates per-post API calls
 export async function getStaticPaths() {
@@ -219,6 +220,11 @@ const robotsDirective = isNoIndex(category, slug)
 const publishedDate = new Date(post.date).toISOString();
 const modifiedDate = new Date(post.modified || post.date).toISOString();
 const categoryName = post.categories.nodes[0]?.name || 'Article';
+// Show "Updated" only when the post was edited on a later day than it was published.
+const showUpdated = modifiedDate.slice(0, 10) > publishedDate.slice(0, 10);
+// FAQPage JSON-LD mirrors the FAQ already visible in the post (needs at least two Q&A pairs).
+// A few older posts carry their own FAQPage script in the WP content; skip those to avoid a duplicate.
+const faq = /"@type"\s*:\s*"FAQPage"/.test(post.content) ? [] : extractFaq(post.content);
 ---
 
 <!doctype html>
@@ -342,6 +348,15 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
       ]
     })} />
 
+    <!-- FAQ Schema -->
+    {faq.length >= 2 && (
+      <script type="application/ld+json" set:html={JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": faq.map((q) => ({ "@type": "Question", "name": q.question, "acceptedAnswer": { "@type": "Answer", "text": q.answer } }))
+      })} />
+    )}
+
     <!-- LCP image preload -->
     {post.featuredImage && (
       <link rel="preload" as="image" href={post.featuredImage.node.sourceUrl} />
@@ -416,6 +431,7 @@ const categoryName = post.categories.nodes[0]?.name || 'Article';
               <div>
                 <p class="font-bold text-slate-900">{post.author.node.name}</p>
                 <time datetime={post.date} class="text-sm text-slate-500">{new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+                {showUpdated && (<span class="text-sm text-slate-500"> · Updated <time datetime={post.modified}>{new Date(post.modified).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>)}
               </div>
             </div>
             <div class="flex items-center gap-2 text-sm font-semibold">
