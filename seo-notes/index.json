@@ -84,6 +84,18 @@
       "last_verdict": "first-run",
       "next_review": "2026-12-11",
       "cms": "wordpress-headless"
+    },
+    {
+      "slug": "startup-the-books-every-founder-should-read",
+      "url": "/startup/the-books-every-founder-should-read",
+      "log": "seo-notes/urls/startup-the-books-every-founder-should-read.md",
+      "target_keyword": "startup books",
+      "cycles": 1,
+      "last_cycle": "2026-11-13",
+      "last_position": 95.7,
+      "last_verdict": "first-run",
+      "next_review": "2027-01-08",
+      "cms": "wordpress-headless"
     }
   ]
 }
