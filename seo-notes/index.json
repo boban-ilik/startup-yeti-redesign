@@ -1,18 +1,19 @@
 {
   "version": 1,
-  "updated": "2026-11-12T00:00:00Z",
+  "updated": "2026-11-13T00:00:00Z",
   "pages": [
     {
       "slug": "startup-the-cost-of-pitchbook",
       "url": "/startup/the-cost-of-pitchbook",
       "log": "seo-notes/urls/startup-the-cost-of-pitchbook.md",
       "target_keyword": "pitchbook pricing",
-      "cycles": 2,
-      "last_cycle": "2026-10-01",
-      "last_position": 26.8,
+      "cycles": 3,
+      "last_cycle": "2026-11-13",
+      "last_position": 44.8,
       "cms": "wordpress-headless",
       "last_verdict": "loss-pivot",
-      "next_review": "2026-10-29"
+      "next_review": "2026-12-29",
+      "note": "accuracy-only cycle; retire from optimizer if head terms still worse than 40 at review"
     },
     {
       "slug": "business-how-to-captivate-conscious-customers",
@@ -70,6 +71,18 @@
       "last_position": 38.7,
       "last_verdict": "first-run",
       "next_review": "2026-12-10",
+      "cms": "wordpress-headless"
+    },
+    {
+      "slug": "marketing-saas-content-marketing-strategy",
+      "url": "/marketing/saas-content-marketing-strategy",
+      "log": "seo-notes/urls/marketing-saas-content-marketing-strategy.md",
+      "target_keyword": "saas content marketing strategy",
+      "cycles": 1,
+      "last_cycle": "2026-11-13",
+      "last_position": 45.5,
+      "last_verdict": "first-run",
+      "next_review": "2026-12-11",
       "cms": "wordpress-headless"
     }
   ]

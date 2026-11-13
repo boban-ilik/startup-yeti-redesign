@@ -207,3 +207,41 @@ Archived Vendr snapshot (2025-06-17) → all contract figures, savings %, uplift
 **Target:** 2026-10-29 (4 weeks). **Run:** `/on-page-optimizer review /startup/the-cost-of-pitchbook`. **Look for:** "pitchbook pricing" and "pitchbook cost" back under position 12; weekly impressions > 1,000; any AI Overview citation. Also run cycle 1 for /startup/carta-pricing (held position, lost ~50% impressions in the same update).
 
 ---
+
+---
+
+## Cycle 3 — 2026-11-13
+
+**Status:** applied (all 37 accuracy edits approved by Boban and applied 2026-11-13 via `scripts/apply-optimizer-proposal.mjs`; WP post 1178 was unmodified since 2026-10-02T10:14:34; title and meta unchanged; pre-change backup kept outside the repo). Full proposal: `seo-notes/proposals/startup-the-cost-of-pitchbook-2026-11-13.md`.
+
+**Cycle:** 3 — 2026-11-13 (review, `loss-pivot`: on-page ceiling reached, accuracy-only)
+
+**Fresh metrics vs baseline (for the log table):**
+
+| Keyword | Cycle 2 (Sep 3 to 30) | Cycle 3 (Oct 16 to Nov 12) | Δ |
+|---|---|---|---|
+| pitchbook pricing | 25.9 (27 impr) | 53.7 (6) | ▼ 27.8 |
+| pitchbook cost | 29.8 (18) | 59.2 (9) | ▼ 29.4 |
+| how much is pitchbook | 1.9 (221) | 58.5 (2) | ▼ 56.6 |
+| pitchbook subscription price | 4.6 (112) | 46.0 (1) | ▼ 41.4 |
+| pitchbook subscription cost | 3.8 (105) | 48.6 (5) | ▼ 44.8 |
+| how much does pitchbook cost | 8.6 (55) | 25.4 (14) | ▼ 16.8 |
+| how much does a pitchbook subscription cost | 2.7 (19) | 29.0 (4) | ▼ 26.3 |
+| pitchbook price per month | 11.1 (14) | 28.8 (5) | ▼ 17.7 |
+
+Page: 954 impr / 0 clicks / pos 13.1 → 153 impr / 0 clicks / pos 44.8. Weekly impressions ~101 (week of Sep 28) → ~43 (week of Nov 2). Ahrefs keywords for URL: 2 at #1, ~37 visits → 1 at #1, 1 visit. AI Overview: not cited → not cited (pitchbook.com, investordatarooms.com, outsales.ai, clay.com cited).
+
+**SERP composition:** new: leadloft.com #6 (DR 40), outsales.ai #10 (DR 36, 0 RDs, published Sep 29, 2026), investordatarooms.com in the AIO and #9 on "how much is pitchbook" (DR 23, 0 RDs, published Sep 14, 2026). Out of the top 10: tagnifi, pitchbook API page, alpha-sense. ITQlick slid to #11. Ahrefs SERP updated 2026-11-11.
+
+**Drift check:** ambiguous. The only post edits were cycle 2 (Oct 1) and the Amplitude link (Oct 2). The decline started the week after cycle 2 shipped. But pipedrive-alternatives and salesforce-cost slid over the same weeks without edits, carta-pricing and amplitude-pricing recovered, and two new low-DR competitors entered in late September. No template change reached production before Nov 12 (5805bd7).
+
+**Verdict:** cycle-2 hypothesis disproven (head terms 26 to 30 → 54 to 59; long tail top-5 → 22 to 58; weekly impressions ~43, target was >1,000). On-page work has hit its ceiling. The page is 2× the measurable competitors' length, ahead on tables and FAQs, and covers every subtopic that 2+ competitors cover. The Amplitude "dated summary table" hypothesis is not supported for this SERP (1/5 competitors, 1/3 AIO-cited third-party pages have one).
+
+**Hypothesis for cycle 3 (proposed):**
+
+> This cycle is not a ranking bet. Correcting ten factual problems, including the page's central claim about how PitchBook is priced (per licensed user, per Morningstar's FY2025 10-K, not "modular"), the API pricing mechanism, outdated coverage counts, contradictory ranges, unsourced tables and stale Preqin/Dealroom/Crunchbase prices, makes every figure on the page traceable to a dated source. Expected ranking effect: none to small. If the page is still worse than position 40 on "pitchbook pricing", "pitchbook cost" and "how much does pitchbook cost" at the next review, retire this URL from the optimizer (no cycle 4). Monitor only for accuracy (Vendr refresh, Dealroom/Crunchbase price changes).
+
+**Baseline to record for cycle 3:** page 153 impr / 0 clicks / pos 44.8 (Oct 16 to Nov 12); "pitchbook pricing" 53.7; "pitchbook cost" 59.2; "how much does pitchbook cost" 25.4; "how much is pitchbook" 58.5; Ahrefs keywords 1 (#1, 60/mo); AIO citation: no; words 2,310 (→ ~2,960 after apply); content H2 8, H3 16 (10 FAQ); internal links out 6, in 8; HEAD at review 707d4a9 (branch design-pass; origin/main 5805bd7; content lives in WordPress post 1178).
+
+**Next review:** 2026-12-29 (6 weeks after apply). Check: the three head terms vs position 40 (retire if worse); GSC URL Inspection result; AIO citation; Vendr Preqin page still dated February 2026 or refreshed; Dealroom seat table and Crunchbase first-year offer unchanged.
+
