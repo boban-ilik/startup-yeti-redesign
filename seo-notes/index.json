@@ -96,6 +96,18 @@
       "last_verdict": "first-run",
       "next_review": "2027-01-08",
       "cms": "wordpress-headless"
+    },
+    {
+      "slug": "startup-best-payroll-software-for-startups",
+      "url": "/startup/best-payroll-software-for-startups",
+      "log": "seo-notes/urls/startup-best-payroll-software-for-startups.md",
+      "target_keyword": "payroll for startups",
+      "cycles": 1,
+      "last_cycle": "2026-11-13",
+      "last_position": 70.0,
+      "last_verdict": "first-run",
+      "next_review": "2026-12-11",
+      "cms": "wordpress-headless"
     }
   ]
 }
