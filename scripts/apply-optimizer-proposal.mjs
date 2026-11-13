@@ -25,7 +25,7 @@ for (let k = 0; k < fences.length; ) {
   if (fences[k + 1]?.[1] === "Replacement HTML") { edits.push({ n: edits.length + 1, cur: fences[k][2], rep: fences[k + 1][2] }); k += 2; continue; }
   // A deletion: "Replacement HTML" followed by an "(empty: delete ...)" note instead of a fence.
   const between = section.slice(fences[k].index + fences[k][0].length, fences[k + 1]?.index ?? section.length);
-  if (!/Replacement HTML[\s\S]*?empty[^\n]*delete/i.test(between)) throw new Error(`unpaired HTML block at edit ${edits.length + 1}`);
+  if (!/^\s*(?:\*\*Replacement HTML:?\*\*[\s\S]*?)?_?\(empty[^\n]*delete/i.test(between)) throw new Error(`unpaired HTML block at edit ${edits.length + 1}`);
   edits.push({ n: edits.length + 1, cur: fences[k][2], rep: "" }); k += 1;
 }
 if (meta) edits.unshift({ n: "meta", excerpt: meta, cur: null, rep: null });

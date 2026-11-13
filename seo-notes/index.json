@@ -31,11 +31,12 @@
       "url": "/marketing/saas-growth-strategy",
       "log": "seo-notes/urls/marketing-saas-growth-strategy.md",
       "target_keyword": "saas growth strategy",
-      "cycles": 1,
-      "last_cycle": "2026-06-15",
-      "last_position": null,
-      "last_verdict": "first-run",
-      "cms": "wordpress-headless"
+      "cycles": 2,
+      "last_cycle": "2026-11-13",
+      "last_position": 48.0,
+      "last_verdict": "loss-pivot",
+      "cms": "wordpress-headless",
+      "next_review": "2027-01-08"
     },
     {
       "slug": "startup-amplitude-pricing",
@@ -107,6 +108,18 @@
       "last_position": 70.0,
       "last_verdict": "first-run",
       "next_review": "2026-12-11",
+      "cms": "wordpress-headless"
+    },
+    {
+      "slug": "startup-pipedrive-alternatives",
+      "url": "/startup/pipedrive-alternatives",
+      "log": "seo-notes/urls/startup-pipedrive-alternatives.md",
+      "target_keyword": "pipedrive alternatives",
+      "cycles": 1,
+      "last_cycle": "2026-11-13",
+      "last_position": 77.7,
+      "last_verdict": "first-run",
+      "next_review": "2027-01-08",
       "cms": "wordpress-headless"
     }
   ]
