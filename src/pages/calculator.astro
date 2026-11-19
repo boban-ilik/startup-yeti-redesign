@@ -154,7 +154,7 @@ const metrics = [
         else insights.push('Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.');
         if (ch > 5) insights.push('Your churn rate is high. Focus on retention and customer success to improve LTV.');
         else if (ch < 2) insights.push('Excellent churn rate! Your customers are sticking around.');
-        if (payback > 12) insights.push('Your CAC payback period is over a year. Consider optimizing your sales efficiency.');
+        if (payback > 24) insights.push('Your CAC payback period is over two years. Consider optimizing your sales efficiency.');
         else if (payback < 6) insights.push("Great payback period! You're recovering acquisition costs quickly.");
         if (a < 50) insights.push('Consider increasing prices or upselling to improve ARPA and LTV.');
         $('insights-list').innerHTML = insights.map((t) => `<li>${t}</li>`).join('');
