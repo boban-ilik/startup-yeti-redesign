@@ -141,15 +141,16 @@ const metrics = [
         $('payback-value').textContent = `${Math.round(payback)} mo`;
 
         const badge = $('ratio-badge');
-        const tone = ratio >= 3 ? ['Excellent', 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200']
-          : ratio >= 2 ? ['Good', 'bg-yeti-100 text-yeti-800 dark:bg-yeti-900/50 dark:text-yeti-200']
-          : ratio >= 1 ? ['Fair', 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200']
-          : ['Needs Improvement', 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200'];
+        const tone = ratio >= 5 ? ['Excellent', 'bg-green-100 text-green-800 dark:bg-green-900/50 dark:text-green-200']
+          : ratio >= 3 ? ['Good', 'bg-yeti-100 text-yeti-800 dark:bg-yeti-900/50 dark:text-yeti-200']
+          : ratio >= 1 ? ['Below target', 'bg-amber-100 text-amber-800 dark:bg-amber-900/50 dark:text-amber-200']
+          : ['Needs improvement', 'bg-red-100 text-red-800 dark:bg-red-900/50 dark:text-red-200'];
         badge.textContent = tone[0];
         badge.className = `rounded-md px-2 py-0.5 text-xs font-semibold ${tone[1]}`;
 
         const insights: string[] = [];
-        if (ratio >= 3) insights.push("Your LTV:CAC ratio is excellent! You're efficiently acquiring customers.");
+        if (ratio >= 5) insights.push("Your LTV:CAC ratio is excellent! You're efficiently acquiring customers.");
+        else if (ratio >= 3) insights.push('Your LTV:CAC ratio clears the common 3:1 bar. Compare it with benchmarks for your growth rate and stage.');
         else if (ratio < 1) insights.push("Your LTV:CAC ratio is below 1. You're spending more to acquire customers than they generate in value.");
         else insights.push('Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.');
         if (ch > 5) insights.push('Your churn rate is high. Focus on retention and customer success to improve LTV.');
