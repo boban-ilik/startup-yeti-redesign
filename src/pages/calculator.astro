@@ -456,25 +456,27 @@
 
           // Update ratio badge
           const ratioBadge = document.getElementById('ratio-badge');
-          if (ratio >= 3) {
+          if (ratio >= 5) {
             ratioBadge.textContent = 'Excellent';
             ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-green-100 dark:bg-green-900 text-green-700 dark:text-green-300';
-          } else if (ratio >= 2) {
+          } else if (ratio >= 3) {
             ratioBadge.textContent = 'Good';
             ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-300';
           } else if (ratio >= 1) {
-            ratioBadge.textContent = 'Fair';
+            ratioBadge.textContent = 'Below target';
             ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 dark:bg-yellow-900 text-yellow-700 dark:text-yellow-300';
           } else {
-            ratioBadge.textContent = 'Needs Improvement';
+            ratioBadge.textContent = 'Needs improvement';
             ratioBadge.className = 'px-3 py-1 rounded-full text-xs font-bold bg-red-100 dark:bg-red-900 text-red-700 dark:text-red-300';
           }
 
           // Generate insights
           const insights = [];
 
-          if (ratio >= 3) {
+          if (ratio >= 5) {
             insights.push({ icon: '✅', text: 'Your LTV:CAC ratio is excellent! You\'re efficiently acquiring customers.' });
+          } else if (ratio >= 3) {
+            insights.push({ icon: '✅', text: 'Your LTV:CAC ratio clears the common 3:1 bar. Compare it with benchmarks for your growth rate and stage.' });
           } else if (ratio < 1) {
             insights.push({ icon: '⚠️', text: 'Your LTV:CAC ratio is below 1. You\'re spending more to acquire customers than they generate in value.' });
           } else {
