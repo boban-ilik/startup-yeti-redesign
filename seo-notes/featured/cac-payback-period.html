@@ -1,38 +1,42 @@
 <!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
-<!-- /startup/cac-payback-period. Figures: Benchmarkit 2026 report, CY-25 median 16 months, 75th percentile 24 (n=198); "under 12 months" = Skok's 2011 guideline. Re-render when a newer edition replaces them. -->
+<!-- /startup/cac-payback-period. Concept: cumulative gross profit climbing month by month until it repays CAC. Figures: Benchmarkit 2026 report, CY-25 median 16 months (n=198); "under 12 months" = Skok's 2011 guideline. Bars: month i at x=150+(i-1)*45, height 20*i, CAC line at y=320 (16 months). Re-render when a newer edition replaces them. -->
 <style>
-  .cac{left:110px;top:300px;width:200px;height:200px}
-  .cac .k{font-size:56px}.cac .s{font-size:15px;margin-top:8px;max-width:140px;line-height:1.25}
-  .med{left:640px;top:205px;width:250px;height:250px}
-  .med .k{font-size:96px}.med .s{font-size:19px;margin-top:6px}
-  .axis{font-size:18px;font-weight:700;fill:#0369a1}
-  .lbl{font-size:16px;font-weight:600;fill:#0369a1}
+  .canvas{background:radial-gradient(900px 600px at 75% 20%,#0c4a6e 0%,#082f49 55%,#061f31 100%)}
+  .head{left:150px;top:62px;font-size:44px;color:#fff;letter-spacing:-.01em}
+  .sub{left:150px;top:124px;font-size:20px;font-weight:600;color:#7dd3fc}
+  .axis{font-size:17px;font-weight:700;fill:#7dd3fc}
+  .cacl{font-size:18px;font-weight:700;fill:#fde68a}
+  .src{left:150px;top:728px;font-size:15px;font-weight:600;color:#7dd3fc}
+  .tag{box-shadow:0 14px 30px -12px rgba(0,0,0,.5)}
 </style></head>
 <body><div class="canvas">
-<!--DECO-->
-<svg class="abs" style="right:90px;top:200px" width="150" height="130" viewBox="0 0 150 130"><polygon points="75,5 145,125 5,125" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
-<svg class="abs" style="left:90px;top:150px" width="190" height="100" viewBox="0 0 190 100"><path d="M5 95 A90 90 0 0 1 185 95 Z" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
+<div class="abs head serif">When does a new customer pay back?</div>
+<div class="abs sub">Gross profit from one customer, added up month by month</div>
 
-<!-- timeline: month 0 at x=330, month 24 at x=1050 (30px per month) -->
 <svg class="abs" style="left:0;top:0" width="1200" height="800" viewBox="0 0 1200 800">
-  <defs><linearGradient id="fill" x1="0" x2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#0369a1"/></linearGradient></defs>
-  <rect x="330" y="560" width="720" height="26" rx="13" fill="#e0f2fe"/>
-  <rect x="330" y="560" width="480" height="26" rx="13" fill="url(#fill)"/>
-  <g stroke="#bae6fd" stroke-width="3">
-    <line x1="330" y1="600" x2="330" y2="614"/><line x1="510" y1="600" x2="510" y2="614"/><line x1="690" y1="600" x2="690" y2="614"/><line x1="870" y1="600" x2="870" y2="614"/><line x1="1050" y1="600" x2="1050" y2="614"/>
+  <defs>
+    <linearGradient id="b" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0369a1"/><stop offset="1" stop-color="#38bdf8"/></linearGradient>
+    <linearGradient id="g" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0e7490"/><stop offset="1" stop-color="#5eead4"/></linearGradient>
+    <linearGradient id="a" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#b45309"/><stop offset="1" stop-color="#fcd34d"/></linearGradient>
+  </defs>
+  <g id="bars"></g>
+  <line x1="130" y1="320" x2="1070" y2="320" stroke="#fde68a" stroke-width="3" stroke-dasharray="10 8"/>
+  <text class="cacl" x="150" y="306">CAC spent up front</text>
+  <line x1="130" y1="640" x2="1070" y2="640" stroke="#1e6a96" stroke-width="2"/>
+  <g class="axis" text-anchor="middle">
+    <text x="168" y="670">1</text><text x="393" y="670">6</text><text x="663" y="670">12</text><text x="843" y="670">16</text><text x="1023" y="670">20</text>
   </g>
-  <text class="axis" x="330" y="642" text-anchor="middle">0</text><text class="axis" x="510" y="642" text-anchor="middle">6</text><text class="axis" x="690" y="642" text-anchor="middle">12</text><text class="axis" x="870" y="642" text-anchor="middle">18</text><text class="axis" x="1050" y="642" text-anchor="middle">24</text>
-  <text class="lbl" x="690" y="676" text-anchor="middle">months of gross profit to win back CAC</text>
-  <line x1="690" y1="520" x2="690" y2="556" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6 6"/>
-  <line x1="810" y1="456" x2="810" y2="556" stroke="#0369a1" stroke-width="4"/>
-  <circle cx="810" cy="573" r="11" fill="#fff" stroke="#0369a1" stroke-width="5"/>
-  <line x1="1050" y1="520" x2="1050" y2="556" stroke="#0ea5e9" stroke-width="4" stroke-dasharray="6 6"/>
+  <line x1="585" y1="368" x2="660" y2="398" stroke="#e0f2fe" stroke-width="3"/>
+  <text class="axis" x="600" y="700" text-anchor="middle">months</text>
 </svg>
+<script>
+  const g=document.getElementById('bars');let h='';
+  for(let i=1;i<=20;i++){const x=150+(i-1)*45,ht=20*i,y=640-ht,f=i<16?'url(#b)':i===16?'url(#a)':'url(#g)',o=i<16?(.45+.55*i/15):1;
+    h+=`<rect x="${x}" y="${y}" width="36" height="${ht}" rx="7" fill="${f}" opacity="${o.toFixed(2)}"/>`;}
+  g.innerHTML=h;
+</script>
 
-<div class="circle glass-amber cac"><div class="k">CAC</div><div class="s">spent up front per customer</div></div>
-<div class="circle glass-blue med"><div class="k">16</div><div class="s">months, 2026 median</div></div>
-
-<div class="tag amber" style="left:470px;top:430px">12 months<small>the old rule of thumb</small></div>
-<div class="tag" style="left:930px;top:430px">24 months<small>75th percentile</small></div>
-<div class="tag" style="left:600px;top:110px">Benchmarkit 2026<small>198 B2B SaaS companies</small></div>
+<div class="tag amber" style="left:690px;top:180px">Month 16<small>the 2026 median repays CAC</small></div>
+<div class="tag" style="left:360px;top:334px">Month 12<small>the old rule, still short</small></div>
+<div class="abs src">Benchmarkit 2026 report, CY-25 data, 198 companies</div>
 </div></body></html>

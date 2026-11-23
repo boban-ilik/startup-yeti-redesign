@@ -1,23 +1,40 @@
 <!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
-<!-- /startup/ltv-to-cac-ratio. Figures: Skok 2009 "3x"; Benchmarkit 2026 report, CY-25 median 4.1x, 75th percentile 7.8x (n=146). Re-render when a newer edition replaces them. -->
+<!-- /startup/ltv-to-cac-ratio. Concept: how many CACs fit in one LTV. Figures: Skok 2009 "3x"; Benchmarkit 2026 report, CY-25 median 4.1x, 75th percentile 7.8x (n=146). Scale: 1x = 110px from x=150. Re-render when a newer edition replaces them. -->
 <style>
-  .ltv{left:370px;top:95px;width:560px;height:560px;padding-left:90px;box-sizing:border-box}
-  .ltv .k{font-size:118px}.ltv .s{font-size:22px;margin-top:14px}
-  .cac{left:200px;top:410px;width:220px;height:220px}
-  .cac .k{font-size:64px}.cac .s{font-size:16px;margin-top:8px;max-width:150px;line-height:1.25}
-  .ratio{left:372px;top:575px;font-size:44px;color:#0c4a6e;background:#fff;border-radius:50%;width:112px;height:112px;display:flex;align-items:center;justify-content:center;box-shadow:0 16px 34px -12px rgba(12,74,110,.4);border:3px solid #e0f2fe}
+  .canvas{background-color:#fff;background-image:linear-gradient(#e0f2fe 1px,transparent 1px),linear-gradient(90deg,#e0f2fe 1px,transparent 1px);background-size:40px 40px}
+  .head{left:150px;top:62px;font-size:44px;color:#082f49;letter-spacing:-.01em}
+  .ltv{left:150px;top:350px;width:451px;height:120px;border-radius:22px;display:flex;align-items:center;padding-left:34px;box-sizing:border-box;gap:22px}
+  .ltv .k{font-size:64px}.ltv .s{font-size:19px;line-height:1.25}
+  .ghost{left:150px;top:350px;width:858px;height:120px;border-radius:22px;border:3px dashed #7dd3fc;box-sizing:border-box;background:rgba(240,249,255,.85)}
+  .tile{top:490px;height:72px;border-radius:14px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:24px}
+  .axis{font-size:18px;font-weight:700;fill:#0369a1}
+  .src{left:150px;top:720px;font-size:15px;font-weight:600;color:#0369a1}
 </style></head>
 <body><div class="canvas">
-<!--DECO-->
-<svg class="abs" style="left:80px;top:150px" width="190" height="100" viewBox="0 0 190 100"><path d="M5 95 A90 90 0 0 1 185 95 Z" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
-<svg class="abs" style="right:90px;top:330px" width="150" height="130" viewBox="0 0 150 130"><polygon points="75,5 145,125 5,125" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
-<svg class="abs" style="left:70px;top:330px" width="70" height="40" viewBox="0 0 70 40"><polyline points="4,36 35,6 66,36" fill="none" stroke="#0369a1" stroke-width="5" stroke-linejoin="round"/></svg>
+<div class="abs head serif">How many CACs fit in one LTV?</div>
 
-<div class="circle glass-blue ltv"><div class="k">LTV</div><div class="s">gross profit over a lifetime</div></div>
-<div class="circle glass-amber cac"><div class="k">CAC</div><div class="s">cost to win one customer</div></div>
-<div class="abs ratio serif">÷</div>
+<div class="abs ghost"></div>
+<div class="abs glass-blue ltv"><div class="k">LTV</div><div class="s" style="color:#fff">2026 median:<br>4.1 times CAC</div></div>
 
-<div class="tag amber" style="left:150px;top:670px">3 : 1<small>Skok's 2009 rule of thumb</small></div>
-<div class="tag" style="left:860px;top:150px">4.1x<small>2026 median, Benchmarkit</small></div>
-<div class="tag" style="left:900px;top:560px">7.8x<small>top quartile</small></div>
+<div class="abs tile glass-amber" style="left:150px;width:104px">CAC</div>
+<div class="abs tile glass-amber" style="left:260px;width:104px">CAC</div>
+<div class="abs tile glass-amber" style="left:370px;width:104px">CAC</div>
+<div class="abs tile glass-amber" style="left:480px;width:104px">CAC</div>
+<div class="abs tile glass-amber" style="left:590px;width:11px;border-radius:5px"></div>
+
+<svg class="abs" style="left:0;top:50px" width="1200" height="800" viewBox="0 0 1200 800">
+  <line x1="480" y1="250" x2="480" y2="536" stroke="#b45309" stroke-width="4" stroke-dasharray="8 7"/>
+  <line x1="1008" y1="250" x2="1008" y2="536" stroke="#0ea5e9" stroke-width="4" stroke-dasharray="8 7"/>
+  <line x1="150" y1="560" x2="1030" y2="560" stroke="#7dd3fc" stroke-width="3"/>
+  <g stroke="#7dd3fc" stroke-width="3">
+    <line x1="150" y1="560" x2="150" y2="574"/><line x1="260" y1="560" x2="260" y2="574"/><line x1="370" y1="560" x2="370" y2="574"/><line x1="480" y1="560" x2="480" y2="574"/><line x1="590" y1="560" x2="590" y2="574"/><line x1="700" y1="560" x2="700" y2="574"/><line x1="810" y1="560" x2="810" y2="574"/><line x1="920" y1="560" x2="920" y2="574"/><line x1="1030" y1="560" x2="1030" y2="574"/>
+  </g>
+  <g class="axis" text-anchor="middle">
+    <text x="150" y="602">0</text><text x="260" y="602">1x</text><text x="370" y="602">2x</text><text x="480" y="602">3x</text><text x="590" y="602">4x</text><text x="700" y="602">5x</text><text x="810" y="602">6x</text><text x="920" y="602">7x</text><text x="1030" y="602">8x</text>
+  </g>
+</svg>
+
+<div class="tag amber" style="left:330px;top:215px">3 : 1<small>Skok's 2009 rule of thumb</small></div>
+<div class="tag" style="left:860px;top:215px">7.8x<small>top quartile</small></div>
+<div class="abs src">Benchmarkit 2026 report, CY-25 data, 146 companies</div>
 </div></body></html>
