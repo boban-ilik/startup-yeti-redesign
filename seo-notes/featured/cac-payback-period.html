@@ -1,0 +1,38 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
+<!-- /startup/cac-payback-period. Figures: Benchmarkit 2026 report, CY-25 median 16 months, 75th percentile 24 (n=198); "under 12 months" = Skok's 2011 guideline. Re-render when a newer edition replaces them. -->
+<style>
+  .cac{left:110px;top:300px;width:200px;height:200px}
+  .cac .k{font-size:56px}.cac .s{font-size:15px;margin-top:8px;max-width:140px;line-height:1.25}
+  .med{left:640px;top:205px;width:250px;height:250px}
+  .med .k{font-size:96px}.med .s{font-size:19px;margin-top:6px}
+  .axis{font-size:18px;font-weight:700;fill:#0369a1}
+  .lbl{font-size:16px;font-weight:600;fill:#0369a1}
+</style></head>
+<body><div class="canvas">
+<!--DECO-->
+<svg class="abs" style="right:90px;top:200px" width="150" height="130" viewBox="0 0 150 130"><polygon points="75,5 145,125 5,125" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
+<svg class="abs" style="left:90px;top:150px" width="190" height="100" viewBox="0 0 190 100"><path d="M5 95 A90 90 0 0 1 185 95 Z" fill="url(#hatch)" stroke="#7dd3fc" stroke-width="3"/></svg>
+
+<!-- timeline: month 0 at x=330, month 24 at x=1050 (30px per month) -->
+<svg class="abs" style="left:0;top:0" width="1200" height="800" viewBox="0 0 1200 800">
+  <defs><linearGradient id="fill" x1="0" x2="1"><stop offset="0" stop-color="#7dd3fc"/><stop offset="1" stop-color="#0369a1"/></linearGradient></defs>
+  <rect x="330" y="560" width="720" height="26" rx="13" fill="#e0f2fe"/>
+  <rect x="330" y="560" width="480" height="26" rx="13" fill="url(#fill)"/>
+  <g stroke="#bae6fd" stroke-width="3">
+    <line x1="330" y1="600" x2="330" y2="614"/><line x1="510" y1="600" x2="510" y2="614"/><line x1="690" y1="600" x2="690" y2="614"/><line x1="870" y1="600" x2="870" y2="614"/><line x1="1050" y1="600" x2="1050" y2="614"/>
+  </g>
+  <text class="axis" x="330" y="642" text-anchor="middle">0</text><text class="axis" x="510" y="642" text-anchor="middle">6</text><text class="axis" x="690" y="642" text-anchor="middle">12</text><text class="axis" x="870" y="642" text-anchor="middle">18</text><text class="axis" x="1050" y="642" text-anchor="middle">24</text>
+  <text class="lbl" x="690" y="676" text-anchor="middle">months of gross profit to win back CAC</text>
+  <line x1="690" y1="520" x2="690" y2="556" stroke="#f59e0b" stroke-width="4" stroke-dasharray="6 6"/>
+  <line x1="810" y1="456" x2="810" y2="556" stroke="#0369a1" stroke-width="4"/>
+  <circle cx="810" cy="573" r="11" fill="#fff" stroke="#0369a1" stroke-width="5"/>
+  <line x1="1050" y1="520" x2="1050" y2="556" stroke="#0ea5e9" stroke-width="4" stroke-dasharray="6 6"/>
+</svg>
+
+<div class="circle glass-amber cac"><div class="k">CAC</div><div class="s">spent up front per customer</div></div>
+<div class="circle glass-blue med"><div class="k">16</div><div class="s">months, 2026 median</div></div>
+
+<div class="tag amber" style="left:470px;top:430px">12 months<small>the old rule of thumb</small></div>
+<div class="tag" style="left:930px;top:430px">24 months<small>75th percentile</small></div>
+<div class="tag" style="left:600px;top:110px">Benchmarkit 2026<small>198 B2B SaaS companies</small></div>
+</div></body></html>
