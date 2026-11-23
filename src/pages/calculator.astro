@@ -40,7 +40,7 @@ const metrics = [
           <input type="number" id="customers" inputmode="numeric" placeholder="500" min="1" step="1" class={`${field} mt-2`} />
         </div>
         <div>
-          <label for="churn" class="block text-sm font-semibold text-slate-900 dark:text-white">Monthly Churn Rate <span class="font-normal text-slate-500 dark:text-slate-400">percentage</span></label>
+          <label for="churn" class="block text-sm font-semibold text-slate-900 dark:text-white">Monthly Revenue Churn <span class="font-normal text-slate-500 dark:text-slate-400">% of MRR lost to cancellations and downgrades</span></label>
           <div class="relative mt-2">
             <input type="number" id="churn" inputmode="decimal" placeholder="5" min="0" max="100" step="0.1" class={`${field} pr-10`} />
             <span class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-500 dark:text-slate-400">%</span>
@@ -153,8 +153,9 @@ const metrics = [
         else if (ratio >= 3) insights.push('Your LTV:CAC ratio clears the common 3:1 bar. Compare it with benchmarks for your growth rate and stage.');
         else if (ratio < 1) insights.push("Your LTV:CAC ratio is below 1. You're spending more to acquire customers than they generate in value.");
         else insights.push('Your LTV:CAC ratio could be improved. Aim for 3:1 or higher.');
-        if (ch > 5) insights.push('Your churn rate is high. Focus on retention and customer success to improve LTV.');
-        else if (ch < 2) insights.push('Excellent churn rate! Your customers are sticking around.');
+        if (ch > 2.3) insights.push('Your revenue churn is high: above about 2.3% a month is roughly the weakest quarter of B2B SaaS. Focus on retention to improve LTV.');
+        else if (ch < 0.8) insights.push('Excellent revenue churn! Under about 0.8% a month is roughly top-quartile B2B SaaS.');
+        else insights.push('Your revenue churn is in the typical B2B SaaS range, roughly 0.8% to 2.3% a month.');
         if (payback > 24) insights.push('Your CAC payback period is over two years. Consider optimizing your sales efficiency.');
         else if (payback < 6) insights.push("Great payback period! You're recovering acquisition costs quickly.");
         if (a < 50) insights.push('Consider increasing prices or upselling to improve ARPA and LTV.');

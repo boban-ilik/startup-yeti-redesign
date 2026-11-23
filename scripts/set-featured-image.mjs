@@ -18,9 +18,9 @@ const post = (await api(`/posts?slug=${slug}&_fields=id,featured_media`, { heade
 if (!post) throw new Error(`no post ${slug}`);
 const file = `/Users/bobanilikj/startup-yeti-redesign/content-drafts/images/${slug}-featured.webp`;
 const bytes = readFileSync(file);
-console.log(`  ~ ${slug} (post ${post.id}): featured ${post.featured_media} → new upload ${slug}-featured-v2.webp (${bytes.length} bytes)`);
+console.log(`  ~ ${slug} (post ${post.id}): featured ${post.featured_media} → new upload ${slug}-featured-${process.env.VER || "v2"}.webp (${bytes.length} bytes)`);
 if (DRY) { console.log("DRY RUN"); process.exit(0); }
-const media = await api("/media", { method: "POST", headers: { Authorization: auth, "Content-Type": "image/webp", "Content-Disposition": `attachment; filename="${slug}-featured-v2.webp"` }, body: bytes });
+const media = await api("/media", { method: "POST", headers: { Authorization: auth, "Content-Type": "image/webp", "Content-Disposition": `attachment; filename="${slug}-featured-${process.env.VER || "v2"}.webp"` }, body: bytes });
 await api(`/media/${media.id}`, { method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify({ alt_text: alt }) });
 await api(`/posts/${post.id}`, { method: "POST", headers: { Authorization: auth, "Content-Type": "application/json" }, body: JSON.stringify({ featured_media: media.id }) });
 console.log(`    ✓ media ${media.id} set as featured (previous: ${post.featured_media})`);
