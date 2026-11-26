@@ -4,14 +4,14 @@ slug: burn-multiple
 category: startup
 meta_description: "The burn multiple formula, the input rules a board will accept, Sacks' original 2020 tiers and dated benchmarks by ARR band to judge what's good at your stage."
 primary_keyword: burn multiple
-word_count: 2378
+word_count: 3070
 ---
 
 # Burn Multiple: Formula, Benchmarks by ARR and What's Good
 
 David Sacks introduced the burn multiple on April 23, 2020, in a [post that opens](https://sacks.substack.com/p/the-burn-multiple-51a7e43cb200) "As the economic crisis deepens." Six years later, on September 17, 2026, ICONIQ added it to its [Pacesetter Index](https://www.iconiq.com/growth/insights/the-iconiq-pacesetter-index) of top-growth AI companies, where compute costs make negative free cash flow common: "Neither cash flow nor growth captures that on its own, making burn multiple an important measure of capital efficiency." In that cohort the median is 1.8x at $10M to $25M ARR and 0.3x at $100M+. Same metric, very different bar.
 
-The formula is net burn divided by net new ARR over the same period. A 2x means you burned $2 for every $1 of net new ARR. What counts as good is harder. Sacks' rule of thumb for venture-stage startups calls under 1x "Amazing" and 1.5x to 2x "Good." Broader data shifts with size too: a16z's 2022 analysis of private software companies put the median at 1.6x under $10M ARR and 0.5x at $75M and above.
+The formula is net burn divided by net new ARR over the same period. A 2x means you burned $2 for every $1 of net new ARR. What counts as good is harder. Sacks' rule of thumb for venture-stage startups calls under 1x "Amazing" and 1.5x to 2x "Good." Broader data shifts with size too. Benchmarkit's 2026 report, a self-reported survey of B2B SaaS and AI-native companies, puts the median at 1.0x across the 62 companies that reported it for 2025 (25th percentile 0.4x, the strong end; 75th 2.0x). The median is 1.0x under $5M ARR and 0.5x at $50M to $100M. The older reference, a16z's 2022 analysis of private software companies, put the median at 1.6x under $10M ARR and 0.5x at $75M and above.
 
 Below: Sacks' tiers, board-ready input rules, a worked quarter, benchmarks by ARR band and the levers.
 
@@ -30,7 +30,7 @@ Unlike burn rate (dollars spent per month) or runway (cash divided by burn rate)
 "For venture-stage startups, these are reasonably good rules of thumb," Sacks wrote above this table:
 
 | Burn multiple | Sacks' label |
-|---|---|
+| --- | --- |
 | Under 1x | Amazing |
 | 1 to 1.5x | Great |
 | 1.5 to 2x | Good |
@@ -47,16 +47,16 @@ He expected it to fall with stage: "a seed stage company might have a Burn Multi
 
 Sacks' 2020 post doesn't spell out the inputs. These rules draw on Lighter Capital, a16z and AirTree:
 
-1. **Use operating net burn**, as a positive number when burning. [Lighter Capital](https://www.lightercapital.com/blog/how-to-calculate-your-burn-multiple) warns that "investor money, loans, and credit lines are not operating inflows, and counting them artificially lowers your burn."
-2. **Strip true one-offs and show both figures**, such as a legal settlement, an equipment purchase or a one-off contractor project.
-3. **Count net new ARR in full**: new plus expansion, minus churned and contracted ARR.
-4. **Match the periods.** a16z recommends evaluating it every quarter; Lighter calls quarterly standard, with longer windows for long sales cycles.
-5. **Report quarterly and trailing-12.** [AirTree](https://www.airtree.vc/open-source-vc/startup-metrics-burn-multiple) uses the quarter for recent changes and 12 months to smooth seasonal swings. Trailing-12 is total burn divided by total net new ARR.
+1.  **Use operating net burn**, as a positive number when burning. [Lighter Capital](https://www.lightercapital.com/blog/how-to-calculate-your-burn-multiple) warns that "investor money, loans, and credit lines are not operating inflows, and counting them artificially lowers your burn."
+2.  **Strip true one-offs and show both figures**, such as a legal settlement, an equipment purchase or a one-off contractor project.
+3.  **Count net new ARR in full**: new plus expansion, minus churned and contracted ARR.
+4.  **Match the periods.** a16z recommends evaluating it every quarter; Lighter calls quarterly standard, with longer windows for long sales cycles.
+5.  **Report quarterly and trailing-12.** [AirTree](https://www.airtree.vc/open-source-vc/startup-metrics-burn-multiple) uses the quarter for recent changes and 12 months to smooth seasonal swings. Trailing-12 is total burn divided by total net new ARR.
 
 An illustrative quarter (made-up numbers):
 
 | Line | Amount |
-|---|---|
+| --- | --- |
 | Operating net burn | $1.2M |
 | New ARR | +$700K |
 | Expansion ARR | +$150K |
@@ -68,7 +68,7 @@ An illustrative quarter (made-up numbers):
 The same quarter with four common mistakes:
 
 | Mistake | Calculation | Result |
-|---|---|---|
+| --- | --- | --- |
 | New plus expansion, ignoring churn and contraction | $1.2M ÷ $850K | 1.41x |
 | New logos only | $1.2M ÷ $700K | 1.71x |
 | A $300K legal settlement left inside the $1.2M | $1.2M ÷ $600K vs $900K ÷ $600K | 2.0x reported vs 1.5x operating |
@@ -93,13 +93,14 @@ Our suggestion for pre-revenue and sub-$1M companies: report absolute burn, runw
 Start with who each dataset measured:
 
 | Source (published; data) | Who | Statistic | Burn basis |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | [a16z](https://a16z.com/a-framework-for-navigating-down-markets/) (May 2022; window not stated) | Private software companies | Percentiles; 25th is the worse multiple | Cash burned |
 | [Scale](https://www.scalevp.com/blog/benchmarking-saas-growth-and-burn) (July 2022; window not stated) | Scale Studio data points, private plus some public SaaS | Pooled average | GAAP operating income |
-| ICONIQ Pacesetter Index (Sept 2026; 2024 to Q2 2026) | Top-quartile-growth AI-native or AI-driven companies | Median, top quartile | Not stated on its public page |
+| [Benchmarkit](https://www.benchmarkit.ai/2026-saas-ai-native-metrics) (June 2026; calendar 2025) | B2B SaaS and AI-native companies, self-reported survey; 62 of 342 reported it | Median, 25th to 75th; the 25th is the better multiple | Net cash burn ÷ net new ARR (window not stated) |
+| ICONIQ Pacesetter Index (Sept 2026; 2024 to Q2 2026) | Top-quartile-growth AI-native or AI-driven companies | Median, top quartile | Free cash flow, per the burn multiple chart in ICONIQ's companion 2026 State of Scaling report (p.39); not restated beside the index |
 
 | Source | ARR band | Burn multiple |
-|---|---|---|
+| --- | --- | --- |
 | a16z 2022 | Under $10M | 1.6x median (25th 3.8x, 75th 1.1x) |
 | a16z 2022 | $10M to $25M | 1.4x (1.8x, 0.8x) |
 | a16z 2022 | $25M to $75M | 0.7x (1.1x, 0.5x) |
@@ -112,27 +113,34 @@ Start with who each dataset measured:
 | Scale 2022 | $25M to $50M | 0.9x |
 | Scale 2022 | $50M to $100M | 0.7x |
 | Scale 2022 | $100M to $150M | 0.4x |
+| Benchmarkit 2026 | All companies | 1.0x median (0.4x to 2.0x) |
+| Benchmarkit 2026 | Under $5M | 1.0x (0.8x to 2.4x) |
+| Benchmarkit 2026 | $5M to $20M | 1.3x (0.6x to 1.7x) |
+| Benchmarkit 2026 | $20M to $50M | 1.0x (0.3x to 1.7x) |
+| Benchmarkit 2026 | $50M to $100M | 0.5x (0.2x to 1.9x) |
 | ICONIQ 2026 | Under $10M | 1.3x median (0.8x top quartile) |
 | ICONIQ 2026 | $10M to $25M | 1.8x (1.6x) |
 | ICONIQ 2026 | $25M to $100M | 0.9x (0.5x) |
 | ICONIQ 2026 | $100M+ | 0.3x (0.1x) |
 
+All Benchmarkit values, including the all-companies row, were read from the report's charts. The by-ARR chart carries the same N of 62, and the report does not publish how many companies sit in each band, so a single band holds few; it has no band above $100M. Percentile direction differs by source. Benchmarkit's ranges run from the 25th to the 75th percentile, and the low figure is the strong end; ICONIQ's top quartile is likewise its low, strong figure. The a16z cells list the 25th percentile first, as the weaker multiple.
+
 [Lighter Capital's June 2026 benchmarks](https://www.lightercapital.com/blog/cash-efficiency-benchmarks-for-private-b2b-saas-startups) have no ARR bands but are recent: 83 private B2B SaaS startups with about $250K to $22M ARR, 2024 to 2025 data, in a lender-screened sample. Of the 55 burning cash, 51% were above 1.0x and 24% below 0.33x, so three in four sat at one end or the other. Lighter calls it bimodal; a single median would hide that.
 
-Beside the data sit two rules of thumb: Sacks' tiers above, and Bessemer's. [Bessemer's State of the Cloud 2023](https://www.bvp.com/atlas/state-of-the-cloud-2023) calls "100% Revenue Growth and a 1.2X Burn multiple" the ideal growth profile, with targets aimed at "the typical Series B or C enterprise software company."
+Beside the data sit three rules of thumb: Sacks' tiers above, Bessemer's and Benchmarkit's. [Bessemer's State of the Cloud 2023](https://www.bvp.com/atlas/state-of-the-cloud-2023) calls "100% Revenue Growth and a 1.2X Burn multiple" the ideal growth profile, with targets aimed at "the typical Series B or C enterprise software company." Benchmarkit's 2026 report sets its own "best-in-class" targets: below 1.0x for scaling companies and below 0.5x for efficient growers. Those are targets, not the measured medians in the table.
 
 ### Why the sources disagree
 
 At $10M to $25M ARR the central figure is 1.4x (a16z 2022), 1.6x (Scale 2022) and 1.8x (ICONIQ 2026). That is not a trend. Our reading is that four differences account for the spread:
 
-- Burn definition: cash burn, operating income or free cash flow.
-- Statistic: median, pooled average or percentile.
-- Population: private software (a16z), a VC dataset with some public SaaS (Scale), lender-screened startups (Lighter), top-growth AI companies (ICONIQ).
-- Era: the 2022 datasets (windows not stated) likely reflect 2021 boom spending; Lighter and ICONIQ cover 2024 to 2026.
+-   Burn definition: cash burn, operating income, net cash burn (Benchmarkit) or free cash flow (ICONIQ, per its companion report). Benchmarkit's 2026 report does not state the measurement window.
+-   Statistic: median, pooled average or percentile.
+-   Population: private software (a16z), a VC dataset with some public SaaS (Scale), lender-screened startups (Lighter), top-growth AI companies (ICONIQ), a self-reported survey of B2B SaaS and AI-native companies whose results include negative multiples (Benchmarkit).
+-   Era: the 2022 datasets (windows not stated) likely reflect 2021 boom spending; Lighter, ICONIQ and Benchmarkit (calendar 2025) cover 2024 to 2026.
 
 ### How to use them
 
-Pick the row for your ARR band and name the dataset in the deck. The multiple generally falls as ARR grows, though ICONIQ's cohort rises from 1.3x to 1.8x between its first two bands. Growth is no excuse either: in Scale's 2022 data, the fastest-growing companies (top decile and quartile) had the lowest burn multiples within their ARR band.
+Pick the row for your ARR band and name the dataset in the deck. In every banded dataset here the central figure is lower in the largest band than in the smallest, but ICONIQ and Benchmarkit both rise before they fall: ICONIQ's median goes from 1.3x to 1.8x between its first two bands, Benchmarkit's from 1.0x to 1.3x. Growth is no excuse either: in Scale's 2022 data, the fastest-growing companies (top decile and quartile) had the lowest burn multiples within their ARR band.
 
 ## What investors read into it
 
@@ -140,7 +148,7 @@ These are named firms' views, not a consensus.
 
 a16z's growth team, May 2022: "We like burn multiples more than other efficiency metrics for recalibrating when market conditions change because they are all-encompassing." And: "If you need to add $100M of ARR with $50M of burn, you should build a plan to make sure your burn multiple is less than 0.5x."
 
-Lighter Capital, a lender, says investors "won't accept" a multiple "above 2.0x with no story, no trend toward improvement," and: "A single quarter's burn multiple is a data point. The trend tells you the truth."
+Lighter Capital, a lender, says investors "won't accept" a multiple "above 2.0x with no story, no trend toward improvement," and: "A single quarter's burn multiple is a data point. The trend tells you the truth." Lenders read the same number before they write a loan; our guide to [venture debt](/startup/venture-debt) covers what they look for and what it really costs.
 
 Bessemer wrote in 2023 that startups should still invest in growth, "but this growth should be at optimal costs, not growth-at-all-costs."
 
@@ -149,17 +157,17 @@ So show the quarterly and trailing-12 trend, state the basis, and footnote it, f
 ## Burn multiple vs CAC payback, NRR and Rule of 40
 
 | Metric | What it divides | Spend covered | When it fits |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Burn multiple | Net burn ÷ net new ARR | All operating spend | Once net new ARR is meaningful |
 | CAC payback | S&M spend vs gross-margin-adjusted new ARR, in months | Sales and marketing | When you pay to acquire |
 | NRR | Cohort revenue now ÷ a year earlier | None | Once customers are a year old |
 | Rule of 40 | Growth rate + profit margin | All, via profit | Feld: "at least $50 million in revenue" |
 
-CAC payback is Bessemer's primary sales and marketing efficiency metric; its 2023 tiers were 12 to 18 months good, 6 to 12 better, 0 to 6 best. The burn multiple counts all spend, which matters because, as AirTree notes, R&D spend plays a big role in driving customer acquisition, particularly as more startups go [product-led](/startup/plg-saas).
+[CAC payback](/startup/cac-payback-period) is Bessemer's primary sales and marketing efficiency metric; its 2023 tiers were 12 to 18 months good, 6 to 12 better, 0 to 6 best. The burn multiple counts all spend, which matters because, as AirTree notes, R&D spend plays a big role in driving customer acquisition, particularly as more startups go [product-led](/startup/plg-saas). The [SaaS magic number](/startup/saas-magic-number) is the other common sales and marketing efficiency ratio: annualized new revenue per dollar of last quarter's sales and marketing spend.
 
 NRR feeds the denominator: expansion adds to net new ARR, contraction and churn subtract. Weak [net revenue retention](/startup/net-revenue-retention) shows up in your burn multiple even when new sales look healthy.
 
-The Rule of 40 appeared in a [2015 Brad Feld post](https://feld.com/archives/2015/02/rule-40-healthy-saas-company/) that passed on a late-stage investor's rule, and Scale argued in March 2022 that it "does not compute" for early-stage startups. Bessemer's growth-plus-FCF-margin score, which it also calls an efficiency score, is in this family and generally applies only after $25M+ ARR. It is not the reciprocal of the burn multiple.
+The [Rule of 40](/startup/rule-of-40) appeared in a [2015 Brad Feld post](https://feld.com/archives/2015/02/rule-40-healthy-saas-company/) that passed on a late-stage investor's rule, and Scale argued in March 2022 that it "does not compute" for early-stage startups. Bessemer's growth-plus-FCF-margin score, which it also calls an efficiency score, is in this family and generally applies only after $25M+ ARR. It is not the reciprocal of the burn multiple.
 
 ## Levers that lower your burn multiple
 
@@ -175,7 +183,7 @@ The Rule of 40 appeared in a [2015 Brad Feld post](https://feld.com/archives/201
 
 **Plan backwards from the next round.** AirTree back-solves the multiple needed to hit the raise's ARR milestone with about six months of cash in reserve.
 
-This week, compute last quarter's multiple and your trailing-12, write the footnote, and find the benchmark row for your ARR.
+This week, compute last quarter's multiple and your trailing-12, write the footnote, and find the benchmark row for your ARR. Our [SaaS metrics guide](/startup/saas-metrics) maps the other metrics to ARR bands.
 
 ## FAQ
 
@@ -189,7 +197,7 @@ Divide a quarter's operating net burn, excluding financing and true one-offs, by
 
 ### What is a good burn multiple?
 
-Sacks' 2020 rule of thumb calls under 1x amazing and 1.5x to 2x good for venture-stage startups. Measured medians depend on size: a16z's 2022 data showed 1.6x under $10M ARR and 0.5x at $75M+. Compare with your ARR band and name the dataset.
+Sacks' 2020 rule of thumb calls under 1x amazing and 1.5x to 2x good for venture-stage startups. Measured medians depend on size. Benchmarkit's 2026 report, a self-reported survey of B2B SaaS and AI-native companies, put the median at 1.0x for 2025 across the 62 that reported it (25th percentile 0.4x, the strong end; 75th 2.0x). It was 1.0x under $5M ARR and 0.5x at $50M to $100M. a16z's 2022 data showed 1.6x under $10M ARR and 0.5x at $75M+. Compare with your ARR band and name the dataset.
 
 ### What is the difference between burn multiple, burn rate and runway?
 

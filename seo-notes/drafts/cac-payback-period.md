@@ -4,12 +4,12 @@ slug: cac-payback-period
 category: startup
 meta_description: "CAC payback period formula with gross margin, a worked example, 2026 benchmarks by contract size with their sources, and a free calculator for your numbers."
 primary_keyword: cac payback period
-word_count: 3469
+word_count: 4070
 ---
 
 # CAC Payback Period: Formula, Benchmarks by Contract Size and What's Good
 
-"Under 12 months" is the CAC payback target repeated across SaaS explainers, and it has a birth year. David Skok, whose [SaaS metrics definitions](https://www.forentrepreneurs.com/saas-metrics-2-definitions-2/) carry the guideline, says it was written in 2011. Measured data is less generous: Benchmarkit's 2026 report (June 2026), a survey of 342 B2B SaaS and AI-native software companies, put the median at 16 months for calendar 2025, across the 198 companies that reported the metric. And if you compute payback on revenue rather than gross profit, your own number looks shorter than it is before any comparison starts.
+"Under 12 months" is the CAC payback target repeated across SaaS explainers, and it has a birth year. David Skok, whose [SaaS metrics definitions](https://www.forentrepreneurs.com/saas-metrics-2-definitions-2/) carry the guideline, says it was written in 2011. Benchmarkit's measured data is less generous: its 2026 report (June 2026), a survey of 342 B2B SaaS and AI-native software companies, put the median at 16 months for calendar 2025, across the 198 companies that reported the metric. And if you compute payback on revenue rather than gross profit, your own number looks shorter than it is before any comparison starts.
 
 The formula: **CAC payback (months) = CAC ÷ (monthly revenue per new customer × gross margin)**. A result of 15 means a new customer's gross profit takes 15 months to repay what you spent to win them.
 
@@ -29,14 +29,14 @@ The SaaS CFO's Ben Murray frames CAC as a debt: you pay the acquisition cost up 
 
 Three inputs, each with a choice inside it:
 
-- **CAC.** Fully loaded sales and marketing spend for a period (salaries, commissions, ads, tools, agencies, events), divided by the number of new customers won in that period. Conventions differ at the edges. Bessemer counts sales, marketing and the part of customer success tied to renewals and upsells; Murray splits sales and marketing spend between new and existing customers before computing CAC. Pick one convention and keep it.
-- **Monthly revenue per new customer.** New MRR from the customers you won in the period, divided by how many you won. Murray is blunt about this one: "It's not the ARPA of our entire customer base" ([The SaaS CFO](https://www.thesaascfo.com/cac-payback-period/)). Benchmarkit's 2025 report also uses ARR from new customers.
-- **Gross margin.** Your subscription gross margin: subscription revenue minus the cost of delivering it, as a share of subscription revenue. Murray and Benchmarkit's 2025 report both use the subscription line rather than total gross margin, so services revenue doesn't blur it.
+-   **CAC.** Fully loaded sales and marketing spend for a period (salaries, commissions, ads, tools, agencies, events), divided by the number of new customers won in that period. Conventions differ at the edges. Bessemer counts sales, marketing and the part of customer success tied to renewals and upsells; Murray splits sales and marketing spend between new and existing customers before computing CAC. Pick one convention and keep it.
+-   **Monthly revenue per new customer.** New MRR from the customers you won in the period, divided by how many you won. Murray is blunt about this one: "It's not the ARPA of our entire customer base" ([The SaaS CFO](https://www.thesaascfo.com/cac-payback-period/)). Benchmarkit's 2025 report also uses ARR from new customers.
+-   **Gross margin.** Your subscription gross margin: subscription revenue minus the cost of delivering it, as a share of subscription revenue. Murray and Benchmarkit's 2025 report both use the subscription line rather than total gross margin, so services revenue doesn't blur it.
 
 The same name covers several formulas:
 
 | Variant | Formula | Who uses it | Effect on the number |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Revenue only | CAC ÷ monthly revenue per new customer | Quick estimates; no definition we reviewed uses it | Equals the standard figure × your gross margin, so it always reads shorter |
 | Gross-margin adjusted, monthly | CAC ÷ (monthly revenue per new customer × gross margin) | Skok; Baremetrics; Bessemer measures against gross-margin-adjusted ARR | The standard form |
 | Annual form | S&M spend ÷ (ARR from new customers × gross margin) × 12 | Benchmarkit 2025 report; The SaaS CFO (cohort ARR × subscription gross margin) | Same answer as the monthly form; the × 12 turns years into months |
@@ -49,7 +49,7 @@ If you report the net new version, say so. It answers a broader question than th
 An illustrative early-stage company (made-up numbers, not a real business):
 
 | Input | Value |
-|---|---|
+| --- | --- |
 | Fully loaded S&M spend in March | $30,000 |
 | New customers won in March | 20 |
 | CAC | $30,000 ÷ 20 = $1,500 |
@@ -64,14 +64,14 @@ The annual form gives the same result. New ARR is $2,500 × 12 = $30,000, so $30
 Now change only the revenue basis and the margin:
 
 | Basis | Calculation | Payback |
-|---|---|---|
+| --- | --- | --- |
 | Revenue only | $1,500 ÷ $125 | 12.0 months |
 | Gross margin 80% | $1,500 ÷ ($125 × 0.80) | 15.0 months |
 | Gross margin 70% | $1,500 ÷ ($125 × 0.70) = $1,500 ÷ $87.50 | 17.1 months |
 
 The revenue-only figure lands exactly on the 12-month line. The real figure is 15.0, and 17.1 if margin slips to 70%. The gap is a fixed proportion: revenue-only payback equals the gross-margin figure multiplied by your gross margin, so at 80% margin it understates payback by 20%, and at 70% by 30%.
 
-The contract-size view is kinder than the single rule. $125 a month is $1,500 a year, which puts this company in Benchmarkit's under $5K annual contract value (ACV) bucket. In the 2026 report, that bucket's 25th percentile is 10 months, its median 11 and its 75th percentile 17. The revenue-only figure sits just above the median. The real figure is about 1.4 times the median (15.0 ÷ 11 = 1.36) but still inside the middle half; only the 70% margin case, at 17.1, reaches the 75th percentile. Against a single 12-month rule, the revenue-only figure looks borderline and the real one misses. Against companies selling at the same price point, the gross margin adjustment takes this company from just behind the median to clearly behind it, though still within the normal range.
+The contract-size view is kinder than the single rule. $125 a month is $1,500 a year, which puts this company in Benchmarkit's under $5K annual contract value (ACV) bucket. In the 2026 report, that bucket's 25th percentile is 10 months, its median 11 and its 75th percentile 17. The revenue-only figure sits just above the median. The real figure is about 1.4 times the median (15.0 ÷ 11 = 1.36) but still inside the middle half; only the 70% margin case, at 17.1, reaches the 75th percentile. Against a single 12-month rule, the revenue-only figure looks borderline and the real one misses. Against companies selling at the same price point, the gross margin adjustment takes this company from just behind the median to clearly behind it, though still within the normal range. By early ARR band the view is harsher: in High Alpha's 2026 report (table below), 15.0 months sits above the 75th percentile both under $1M ARR (8 months) and at $1M to $5M (14).
 
 One more input choice shifts the result. If you divide by average revenue across all customers instead of new customers, the answer moves whenever new customers pay a different amount from the base. Say older customers on cheaper plans pull the all-customer average down to $100: the same company would compute $1,500 ÷ ($100 × 0.80) = 18.8 months. If new customers pay less than the base, the error runs the other way and payback looks shorter than it is.
 
@@ -82,7 +82,7 @@ The calculator at the end of this article runs the same formula on your own inpu
 Compare by contract size, not against one number. The sources below measure different things, so the column that matters most is "Statistic":
 
 | Source (year; data period) | Population | Statistic | CAC payback |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | [Benchmarkit 2026 report](https://www.benchmarkit.ai/2026-saas-ai-native-metrics) (June 2026; CY-25) | B2B SaaS and AI-native companies, self-reported survey; 198 of 342 participants reported it | Median (25th to 75th percentile) | 16 months (10 to 24) |
 | Benchmarkit 2026 report (CY-24; CY-23; CY-22) | Same report, earlier years | Median (25th to 75th percentile) | 18 months (12 to 24); 14 (10 to 20); 16 (11 to 23) |
 | [ICONIQ State of Software 2025](https://www.iconiq.com/growth/reports/2025-state-of-software) (data through Q2 2025) | Public SaaS plus ICONIQ portfolio; companies under $10M ARR excluded; 21 companies in 2025 | Top-quartile threshold | 15.9 months |
@@ -93,7 +93,7 @@ Compare by contract size, not against one number. The sources below measure diff
 Benchmarkit's 2026 report also cuts the CY-25 data by ACV, the amount a customer pays per year. Values below were read from the report's chart, and the report does not publish how many companies sit in each bucket, so treat the extremes with care:
 
 | Annual contract value | 25th percentile | Median | 75th percentile |
-|---|---|---|---|
+| --- | --- | --- | --- |
 | Under $5K | 10 | 11 | 17 |
 | $5K to $10K | 8 | 12 | 20 |
 | $10K to $25K | 10 | 18 | 34 |
@@ -104,25 +104,39 @@ Months; lower is faster. The median doubles from the smallest contracts (11) to 
 
 The 2026 report also cuts payback by 2025 growth rate. Medians were 14 months for companies growing under 10%, 18 for 11 to 20%, 22 for 21 to 30% (the highest), 14 for 31 to 50% and 10 for growth over 50%. That is a correlation in one year's survey, not evidence that faster payback causes growth or the reverse. By solution type, horizontal B2B SaaS applications had a median of 14 months and vertical SaaS 18.
 
+[High Alpha and Visible's 2026 Startup Benchmarks Report](https://www.highalpha.com/saas-benchmarks) (PDF dated November 2026) cuts payback by ARR instead. It is a different survey with different companies, so read it beside the ACV table, not blended with it:
+
+| ARR band | Median (25th to 75th percentile) |
+| --- | --- |
+| Under $1M | 2 (2 to 8)* |
+| $1M to $5M | 10 (8 to 14) |
+| $5M to $20M | 14 (8 to 17) |
+| $20M to $50M | 11 (8 to 21) |
+| Over $50M | 20 (17 to 22) |
+
+\* High Alpha warns that sub-$1M payback is understated by unallocated founder time and costs.
+
+Months; lower is faster, so the 25th percentile is the fast end. High Alpha's report labels the slow end, the 75th percentile, its "upper quartile". Population: 500+ survey respondents, per the report's landing page. The report does not publish n per metric or a measurement period for payback, and the two top bands are small shares of respondents (8% at $20M to $50M, 3% over $50M), so treat those rows as indicative.
+
 ### Why the numbers disagree
 
 **The statistic.** Benchmarkit's 16 months is the middle company. ICONIQ's 15.9 is the line the fastest quarter of its companies beat. The two are almost the same number while measuring different things, so a close match between two benchmarks means nothing until you know which statistic each one reports. Bessemer's 15 is an average. Bessemer's tiers are goals, not measurements. Compare your number with a top-quartile line or a target and call that the norm, and an ordinary result will look like a failure.
 
-**The population.** ICONIQ excludes companies under $10M ARR, and Bessemer notes its portfolio is not a random sample of the private market. We did not find a payback benchmark specific to companies under $1M ARR in these sources. If you are pre-seed or seed, the ACV table is the closest fit available, and a loose one.
+**The population.** ICONIQ excludes companies under $10M ARR, and Bessemer notes its portfolio is not a random sample of the private market. Under $1M ARR, High Alpha's 2026 report gives a median of 2 months (2 to 8), with its own caution: "Treat the sub-$1M figures cautiously, since unallocated founder time and costs may understate early CAC." Read 2 months as a likely understatement, not a target. Before comparing, load founder selling time into your CAC, and check that support and onboarding costs sit in your cost of revenue.
 
-**The method.** Benchmarkit's 2025 report also printed a public-company median of 34 months. That figure is computed from net new implied ARR, which nets churn, downsell and expansion, and the report itself warns it is not an apples-to-apples comparison with the private figure. The 2026 report prints no public comparison. Keep the 2025 public figure out of your comparison. We could not find ICONIQ's exact formula in its report. Nor could we find a payback formula in Benchmarkit's 2026 report, so we can't confirm its figures use the same gross-margin basis as the 2025 edition and the worked example above.
+**The method.** Benchmarkit's 2025 report also printed a public-company median of 34 months. That figure is computed from net new implied ARR, which nets churn, downsell and expansion, and the report itself warns it is not an apples-to-apples comparison with the private figure. The 2026 report prints no public comparison. Keep the 2025 public figure out of your comparison. We could not find ICONIQ's exact formula in its report. Nor could we find a payback formula in Benchmarkit's 2026 report, so we can't confirm its figures use the same gross-margin basis as the 2025 edition and the worked example above. High Alpha defines payback as "Months of software gross margin to recover the fully-loaded cost of acquiring a customer"; its revenue basis, new customers or all customers, is not stated.
 
-**The year.** Benchmarkit's median went from 16 months (CY-22) to 14 (CY-23) to 18 (CY-24) to 16 (CY-25): down 11% in the latest year and back to the CY-22 level. The earlier years match the figures in the 2025 edition, which drew on 148 companies. The report does not say whether they were recomputed for this year's sample, so read the series as indicative, not as the same companies tracked over time. Benchmarkit and ICONIQ publish yearly, so check for a newer edition before putting a figure in a board deck.
+**The year.** Benchmarkit's median went from 16 months (CY-22) to 14 (CY-23) to 18 (CY-24) to 16 (CY-25): down 11% in the latest year and back to the CY-22 level. The earlier years match the figures in the 2025 edition, which drew on 148 companies. The report does not say whether they were recomputed for this year's sample, so read the series as indicative, not as the same companies tracked over time. Benchmarkit, ICONIQ and High Alpha publish yearly, so check for a newer edition before putting a figure in a board deck. We found no CAC payback figure in ICONIQ's newer edition, the [2026 State of Scaling](https://www.iconiq.com/growth/reports/2026-state-of-scaling) (September 2026), so its 2025 figure is the latest ICONIQ payback number we found. Our [SaaS metrics guide](/startup/saas-metrics) sets the 2026 surveys side by side by ARR band.
 
 ### Where "5 to 7 months" comes from
 
 Some explainers call five to seven months best in class without a source. The likely origin is Skok's [SaaS Metrics 2.0](https://www.forentrepreneurs.com/saas-metrics-2/), where he wrote that many of the best SaaS businesses recover CAC in five to seven months and described his guidelines as early guesses that held up. That is one investor's opinion from portfolio experience in the early 2010s, and every source in the table above was published later. In his definitions he also wrote: "In practice, it is very rare to find Months to recover CAC as less than 12."
 
-The 2026 data puts it in context. In Benchmarkit's ACV cut, the lowest 25th percentile in any bucket is 8 months ($5K to $10K), and for contracts under $5,000 a year it is 10; across all companies it is also 10. Five to seven months beats the top-quartile line of every published ACV bucket, which makes it an exceptional result rather than a target. The same data also dates Skok's "very rare" line: about a quarter of the 2026 sample reported 10 months or less.
+Benchmarkit's 2026 data puts it in context. In Benchmarkit's ACV cut, the lowest 25th percentile in any bucket is 8 months ($5K to $10K), and for contracts under $5,000 a year it is 10; across all companies it is also 10. Five to seven months beats the top-quartile line of every published ACV bucket, which makes it an exceptional result rather than a target. The same data also dates Skok's "very rare" line: about a quarter of the 2026 sample reported 10 months or less.
 
 ### How to use the benchmarks
 
-Find your ACV row and compare with its median and 75th percentile. If you are above $10M ARR, ICONIQ's top-quartile line tells you what the fastest peers achieve. Use Bessemer's tiers to set a goal. And whichever row you pick, name it, with its year, next to your number.
+Find your ACV row and compare with its median and 75th percentile. If you know your ARR band, compare with High Alpha's band median and quartiles too; under $1M ARR, load founder time into CAC first. If you are above $10M ARR, ICONIQ's top-quartile line tells you what the fastest quarter of its public and portfolio companies achieves. That is ICONIQ's population, not every company that size: High Alpha's 25th percentile is 8 months from $5M to $50M ARR and 17 above $50M. Use Bessemer's tiers to set a goal. And whichever row you pick, name it, with its year, next to your number.
 
 ## How to read your CAC payback number
 
@@ -133,7 +147,7 @@ The formula assumes a customer stays until their CAC is repaid. Murray points ou
 Here is what churn does to the worked example. This is our illustration under a simple model: constant monthly churn, no expansion, $100 of monthly gross profit per customer, billed at the start of each month. After n months, a cohort has earned $100 × (1 - (1 - churn)^n) ÷ churn of gross profit per customer originally won, which has to reach the $1,500 CAC.
 
 | Monthly churn | Customers left at month 15 | Months for the cohort to repay CAC |
-|---|---|---|
+| --- | --- | --- |
 | 0% | 100% | 15.0 |
 | 2% | 74% | 17.7 |
 | 5% | 46% | 27.0 |
@@ -149,7 +163,7 @@ Airtree Ventures notes that acquisition spend can lead conversion by months, in 
 
 ### When payback is too short
 
-A very fast payback is not automatically a trophy. [Airtree](https://www.airtree.vc/open-source-vc/startup-metrics-cac-payback-and-ltv-cac-ratio) points out that a payback that is "too low" can mean you are under-investing in sales and marketing. If yours is far below your ACV row's 25th percentile and growth is slow, treat that as a prompt to test more spend.
+A very fast payback is not automatically a trophy. [Airtree](https://www.airtree.vc/open-source-vc/startup-metrics-cac-payback-and-ltv-cac-ratio) points out that a payback that is "too low" can mean you are under-investing in sales and marketing. At an early company, a very short payback can also mean costs left out of CAC. If yours is far below your ACV row's 25th percentile and growth is slow, treat that as a prompt to test more spend.
 
 ### Next to magic number and burn multiple
 
@@ -179,7 +193,7 @@ Then find your row in the ACV table above, and put the formula basis, the period
 
 ### What is a good CAC payback period?
 
-It depends on contract size. Benchmarkit's 2026 report put the median at 16 months for 2025 (CY-25), based on 198 companies, with the middle half between 10 and 24 months. Medians were 11 months for contracts under $5,000 a year and 22 months for $50,000 to $100,000. Bessemer's 2021 targets are under 12 months for SMB, under 18 for mid-market and under 24 for enterprise.
+It depends on contract size. Benchmarkit's 2026 report put the median at 16 months for 2025 (CY-25), based on 198 companies, with the middle half between 10 and 24 months. Medians were 11 months for contracts under $5,000 a year and 22 months for $50,000 to $100,000. By ARR, High Alpha's 2026 medians are 10 months at $1M to $5M and 14 at $5M to $20M; under $1M it reports 2, but flags that figure as likely understated by unallocated founder time and costs. Bessemer's 2021 targets are under 12 months for SMB, under 18 for mid-market and under 24 for enterprise.
 
 ### How do you calculate CAC?
 
@@ -187,12 +201,12 @@ Add up fully loaded sales and marketing spend for a period, including salaries, 
 
 ### Should CAC payback include gross margin?
 
-Yes. Revenue that pays for hosting, support and onboarding is not available to repay acquisition spend, so the standard formula divides by gross profit. Every definition we reviewed, including Skok's, Bessemer's and the one in Benchmarkit's 2025 report, does this. Skipping it shrinks the result to the true payback × your gross margin: at 80% margin, a 12-month revenue-only figure is really 15 months.
+Yes. Revenue that pays for hosting, support and onboarding is not available to repay acquisition spend, so the standard formula divides by gross profit. Every definition we reviewed, including Skok's, Bessemer's, High Alpha's and the one in Benchmarkit's 2025 report, does this. Skipping it shrinks the result to the true payback × your gross margin: at 80% margin, a 12-month revenue-only figure is really 15 months.
 
 ### Does CAC payback account for churn?
 
-No. The formula assumes a customer stays until their acquisition cost is repaid, and it ignores the time value of money too. If customers leave earlier, their CAC is never recovered. Under a simple constant-churn model, a cohort never pays back when monthly churn is at or above 1 ÷ payback months, which is 6.7% for a 15-month payback. Read payback next to churn and net revenue retention.
+No. The formula assumes a customer stays until their acquisition cost is repaid, and it ignores the time value of money too. If customers leave earlier, their CAC is never recovered. Under a simple constant-churn model, a cohort never pays back when monthly churn is at or above 1 ÷ payback months, which is 6.7% for a 15-month payback. Read payback next to [churn](/startup/saas-churn-rate) and net revenue retention.
 
 ### CAC payback vs LTV:CAC: which matters more?
 
-They answer different questions. Payback measures speed: how many months of cash you are out for each new customer, which matters most when cash is scarce. LTV:CAC measures lifetime return, but lifetime value rests on a churn assumption. With $100 of monthly gross profit per customer, LTV is $5,000 at 2% monthly churn and $2,000 at 5%. For an early-stage founder, we would plan cash on payback and use LTV:CAC as a check.
+They answer different questions. Payback measures speed: how many months of cash you are out for each new customer, which matters most when cash is scarce. LTV:CAC measures lifetime return, but lifetime value rests on a churn assumption. With $100 of monthly gross profit per customer, LTV is $5,000 at 2% monthly churn and $2,000 at 5%. For an early-stage founder, we would plan cash on payback and use LTV:CAC as a check. Our [LTV to CAC ratio guide](/startup/ltv-to-cac-ratio) covers the ratio, its 3:1 origin and 2026 benchmarks.
