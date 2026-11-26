@@ -55,7 +55,8 @@ export async function getStaticPaths() {
       id: rawPost.id,
       slug: rawPost.slug,
       title: decodeHtmlEntities(rawPost.title.rendered),
-      content: rawPost.content.rendered,
+      // WordPress's wptexturize turns a spaced hyphen (a minus sign in formulas) into an en dash; restore it.
+      content: rawPost.content.rendered.replace(/ &#8211; /g, ' - '),
       date: rawPost.date,
       modified: rawPost.modified || rawPost.date,
       // Decoded like the title: excerpts feed related-post cards and the meta
