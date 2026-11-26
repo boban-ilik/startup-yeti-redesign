@@ -1,0 +1,35 @@
+<!doctype html><html><head><meta charset="utf-8"><link rel="stylesheet" href="_brand.css">
+<!-- /startup/saas-metrics. Concept: a staircase of ARR bands; each step adds the metrics that start to mean something there (the hub's short answer, our reading of High Alpha, Benchmarkit and SaaS Capital 2026 caveats). -->
+<style>
+  .canvas{background:radial-gradient(1200px 800px at 20% 10%,#f0f9ff 0%,#fff 60%)}
+  .head{left:80px;top:62px;font-size:46px;color:#082f49;letter-spacing:-.01em}
+  .sub{left:80px;top:134px;font-size:22px;font-weight:600;color:#0369a1}
+  .step{position:absolute;bottom:96px;width:250px;border-radius:18px 18px 0 0}
+  .s1{left:80px;height:120px;background:#e0f2fe}
+  .s2{left:340px;height:200px;background:#bae6fd}
+  .s3{left:600px;height:280px;background:#38bdf8}
+  .s4{left:860px;height:360px;background:radial-gradient(circle at 30% 20%,#0ea5e9 0%,#0369a1 60%,#082f49 100%)}
+  .band{position:absolute;bottom:112px;width:250px;text-align:center;font-size:24px;font-weight:800;letter-spacing:-.01em}
+  .chips{position:absolute;width:250px;display:flex;flex-direction:column;align-items:center;gap:10px}
+  .chip{background:#fff;border-radius:999px;padding:9px 18px;font-size:18px;font-weight:700;color:#0c4a6e;box-shadow:0 10px 22px -12px rgba(12,74,110,.45);border:1px solid #e0f2fe;white-space:nowrap}
+  .chip.a{color:#92400e;border-color:#fde68a;background:#fffbeb}
+  .plus{font-size:15px;font-weight:700;color:#0369a1;letter-spacing:.04em}
+  .src{left:80px;top:728px;font-size:15px;font-weight:600;color:#0369a1}
+</style></head>
+<body><div class="canvas">
+<div class="abs head serif">What to track at each ARR stage</div>
+<div class="abs sub">Each step keeps the metrics below it and adds new ones.</div>
+
+<div class="step s1"></div><div class="step s2"></div><div class="step s3"></div><div class="step s4"></div>
+<div class="band" style="left:80px;color:#0369a1">Under $1M</div>
+<div class="band" style="left:340px;color:#075985">$1M to $5M</div>
+<div class="band" style="left:600px;color:#fff">$5M to $20M</div>
+<div class="band" style="left:860px;color:#fff">$20M+</div>
+
+<div class="chips" style="left:80px;bottom:230px"><span class="chip">MRR growth</span><span class="chip">Gross margin</span><span class="chip">Burn and runway</span></div>
+<div class="chips" style="left:340px;bottom:310px"><span class="plus">ADD</span><span class="chip">CAC payback</span><span class="chip">NRR</span><span class="chip">Burn multiple</span></div>
+<div class="chips" style="left:600px;bottom:390px"><span class="plus">ADD</span><span class="chip">Magic number</span><span class="chip">GRR</span><span class="chip">LTV:CAC</span></div>
+<div class="chips" style="left:860px;bottom:470px"><span class="plus">ADD</span><span class="chip a">Rule of 40</span></div>
+
+<div class="abs src">Our reading of the High Alpha, Benchmarkit and SaaS Capital 2026 reports</div>
+</div></body></html>
